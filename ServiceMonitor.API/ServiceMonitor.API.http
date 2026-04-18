@@ -1,6 +1,6 @@
 @ServiceMonitor_API_HostAddress = http://localhost:5100
 
-GET {{ServiceMonitor_API_HostAddress}}/api/services/3
+GET {{ServiceMonitor_API_HostAddress}}/api/services/4
 Accept: application/json
 
 ###
@@ -24,10 +24,8 @@ PUT {{ServiceMonitor_API_HostAddress}}/api/services
 Content-Type: application/json
 
 {
-  "Id": 2,
-  "Name": "YouTube",
-  "Endpoint": "https://www.youtube.com/",
-  "Status": "Down"
+  "Id": 4,
+  "Endpoint": "https://notvalidurl..."
 }
 
 ###

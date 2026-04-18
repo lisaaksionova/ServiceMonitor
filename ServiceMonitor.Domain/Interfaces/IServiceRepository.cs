@@ -6,6 +6,6 @@ public interface IServiceRepository
 { 
     Task<Service?> GetByIdAsync(int id);
     Task CreateAsync(Service service);
-    Task UpdateAsync(Service service);
-    Task Delete(int id);
+    Task Delete(Service service);
+    Task Save();
 }

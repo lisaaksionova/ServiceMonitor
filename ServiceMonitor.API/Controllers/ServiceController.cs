@@ -4,6 +4,7 @@ using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
 using ServiceMonitor.Application.Services.Commands.UpdateService;
 using ServiceMonitor.Application.Services.Dtos;
+using ServiceMonitor.Application.Services.Queries.GetAllServices;
 using ServiceMonitor.Application.Services.Queries.GetServiceById;
 
 namespace ServiceMonitor.API.Controllers;
@@ -17,6 +18,13 @@ public class ServiceController(IMediator mediator) : ControllerBase
     {
         var service = await mediator.Send(new GetServiceByIdQuery(id));
         return Ok(service);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll()
+    {
+        var services = await mediator.Send(new GetAllServicesQuery());
+        return Ok(services);
     }
 
     [HttpPost]

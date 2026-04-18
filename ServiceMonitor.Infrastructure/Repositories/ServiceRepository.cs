@@ -19,19 +19,14 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Service service)
+    public async Task Delete(Service service)
     {
-        var serviceToUpdate = await context.Services.FirstOrDefaultAsync(s => s.Id == service.Id);
-        serviceToUpdate.Name = service.Name;
-        serviceToUpdate.Endpoint = service.Endpoint;
-        serviceToUpdate.Status = service.Status;
+        context.Services.Remove(service);
         await context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
+    public async Task Save()
     {
-        var service = await context.Services.FirstOrDefaultAsync(s => s.Id == id);
-        context.Services.Remove(service);
         await context.SaveChangesAsync();
     }
 }

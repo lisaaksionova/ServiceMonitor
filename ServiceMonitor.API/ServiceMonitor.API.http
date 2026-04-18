@@ -1,6 +1,6 @@
 @ServiceMonitor_API_HostAddress = http://localhost:5100
 
-GET {{ServiceMonitor_API_HostAddress}}/api/services/1
+GET {{ServiceMonitor_API_HostAddress}}/api/services/2
 Accept: application/json
 
 ###
@@ -19,7 +19,7 @@ PUT {{ServiceMonitor_API_HostAddress}}/api/services
 Content-Type: application/json
 
 {
-  "Id": 1,
+  "Id": 2,
   "Name": "YouTube",
   "Endpoint": "https://www.youtube.com/",
   "Status": "Down"
@@ -27,5 +27,5 @@ Content-Type: application/json
 
 ###
 
-DELETE {{ServiceMonitor_API_HostAddress}}/api/services/1
+DELETE {{ServiceMonitor_API_HostAddress}}/api/services/2
 Accept: application/json

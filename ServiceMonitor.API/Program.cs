@@ -1,3 +1,5 @@
+using ServiceMonitor.API.Extensions;
+using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
 using ServiceMonitor.Infrastructure.Extensions;
 
@@ -7,6 +9,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddPresentation();
 
 builder.Services.AddOpenApi();
 
@@ -20,5 +23,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();

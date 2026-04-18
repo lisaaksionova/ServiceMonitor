@@ -16,7 +16,7 @@ public class ServiceController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ServiceDto>> GetById([FromRoute] int id)
     {
         var service = await mediator.Send(new GetServiceByIdQuery(id));
-        return  Ok(service);
+        return Ok(service);
     }
 
     [HttpPost]

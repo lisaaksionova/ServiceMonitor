@@ -1,4 +1,7 @@
-﻿namespace ServiceMonitor.Application.Services.Dtos;
+﻿using ServiceMonitor.Application.Incidents.Dtos;
+using ServiceMonitor.Domain.Enums;
+
+namespace ServiceMonitor.Application.Services.Dtos;
 
 public class ServiceDto
 {
@@ -6,4 +9,5 @@ public class ServiceDto
     public string Name { get; set; }
     public string Endpoint { get; set; }
     public string Status { get; set; }
+    public List<IncidentDto> Incidents { get; set; }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceMonitor.Domain.Interfaces;
+using ServiceMonitor.Infrastructure.BackgroundServices;
 using ServiceMonitor.Infrastructure.Persistence;
 using ServiceMonitor.Infrastructure.Repositories;
 
@@ -15,5 +16,9 @@ public static class ServiceCollectionExtension
         services.AddDbContext<MonitorDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IIncidentRepository, IncidentRepository>();
+
+        services.AddHttpClient();
+        services.AddHostedService<HealthCheckBackgroundService>();
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using ServiceMonitor.Infrastructure.Persistence;
 namespace ServiceMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(MonitorDbContext))]
-    partial class MonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418171031_Add_Incidents")]
+    partial class Add_Incidents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -9,13 +9,13 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
 {
     public async Task<Service?> GetByIdAsync(int id)
     {
-        var service = await context.Services.FirstOrDefaultAsync(s => s.Id == id);
+        var service = await context.Services.Include(s => s.Incidents).FirstOrDefaultAsync(s => s.Id == id);
         return service;
     }
 
     public async Task<IEnumerable<Service>> GetAllAsync()
     {
-        var services = await context.Services.ToListAsync();
+        var services = await context.Services.Include(s => s.Incidents).ToListAsync();
         return services;
     }
 

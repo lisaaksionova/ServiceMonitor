@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ServiceMonitor.Application.Extensions;
 
@@ -9,5 +10,6 @@ public static class ServiceCollectionExtension
         var applicationAssembly = typeof(ServiceCollectionExtension).Assembly;
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(applicationAssembly));
         services.AddAutoMapper(cfg => { }, applicationAssembly);
+        services.AddValidatorsFromAssembly(applicationAssembly);
     }
 }

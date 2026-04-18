@@ -13,6 +13,12 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
         return service;
     }
 
+    public async Task<IEnumerable<Service>> GetAllAsync()
+    {
+        var services = await context.Services.ToListAsync();
+        return services;
+    }
+
     public async Task CreateAsync(Service service)
     {
         await context.Services.AddAsync(service);

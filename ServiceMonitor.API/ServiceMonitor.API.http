@@ -1,6 +1,11 @@
 @ServiceMonitor_API_HostAddress = http://localhost:5100
 
-GET {{ServiceMonitor_API_HostAddress}}/api/services/2
+GET {{ServiceMonitor_API_HostAddress}}/api/services/3
+Accept: application/json
+
+###
+
+GET {{ServiceMonitor_API_HostAddress}}/api/services
 Accept: application/json
 
 ###
@@ -27,5 +32,5 @@ Content-Type: application/json
 
 ###
 
-DELETE {{ServiceMonitor_API_HostAddress}}/api/services/2
+DELETE {{ServiceMonitor_API_HostAddress}}/api/services/3
 Accept: application/json

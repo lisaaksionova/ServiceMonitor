@@ -8,4 +8,5 @@ public interface IServiceRepository
     Task CreateAsync(Service service);
     Task Delete(Service service);
     Task Save();
+    Task<IEnumerable<Service>> GetAllAsync();
 }

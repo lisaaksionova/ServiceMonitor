@@ -35,7 +35,7 @@ public class ServiceController(IMediator mediator) : ControllerBase
         return Created();
     }
 
-    [HttpPut]
+    [HttpPatch]
     public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command)
     {
         await mediator.Send(command);

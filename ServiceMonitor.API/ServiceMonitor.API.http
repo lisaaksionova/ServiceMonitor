@@ -15,7 +15,8 @@ Content-Type: application/json
 
 {
   "Name": "YouTube",
-  "Endpoint": "https://www.youtube.com/"
+  "Endpoint": "https://www.youtube.com/",
+  "CheckIntervalMinutes": 2
 }
 
 ###
@@ -30,5 +31,5 @@ Content-Type: application/json
 
 ###
 
-DELETE {{ServiceMonitor_API_HostAddress}}/api/services/3
+DELETE {{ServiceMonitor_API_HostAddress}}/api/services/4
 Accept: application/json

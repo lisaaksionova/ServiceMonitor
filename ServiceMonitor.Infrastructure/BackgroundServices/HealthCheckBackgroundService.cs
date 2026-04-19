@@ -8,7 +8,10 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Infrastructure.BackgroundServices;
 
-public class HealthCheckBackgroundService(IServiceScopeFactory scopeFactory, IHttpClientFactory httpClientFactory, ILogger<HealthCheckBackgroundService> logger)
+public class HealthCheckBackgroundService(
+    IServiceScopeFactory scopeFactory,
+    IHttpClientFactory httpClientFactory,
+    ILogger<HealthCheckBackgroundService> logger)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -16,72 +19,73 @@ public class HealthCheckBackgroundService(IServiceScopeFactory scopeFactory, IHt
         while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = scopeFactory.CreateScope();
+
             var serviceRepository = scope.ServiceProvider.GetRequiredService<IServiceRepository>();
             var incidentRepository = scope.ServiceProvider.GetRequiredService<IIncidentRepository>();
-            
-            var services = await serviceRepository.GetAllAsync();
+
+            var services = await serviceRepository.GetServicesForCheck();
             var httpClient = httpClientFactory.CreateClient();
+
+            var now = DateTime.UtcNow;
 
             foreach (var service in services)
             {
+                var oldStatus = service.Status;
+                var newStatus = oldStatus;
+
                 try
                 {
-                    using var request = new HttpRequestMessage(HttpMethod.Head, service.Endpoint);
+                    using var request = new HttpRequestMessage(HttpMethod.Get, service.Endpoint);
                     using var response = await httpClient.SendAsync(request, stoppingToken);
 
-                    logger.LogInformation("Health check {Endpoint}: {StatusCode}", 
-                        service.Endpoint, response.StatusCode);
+                    logger.LogInformation(
+                        "Health check {Endpoint}: {StatusCode}",
+                        service.Endpoint,
+                        response.StatusCode);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        service.Status = ServiceStatus.Healthy;
-                        await serviceRepository.Save();
-                    }
-                    else if (response.StatusCode == HttpStatusCode.ServiceUnavailable && service.Status != ServiceStatus.Down)
-                    {
-                        service.Status = ServiceStatus.Down;
-                        await serviceRepository.Save();
-                        await incidentRepository.CreateAsync(new Incident
-                        {
-                            ServiceId = service.Id,
-                            Date = DateTime.UtcNow,
-                            Status = IncidentStatus.Open,
-                            Description = $"Service {service.Name} is in state {service.Status}"
-                        });
-                    }
-                    else if(service.Status != ServiceStatus.Degraded)
-                    {
-                        service.Status = ServiceStatus.Degraded;
-                        await  serviceRepository.Save();
-                        await incidentRepository.CreateAsync(new Incident
-                        {
-                            ServiceId = service.Id,
-                            Date = DateTime.UtcNow,
-                            Status = IncidentStatus.Open,
-                            Description = $"Service {service.Name} is in state {service.Status}"
-                        });
-                    }
+                    newStatus = DetermineStatus(response.StatusCode);
                 }
                 catch (Exception ex)
                 {
                     logger.LogWarning(ex, "Health check failed for {Endpoint}", service.Endpoint);
-
-                    if(service.Status != ServiceStatus.Down)
-                    {
-                        service.Status = ServiceStatus.Down;
-                        await serviceRepository.Save();
-                        await incidentRepository.CreateAsync(new Incident
-                        {
-                            ServiceId = service.Id,
-                            Date = DateTime.UtcNow,
-                            Status = IncidentStatus.Open,
-                            Description = $"Service {service.Name} is in state {service.Status}"
-                        });
-                    }
+                    newStatus = ServiceStatus.Down;
                 }
+
+                if (oldStatus != newStatus)
+                {
+                    logger.LogInformation(
+                        "Service {ServiceName} status changed: from {OldStatus} to {NewStatus}",
+                        service.Name,
+                        oldStatus,
+                        newStatus);
+
+                    service.Status = newStatus;
+
+                    await incidentRepository.CreateAsync(new Incident
+                    {
+                        ServiceId = service.Id,
+                        Date = now,
+                        Status = IncidentStatus.Open,
+                        Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
+                    });
+                }
+
+                service.NextCheckAt = now.AddMinutes(service.CheckIntervalMinutes);
             }
 
+            await serviceRepository.Save();
             await Task.Delay(5000, stoppingToken);
         }
+    }
+
+    private static ServiceStatus DetermineStatus(HttpStatusCode statusCode)
+    {
+        if ((int)statusCode >= 200 && (int)statusCode < 300)
+            return ServiceStatus.Healthy;
+
+        if (statusCode == HttpStatusCode.ServiceUnavailable)
+            return ServiceStatus.Down;
+
+        return ServiceStatus.Degraded;
     }
 }

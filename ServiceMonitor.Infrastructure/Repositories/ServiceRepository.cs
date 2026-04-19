@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
+using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
 
@@ -16,6 +17,15 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
     public async Task<IEnumerable<Service>> GetAllAsync()
     {
         var services = await context.Services.Include(s => s.Incidents).ToListAsync();
+        return services;
+    }
+
+    public async Task<IEnumerable<Service>> GetServicesForCheck()
+    {
+        var services = await context.Services
+            .Where(s => s.NextCheckAt <= DateTime.UtcNow)
+            .Take(50)
+            .ToListAsync();
         return services;
     }
 

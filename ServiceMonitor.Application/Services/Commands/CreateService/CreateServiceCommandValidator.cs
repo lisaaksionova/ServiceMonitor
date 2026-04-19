@@ -17,6 +17,9 @@ public class CreateServiceCommandValidator : AbstractValidator<CreateServiceComm
         RuleFor(service => service.Endpoint)
             .Matches(@"^https?:\/\/[^\s/$.?#].[^\s]*$")
             .WithMessage("Only correct http/https endpoint are supported");
+        RuleFor(service => service.CheckIntervalMinutes)
+            .GreaterThan(0)
+            .WithMessage("Check interval must be greater than zero");
         
     }
 }

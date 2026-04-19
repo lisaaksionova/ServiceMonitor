@@ -9,4 +9,5 @@ public interface IServiceRepository
     Task Delete(Service service);
     Task Save();
     Task<IEnumerable<Service>> GetAllAsync();
+    Task<IEnumerable<Service>> GetServicesForCheck();
 }

@@ -8,6 +8,8 @@ public class Service
     public string Name { get; set; } = string.Empty;
     public string Endpoint { get; set; } = string.Empty;
     public ServiceStatus Status { get; set; }
+    public int CheckIntervalMinutes { get; set; }
+    public DateTime NextCheckAt { get; set; }
 
     public List<Incident> Incidents { get; set; } = new();
 }

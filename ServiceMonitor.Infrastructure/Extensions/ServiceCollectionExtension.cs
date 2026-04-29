@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.BackgroundServices;
 using ServiceMonitor.Infrastructure.Persistence;
 using ServiceMonitor.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ServiceMonitor.Infrastructure.Extensions;
 

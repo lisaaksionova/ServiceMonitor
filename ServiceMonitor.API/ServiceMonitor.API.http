@@ -1,7 +1,9 @@
 @ServiceMonitor_API_HostAddress = http://localhost:5100
+@token = CfDJ8JwcFhtJwrNItAGwwkOw38PTIwQZ00QGJKX9mdF_FtA1eJJPieMsLf2RHJILL1cmvJ5YruyxoAvafN_Bbq9kLp2c510Isv8tv7si40mRIGzsrNbcSzOHgsqrGP17MPhhYaDCBaNxTm9hWm7rx_X0EATNwDeCnR_IvlL_e8HYZT5N0jnujdpIMpsx7CThosmQzqZ9ZSgcppQagaqNhi9bDVHw5XM9-tBC8IpfmCEHDFlX8dVhTdKKXFtEhDTcxXV07A9_aEeuJBCyZLTUYE_4j4_p-f4NE_mJcM8VhwOQa9XDorXOOhVIncDSLU_HXF3idtEbHPSCpBkEbbEMDn6a-bHXy9vFraQytBNK8NkQbG4Ui0NpWJP_IwhGRHjlJf8Bn5A_i4syWhs1Nrwl3sXaYDygKrDa6HR6w_Smi4n6-8tdFfGG5D4SnS7_dSCsVLIaL7FYogMMEbu0w6ZSeXLH2Gssxy6ShzX6IHIZddjHdFXmNwz2VNqjmh_m3nJj5YW0RSNWFZAK7D3nKMiWhKuK3VhTshiFFpHcbUwKKfaj-CPQgMvLu1rCNBLzcdgYg9KcuuzAby_KcU5akQxNvIdO5tfyxKcoVUMBI3xEsQ2DybVzme695x9_Tfa5nPQGzqMUNtNtSuCb9p1lgNaIh1DD1J7ir8VRYf06-_dAd0DhVv89NhV1eCuZKWPcYB3vVCji8A
 
-GET {{ServiceMonitor_API_HostAddress}}/api/services/4
+GET {{ServiceMonitor_API_HostAddress}}/api/services
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
@@ -33,3 +35,23 @@ Content-Type: application/json
 
 DELETE {{ServiceMonitor_API_HostAddress}}/api/services/4
 Accept: application/json
+
+###
+
+POST {{ServiceMonitor_API_HostAddress}}/register
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "Password1@"
+}
+
+###
+
+POST {{ServiceMonitor_API_HostAddress}}/api/identity/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "Password1@"
+}

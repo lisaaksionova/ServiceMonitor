@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 using ServiceMonitor.Application.Incidents.Dtos;
@@ -9,6 +10,7 @@ namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/incidents")]
+[Authorize]
 public class IncidentController(IMediator mediator) : ControllerBase
 {
     [HttpGet]

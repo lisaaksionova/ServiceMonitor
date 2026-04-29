@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
@@ -11,6 +12,7 @@ namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/services")]
+[Authorize]
 public class ServiceController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id:int}")]

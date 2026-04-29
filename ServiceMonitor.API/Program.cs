@@ -1,6 +1,7 @@
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
+using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,18 +12,19 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddPresentation();
 
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
 app.MapControllers();
-
+app.MapGroup("api/identity").MapIdentityApi<User>();
+    
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
 
 app.Run();

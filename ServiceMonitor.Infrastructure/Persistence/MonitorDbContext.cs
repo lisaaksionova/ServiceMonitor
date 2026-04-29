@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
 
 namespace ServiceMonitor.Infrastructure.Persistence;
 
-public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : DbContext(options)
+public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : IdentityDbContext<User>(options)
 {
     public DbSet<Service> Services { get; set; }
     public DbSet<Incident> Incidents { get; set; }

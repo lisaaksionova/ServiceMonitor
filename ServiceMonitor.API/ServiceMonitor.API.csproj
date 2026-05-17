@@ -21,4 +21,8 @@
       <ProjectReference Include="..\ServiceMonitor.Infrastructure\ServiceMonitor.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Users\" />
+    </ItemGroup>
+
 </Project>

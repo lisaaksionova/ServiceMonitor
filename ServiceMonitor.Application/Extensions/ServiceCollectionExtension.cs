@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceMonitor.Application.Users;
 
 namespace ServiceMonitor.Application.Extensions;
 

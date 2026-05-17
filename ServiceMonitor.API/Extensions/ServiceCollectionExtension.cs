@@ -1,8 +1,7 @@
 ﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi;
 using ServiceMonitor.API.Middlewares;
-using ServiceMonitor.API.Users;
-using ServiceMonitor.Application.Users;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Persistence;
 
@@ -14,8 +13,10 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<ErrorHandlingMiddleware>();
         services.AddFluentValidationAutoValidation();
-        services.AddIdentityApiEndpoints<User>()
-            .AddEntityFrameworkStores<MonitorDbContext>();
+        services.AddIdentityCore<User>()
+            .AddEntityFrameworkStores<MonitorDbContext>()
+            .AddApiEndpoints();
+        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
@@ -30,8 +31,6 @@ public static class ServiceCollectionExtension
                 [new OpenApiSecuritySchemeReference("Bearer", document)] = []
             });
         });
-        
-        services.AddScoped<IUserContext, UserContext>();
         services.AddHttpContextAccessor();
     }
 }

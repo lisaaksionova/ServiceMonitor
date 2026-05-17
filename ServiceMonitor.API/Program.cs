@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Extensions;
+using ServiceMonitor.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,7 @@ builder.Services.AddPresentation();
 var app = builder.Build();
 
 app.MapControllers();
-app.MapGroup("api/identity").MapIdentityApi<User>();
+
     
 if (app.Environment.IsDevelopment())
 {
@@ -24,6 +27,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapGroup("api/identity").MapIdentityApi<User>();
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 

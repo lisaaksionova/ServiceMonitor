@@ -23,7 +23,7 @@ public class HealthCheckBackgroundService(
             var serviceRepository = scope.ServiceProvider.GetRequiredService<IServiceRepository>();
             var incidentRepository = scope.ServiceProvider.GetRequiredService<IIncidentRepository>();
 
-            var services = await serviceRepository.GetServicesForCheck();
+            var services = await serviceRepository.GetServicesForCheck(stoppingToken);
             var httpClient = httpClientFactory.CreateClient();
 
             var now = DateTime.UtcNow;
@@ -67,13 +67,13 @@ public class HealthCheckBackgroundService(
                         Date = now,
                         Status = IncidentStatus.Open,
                         Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
-                    });
+                    }, stoppingToken);
                 }
 
                 service.NextCheckAt = now.AddMinutes(service.CheckIntervalMinutes);
             }
 
-            await serviceRepository.Save();
+            await serviceRepository.Save(stoppingToken);
             await Task.Delay(5000, stoppingToken);
         }
     }

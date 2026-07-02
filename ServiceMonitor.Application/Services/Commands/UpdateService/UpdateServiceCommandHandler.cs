@@ -11,8 +11,8 @@ public class UpdateServiceCommandHandler(IServiceRepository repository,
 {
     public async Task Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
     {
-        var service = await repository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
+        var service = await repository.GetByIdAsync(request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
         mapper.Map(request, service);
-        await repository.Save();
+        await repository.Save(cancellationToken);
     }
 }

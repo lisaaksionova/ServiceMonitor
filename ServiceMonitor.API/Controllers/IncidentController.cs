@@ -14,23 +14,23 @@ namespace ServiceMonitor.API.Controllers;
 public class IncidentController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll(CancellationToken cancellationToken)
     {
-        var incidents = await mediator.Send(new GetAllIncidentsQuery());
+        var incidents = await mediator.Send(new GetAllIncidentsQuery(), cancellationToken);
         return Ok(incidents);
     }
     
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<IncidentDto>> GetById(int id)
+    public async Task<ActionResult<IncidentDto>> GetById(int id, CancellationToken cancellationToken)
     {
-        var incident = await mediator.Send(new GetIncidentByIdQuery(id));
+        var incident = await mediator.Send(new GetIncidentByIdQuery(id), cancellationToken);
         return Ok(incident);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateIncidentCommand request)
+    public async Task<IActionResult> Create(CreateIncidentCommand request, CancellationToken cancellationToken)
     {
-        await mediator.Send(request);
+        await mediator.Send(request, cancellationToken);
         return Created();
     }
 }

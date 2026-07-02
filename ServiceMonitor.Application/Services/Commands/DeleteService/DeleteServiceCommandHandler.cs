@@ -10,7 +10,7 @@ public class DeleteServiceCommandHandler(IServiceRepository repository) : IReque
 {
     public async Task Handle(DeleteServiceCommand request, CancellationToken cancellationToken)
     {
-        var service = await repository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
-        await repository.Delete(service);
+        var service = await repository.GetByIdAsync(request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
+        await repository.Delete(service, cancellationToken);
     }
 }

@@ -4,10 +4,10 @@ namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IServiceRepository
 { 
-    Task<Service?> GetByIdAsync(int id);
-    Task CreateAsync(Service service);
-    Task Delete(Service service);
-    Task Save();
-    Task<IEnumerable<Service>> GetAllAsync();
-    Task<IEnumerable<Service>> GetServicesForCheck();
+    Task<Service?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task CreateAsync(Service service, CancellationToken cancellationToken);
+    Task Delete(Service service, CancellationToken cancellationToken);
+    Task Save(CancellationToken cancellationToken);
+    Task<IEnumerable<Service>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken);
 }

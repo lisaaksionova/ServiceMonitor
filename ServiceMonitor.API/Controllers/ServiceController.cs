@@ -16,38 +16,38 @@ namespace ServiceMonitor.API.Controllers;
 public class ServiceController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] int id)
+    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var service = await mediator.Send(new GetServiceByIdQuery(id));
+        var service = await mediator.Send(new GetServiceByIdQuery(id), cancellationToken);
         return Ok(service);
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll(CancellationToken cancellationToken)
     {
-        var services = await mediator.Send(new GetAllServicesQuery());
+        var services = await mediator.Send(new GetAllServicesQuery(),  cancellationToken);
         return Ok(services);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateServiceCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateServiceCommand command,  CancellationToken cancellationToken)
     {
-        await mediator.Send(command);
+        await mediator.Send(command,  cancellationToken);
         
         return Created();
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command)
+    public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         return Ok();
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteServiceCommand(id));
+        await mediator.Send(new DeleteServiceCommand(id), cancellationToken);
         return Ok();
     }
 }

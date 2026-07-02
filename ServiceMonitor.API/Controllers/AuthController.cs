@@ -10,17 +10,17 @@ namespace ServiceMonitor.API.Controllers;
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command)
+    public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command, CancellationToken cancellationToken)
     {
-        var token = await mediator.Send(command);
+        var token = await mediator.Send(command, cancellationToken);
         
         return Ok("ACCESS_TOKEN: " + token);
     }
     
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         
         return Created();
     }

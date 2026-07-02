@@ -13,6 +13,6 @@ public class CreateServiceCommandHandler(IServiceRepository repository,
     {
         var service = mapper.Map<Service>(request);
         service.Status = ServiceStatus.Healthy;
-        await repository.CreateAsync(service);
+        await repository.CreateAsync(service, cancellationToken);
     }
 }

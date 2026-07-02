@@ -11,6 +11,6 @@ public class CreateIncidentCommandHandler(IIncidentRepository repository,
     public async Task Handle(CreateIncidentCommand request, CancellationToken cancellationToken)
     {
         var incident = mapper.Map<Incident>(request);
-        await repository.CreateAsync(incident);
+        await repository.CreateAsync(incident, cancellationToken);
     }
 }

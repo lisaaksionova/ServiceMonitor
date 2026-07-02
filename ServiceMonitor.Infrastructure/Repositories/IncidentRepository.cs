@@ -8,32 +8,32 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
 {
-    public async Task<IEnumerable<Incident>> GetAllAsync()
+    public async Task<IEnumerable<Incident>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var incidents = await context.Incidents.ToListAsync();
+        var incidents = await context.Incidents.ToListAsync(cancellationToken);
         return incidents;
     }
 
-    public async Task<Incident?> GetByIdAsync(int id)
+    public async Task<Incident?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var incident = await context.Incidents.FirstOrDefaultAsync(x => x.Id == id);
+        var incident = await context.Incidents.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         return incident;
     }
 
-    public async Task CreateAsync(Incident incident)
+    public async Task CreateAsync(Incident incident,  CancellationToken cancellationToken)
     {
-        await context.Incidents.AddAsync(incident);
-        await context.SaveChangesAsync();
+        await context.Incidents.AddAsync(incident, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Incident incident)
+    public async Task DeleteAsync(Incident incident,   CancellationToken cancellationToken)
     {
         context.Incidents.Remove(incident);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task SaveAsync()
+    public async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

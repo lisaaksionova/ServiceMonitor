@@ -4,6 +4,7 @@ using Microsoft.OpenApi;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Persistence;
+using ServiceMonitor.Infrastructure.Seeders;
 
 namespace ServiceMonitor.API.Extensions;
 
@@ -12,11 +13,13 @@ public static class ServiceCollectionExtension
     public static void AddPresentation(this IServiceCollection services)
     {
         services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddScoped<IMonitorSeeder, MonitorSeeder>();
         services.AddFluentValidationAutoValidation();
-        services.AddIdentityCore<User>()
+        
+        services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<MonitorDbContext>()
-            .AddApiEndpoints();
-        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+            .AddDefaultTokenProviders();
+        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {

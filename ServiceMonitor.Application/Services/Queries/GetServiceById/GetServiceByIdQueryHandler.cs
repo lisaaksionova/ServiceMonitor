@@ -12,7 +12,7 @@ public class GetServiceByIdQueryHandler(IServiceRepository repository,
 {
     public async Task<ServiceDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
     {
-        var service = await repository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
+        var service = await repository.GetByIdAsync(request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
         var serviceDto = mapper.Map<ServiceDto>(service);
         return serviceDto;
     }

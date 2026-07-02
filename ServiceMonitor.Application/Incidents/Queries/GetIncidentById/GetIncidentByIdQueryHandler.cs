@@ -12,7 +12,7 @@ public class GetIncidentByIdQueryHandler(IIncidentRepository repository,
 {
     public async Task<IncidentDto> Handle(GetIncidentByIdQuery request, CancellationToken cancellationToken)
     {
-        var incident = await repository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Incident), request.Id.ToString());
+        var incident = await repository.GetByIdAsync(request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Incident), request.Id.ToString());
         var incidentDto = mapper.Map<IncidentDto>(incident);
         return incidentDto;
     }

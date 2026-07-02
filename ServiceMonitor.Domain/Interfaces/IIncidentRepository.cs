@@ -4,9 +4,9 @@ namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IIncidentRepository
 {
-    Task<IEnumerable<Incident>> GetAllAsync();
-    Task<Incident?> GetByIdAsync(int id);
-    Task CreateAsync(Incident incident);
-    Task DeleteAsync(Incident incident);
-    Task SaveAsync();
+    Task<IEnumerable<Incident>> GetAllAsync(CancellationToken cancellationToken);
+    Task<Incident?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task CreateAsync(Incident incident, CancellationToken cancellationToken);
+    Task DeleteAsync(Incident incident, CancellationToken cancellationToken);
+    Task SaveAsync(CancellationToken cancellationToken);
 }

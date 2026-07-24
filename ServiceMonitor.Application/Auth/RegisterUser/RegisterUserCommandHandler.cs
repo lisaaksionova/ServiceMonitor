@@ -12,7 +12,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager) : IReques
     {
         var userExists = await userManager.FindByEmailAsync(request.Email);
         if (userExists != null)
-            throw new InvalidOperationException("User already exists"); //handle in extention
+            throw new InvalidOperationException("User already exists"); //handle in extension
 
         User user = new()
         {
@@ -22,7 +22,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager) : IReques
         
         var createResult = await userManager.CreateAsync(user, request.Password);
         if (!createResult.Succeeded)
-            throw new InvalidOperationException("Failed to create user");
+            throw new InvalidOperationException($"Failed to create user: {createResult.Errors.First().Description}");
         
         await userManager.AddToRoleAsync(user, UserRoles.User);
     }

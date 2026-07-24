@@ -15,5 +15,10 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsync(notFound.Message);
         }
+        catch (InvalidOperationException invalidOperation)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync(invalidOperation.Message);
+        }
     }
 }

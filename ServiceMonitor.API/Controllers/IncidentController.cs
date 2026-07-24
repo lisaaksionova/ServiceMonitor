@@ -14,7 +14,8 @@ namespace ServiceMonitor.API.Controllers;
 public class IncidentController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll(CancellationToken cancellationToken,
+        [FromQuery] int limit = 10, [FromQuery] string? cursor = null)
     {
         var incidents = await mediator.Send(new GetAllIncidentsQuery(), cancellationToken);
         return Ok(incidents);

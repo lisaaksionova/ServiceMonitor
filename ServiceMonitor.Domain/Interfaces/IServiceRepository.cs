@@ -8,6 +8,6 @@ public interface IServiceRepository
     Task CreateAsync(Service service, CancellationToken cancellationToken);
     Task Delete(Service service, CancellationToken cancellationToken);
     Task Save(CancellationToken cancellationToken);
-    Task<IEnumerable<Service>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken);
     Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken);
 }

@@ -14,9 +14,16 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
         return service;
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
-        var services = await context.Services.Include(s => s.Incidents).ToListAsync(cancellationToken);
+        var query = context.Services.Include(s => s.Incidents).AsQueryable();
+        
+        var services = await query
+            // implement Offset-based pagination with Skip + Take
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
         return services;
     }
 

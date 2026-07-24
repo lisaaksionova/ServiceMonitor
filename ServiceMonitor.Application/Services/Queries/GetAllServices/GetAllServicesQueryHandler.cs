@@ -10,7 +10,7 @@ public class GetAllServicesQueryHandler(IServiceRepository repository,
 {
     public async Task<IEnumerable<ServiceDto>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
     {
-        var services = await repository.GetAllAsync(cancellationToken);
+        var services = await repository.GetAllAsync(request.Page,  request.PageSize, cancellationToken);
         var serviceDtos = mapper.Map<IEnumerable<ServiceDto>>(services);
         return serviceDtos;
     }

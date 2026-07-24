@@ -23,9 +23,9 @@ public class ServiceController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll(CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var services = await mediator.Send(new GetAllServicesQuery(),  cancellationToken);
+        var services = await mediator.Send(new GetAllServicesQuery(page, pageSize),  cancellationToken);
         return Ok(services);
     }
 

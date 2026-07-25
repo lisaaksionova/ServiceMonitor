@@ -15,20 +15,17 @@ public static class ServiceCollectionExtension
         services.AddScoped<ErrorHandlingMiddleware>();
         services.AddScoped<IMonitorSeeder, MonitorSeeder>();
         services.AddFluentValidationAutoValidation();
-        
+
         services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<MonitorDbContext>()
             .AddDefaultTokenProviders();
-        
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
-            });
-            
+            c.AddSecurityDefinition("Bearer",
+                new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "Bearer" });
+
             c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
                 [new OpenApiSecuritySchemeReference("Bearer", document)] = []

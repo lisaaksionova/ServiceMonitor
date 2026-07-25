@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
 
@@ -13,20 +11,21 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
     {
         var service = await context.Services
             .Include(s => s.Incidents)
-            .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId,  cancellationToken);
+            .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId, cancellationToken);
         return service;
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, string userId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, string userId,
+        CancellationToken cancellationToken)
     {
         var query = context.Services.Include(s => s.Incidents).AsQueryable();
-        
+
         var services = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Where(s => s.UserId == userId)
             .ToListAsync(cancellationToken);
-        
+
         return services;
     }
 
@@ -51,8 +50,5 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task Save(CancellationToken cancellationToken)
-    {
-        await context.SaveChangesAsync(cancellationToken);
-    }
+    public async Task Save(CancellationToken cancellationToken) => await context.SaveChangesAsync(cancellationToken);
 }

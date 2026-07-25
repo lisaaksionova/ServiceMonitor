@@ -20,6 +20,5 @@ public class CreateServiceCommandValidator : AbstractValidator<CreateServiceComm
         RuleFor(service => service.CheckIntervalMinutes)
             .GreaterThan(0)
             .WithMessage("Check interval must be greater than zero");
-        
     }
 }

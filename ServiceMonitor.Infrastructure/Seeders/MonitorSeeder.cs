@@ -13,7 +13,7 @@ public class MonitorSeeder(MonitorDbContext dbContext) : IMonitorSeeder
         {
             await dbContext.Database.MigrateAsync();
         }
-            
+
         if (await dbContext.Database.CanConnectAsync())
         {
             if (!dbContext.Roles.Any())
@@ -24,21 +24,15 @@ public class MonitorSeeder(MonitorDbContext dbContext) : IMonitorSeeder
             }
         }
     }
-    
+
     private IEnumerable<IdentityRole> GetRoles()
     {
         List<IdentityRole> roles =
         [
-            new(UserRoles.User)
-            {
-                NormalizedName = UserRoles.User.ToUpper()
-            },
-            new(UserRoles.Admin)
-            {
-                NormalizedName = UserRoles.Admin.ToUpper()
-            }
+            new(UserRoles.User) { NormalizedName = UserRoles.User.ToUpper() },
+            new(UserRoles.Admin) { NormalizedName = UserRoles.Admin.ToUpper() }
         ];
-        
+
         return roles;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
 
@@ -17,7 +16,7 @@ public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : Iden
         modelBuilder.Entity<Service>()
             .HasMany(s => s.Incidents)
             .WithOne(i => i.Service);
-        
+
         modelBuilder.Entity<Incident>()
             .HasOne(i => i.Service)
             .WithMany(s => s.Incidents);

@@ -31,12 +31,9 @@ builder.Services.AddAuthentication(opts =>
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-
             ValidAudience = builder.Configuration["JWT:ValidAudience"],
             ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-
             ClockSkew = TimeSpan.Zero,
-
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     builder.Configuration["JWT:Secret"]!
@@ -45,14 +42,14 @@ builder.Services.AddAuthentication(opts =>
         };
     });
 
-builder.Host.UseSerilog((context, configuration) => 
+builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
 app.MapControllers();
 
-    
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

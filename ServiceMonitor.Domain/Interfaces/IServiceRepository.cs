@@ -3,7 +3,7 @@
 namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IServiceRepository
-{ 
+{
     Task<Service?> GetByIdAsync(int id, string userId, CancellationToken cancellationToken);
     Task CreateAsync(Service service, CancellationToken cancellationToken);
     Task Delete(Service service, CancellationToken cancellationToken);

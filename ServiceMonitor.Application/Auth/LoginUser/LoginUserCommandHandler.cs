@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,8 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace ServiceMonitor.Application.Auth.LoginUser;
 
-public class LoginUserCommandHandler(UserManager<User> userManager,
+public class LoginUserCommandHandler(
+    UserManager<User> userManager,
     IConfiguration configuration,
     ILogger<LoginUserCommandHandler> logger) : IRequestHandler<LoginUserCommand, string>
 {
@@ -19,42 +21,44 @@ public class LoginUserCommandHandler(UserManager<User> userManager,
     {
         logger.LogDebug("Login user {@UserEmail}", request.Email);
         var user = await userManager.FindByEmailAsync(request.Email);
-        
-        if(user == null)
+
+        if (user == null)
+        {
             throw new AuthenticationException("Invalid email");
-        if(!await userManager.CheckPasswordAsync(user, request.Password))
+        }
+
+        if (!await userManager.CheckPasswordAsync(user, request.Password))
+        {
             throw new AuthenticationException("Invalid password");
-        
+        }
+
         var userRoles = await userManager.GetRolesAsync(user);
         var authClaims = new List<Claim>
         {
-            new Claim(
+            new(
                 ClaimTypes.NameIdentifier,
                 user.Id),
-
-            new Claim(
+            new(
                 ClaimTypes.Name,
                 user.UserName!),
-
-            new Claim(
+            new(
                 ClaimTypes.Email,
                 user.Email!),
-
-            new Claim(
+            new(
                 JwtRegisteredClaimNames.Jti,
-                Guid.NewGuid().ToString()),
+                Guid.NewGuid().ToString())
         };
-        
+
         authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-        
+
         logger.LogDebug("Generating token for user {@UserEmail}", request.Email);
-        string token = GenerateToken(authClaims);
+        var token = GenerateToken(authClaims);
         return token;
     }
 
     private string GenerateToken(List<Claim> authClaims)
     {
-        var authSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
         var tokenExpireMinutes = Convert.ToInt64(configuration["JWT:ExpirationMinutes"]!);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -64,7 +68,7 @@ public class LoginUserCommandHandler(UserManager<User> userManager,
             Audience = configuration["JWT:ValidAudience"],
             SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         };
-        
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);

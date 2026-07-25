@@ -20,7 +20,7 @@ public class IncidentController(IMediator mediator) : ControllerBase
         var incidents = await mediator.Send(new GetAllIncidentsQuery(), cancellationToken);
         return Ok(incidents);
     }
-    
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<IncidentDto>> GetById(int id, CancellationToken cancellationToken)
     {

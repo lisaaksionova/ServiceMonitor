@@ -61,13 +61,14 @@ public class HealthCheckBackgroundService(
 
                     service.Status = newStatus;
 
-                    await incidentRepository.CreateAsync(new Incident
-                    {
-                        ServiceId = service.Id,
-                        Date = now,
-                        Status = IncidentStatus.Open,
-                        Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
-                    }, stoppingToken);
+                    await incidentRepository.CreateAsync(
+                        new Incident
+                        {
+                            ServiceId = service.Id,
+                            Date = now,
+                            Status = IncidentStatus.Open,
+                            Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
+                        }, stoppingToken);
                 }
 
                 service.NextCheckAt = now.AddMinutes(service.CheckIntervalMinutes);
@@ -81,10 +82,14 @@ public class HealthCheckBackgroundService(
     private static ServiceStatus DetermineStatus(HttpStatusCode statusCode)
     {
         if ((int)statusCode >= 200 && (int)statusCode < 300)
+        {
             return ServiceStatus.Healthy;
+        }
 
         if (statusCode == HttpStatusCode.ServiceUnavailable)
+        {
             return ServiceStatus.Down;
+        }
 
         return ServiceStatus.Degraded;
     }

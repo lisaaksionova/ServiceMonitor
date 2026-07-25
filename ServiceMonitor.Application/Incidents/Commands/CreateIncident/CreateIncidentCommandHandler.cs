@@ -6,7 +6,8 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 
-public class CreateIncidentCommandHandler(IIncidentRepository repository,
+public class CreateIncidentCommandHandler(
+    IIncidentRepository repository,
     IMapper mapper,
     ILogger<CreateIncidentCommandHandler> logger) : IRequestHandler<CreateIncidentCommand>
 {

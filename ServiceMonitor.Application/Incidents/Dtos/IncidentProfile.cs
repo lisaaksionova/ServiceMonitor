@@ -13,6 +13,5 @@ public class IncidentProfile : Profile
         CreateMap<CreateIncidentCommand, Incident>()
             .ForMember(x => x.Date, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForMember(x => x.Status, opt => opt.MapFrom(_ => IncidentStatus.Open));
-        
     }
 }

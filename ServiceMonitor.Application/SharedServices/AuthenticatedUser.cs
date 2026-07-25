@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 
 namespace ServiceMonitor.Application.SharedServices;
+
 public class AuthenticatedUser(
     IHttpContextAccessor httpContextAccessor) : IAuthenticatedUser
 {

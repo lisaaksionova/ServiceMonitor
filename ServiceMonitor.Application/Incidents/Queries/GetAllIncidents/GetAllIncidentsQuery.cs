@@ -5,5 +5,4 @@ namespace ServiceMonitor.Application.Incidents.Queries.GetAllIncidents;
 
 public class GetAllIncidentsQuery : IRequest<IEnumerable<IncidentDto>>
 {
-    
 }

@@ -16,9 +16,9 @@ POST {{ServiceMonitor_API_HostAddress}}/api/services
 Content-Type: application/json
 
 {
-  "Name": "YouTube",
-  "Endpoint": "https://www.youtube.com/",
-  "CheckIntervalMinutes": 2
+    "Name": "YouTube",
+    "Endpoint": "https://www.youtube.com/",
+    "CheckIntervalMinutes": 2
 }
 
 ###
@@ -27,8 +27,8 @@ PUT {{ServiceMonitor_API_HostAddress}}/api/services
 Content-Type: application/json
 
 {
-  "Id": 4,
-  "Endpoint": "https://notvalidurl..."
+    "Id": 4,
+    "Endpoint": "https://notvalidurl..."
 }
 
 ###
@@ -42,8 +42,8 @@ POST {{ServiceMonitor_API_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "testtest@test.com",
-  "password": "Password1@"
+    "email": "testtest@test.com",
+    "password": "Password1@"
 }
 
 ###
@@ -52,6 +52,6 @@ POST {{ServiceMonitor_API_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "testtest@test.com",
-  "password": "Password1@"
+    "email": "testtest@test.com",
+    "password": "Password1@"
 }

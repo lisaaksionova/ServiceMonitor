@@ -1,5 +1,4 @@
 ﻿using ServiceMonitor.Application.Incidents.Dtos;
-using ServiceMonitor.Domain.Enums;
 
 namespace ServiceMonitor.Application.Services.Dtos;
 

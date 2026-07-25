@@ -11,13 +11,13 @@ public class UpdateServiceCommandValidator : AbstractValidator<UpdateServiceComm
             .NotEmpty()
             .When(x => x.Name != null)
             .WithMessage("Name cannot be empty");
-    
+
         RuleFor(service => service.Endpoint)
             .NotEmpty()
             .Matches(@"^https?:\/\/[^\s/$.?#][^\s]*$")
             .When(x => x.Endpoint != null)
             .WithMessage("Only correct http/https endpoint are supported");
-    
+
         RuleFor(service => service.Status)
             .NotEmpty()
             .When(x => x.Status != null)

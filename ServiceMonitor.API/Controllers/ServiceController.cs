@@ -23,22 +23,25 @@ public class ServiceController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll(CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAll(CancellationToken cancellationToken,
+        [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var services = await mediator.Send(new GetAllServicesQuery(page, pageSize),  cancellationToken);
+        var services = await mediator.Send(new GetAllServicesQuery(page, pageSize), cancellationToken);
         return Ok(services);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateServiceCommand command,  CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateServiceCommand command,
+        CancellationToken cancellationToken)
     {
-        await mediator.Send(command,  cancellationToken);
-        
+        await mediator.Send(command, cancellationToken);
+
         return Created();
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command,
+        CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
         return Ok();

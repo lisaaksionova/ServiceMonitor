@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -20,20 +19,18 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         return incident;
     }
 
-    public async Task CreateAsync(Incident incident,  CancellationToken cancellationToken)
+    public async Task CreateAsync(Incident incident, CancellationToken cancellationToken)
     {
         await context.Incidents.AddAsync(incident, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Incident incident,   CancellationToken cancellationToken)
+    public async Task DeleteAsync(Incident incident, CancellationToken cancellationToken)
     {
         context.Incidents.Remove(incident);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken)
-    {
+    public async Task SaveAsync(CancellationToken cancellationToken) =>
         await context.SaveChangesAsync(cancellationToken);
-    }
 }

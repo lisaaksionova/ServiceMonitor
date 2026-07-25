@@ -13,6 +13,9 @@ public class Service
     public ServiceStatus Status { get; set; }
     public int CheckIntervalMinutes { get; set; }
     public DateTime NextCheckAt { get; set; }
-
+    
     public List<Incident> Incidents { get; set; } = new();
+    
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
 }

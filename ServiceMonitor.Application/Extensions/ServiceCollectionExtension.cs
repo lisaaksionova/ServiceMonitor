@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceMonitor.Application.SharedServices;
 
 namespace ServiceMonitor.Application.Extensions;
 
@@ -11,5 +12,7 @@ public static class ServiceCollectionExtension
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(applicationAssembly));
         services.AddAutoMapper(cfg => { }, applicationAssembly);
         services.AddValidatorsFromAssembly(applicationAssembly);
+        services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
+        services.AddHttpContextAccessor();
     }
 }

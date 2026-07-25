@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
@@ -44,6 +45,9 @@ builder.Services.AddAuthentication(opts =>
         };
     });
 
+builder.Host.UseSerilog((context, configuration) => 
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 app.MapControllers();
@@ -54,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

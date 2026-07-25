@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Interfaces;
@@ -8,20 +9,22 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class ServiceRepository(MonitorDbContext context) : IServiceRepository
 {
-    public async Task<Service?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Service?> GetByIdAsync(int id, string userId, CancellationToken cancellationToken)
     {
-        var service = await context.Services.Include(s => s.Incidents).FirstOrDefaultAsync(s => s.Id == id,  cancellationToken);
+        var service = await context.Services
+            .Include(s => s.Incidents)
+            .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId,  cancellationToken);
         return service;
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, string userId, CancellationToken cancellationToken)
     {
         var query = context.Services.Include(s => s.Incidents).AsQueryable();
         
         var services = await query
-            // implement Offset-based pagination with Skip + Take
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Where(s => s.UserId == userId)
             .ToListAsync(cancellationToken);
         
         return services;

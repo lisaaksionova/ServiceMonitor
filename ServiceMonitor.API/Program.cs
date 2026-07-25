@@ -1,13 +1,11 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
-using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Extensions;
-using ServiceMonitor.Infrastructure.Persistence;
 using ServiceMonitor.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,18 +26,27 @@ builder.Services.AddAuthentication(opts =>
     {
         opts.SaveToken = true;
         opts.RequireHttpsMetadata = false;
+
         opts.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["JwtOptions:Audience"],
-            ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+
+            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:Secret"]!))
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["JWT:Secret"]!
+                )
+            )
         };
     });
+
+builder.Host.UseSerilog((context, configuration) => 
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -51,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

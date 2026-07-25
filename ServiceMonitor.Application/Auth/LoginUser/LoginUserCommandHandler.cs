@@ -37,14 +37,14 @@ public class LoginUserCommandHandler(UserManager<User> userManager,
 
     private string GenerateToken(List<Claim> authClaims)
     {
-        var authSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["JwtOptions:Secret"]!));
-        var tokenExpireMinutes = Convert.ToInt64(configuration["JwtOptions:ExpirationMinutes"]!);
+        var authSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
+        var tokenExpireMinutes = Convert.ToInt64(configuration["JWT:ExpirationMinutes"]!);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(authClaims),
             Expires = DateTime.UtcNow.AddMinutes(tokenExpireMinutes),
-            Issuer = configuration["JwtOptions:Issuer"],
-            Audience = configuration["JwtOptions:Audience"],
+            Issuer = configuration["JWT:ValidIssuer"],
+            Audience = configuration["JWT:ValidAudience"],
             SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         };
         

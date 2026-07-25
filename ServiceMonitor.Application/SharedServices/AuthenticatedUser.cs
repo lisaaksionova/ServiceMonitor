@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using ServiceMonitor.Application.Interfaces;
 
 namespace ServiceMonitor.Application.SharedServices;
 

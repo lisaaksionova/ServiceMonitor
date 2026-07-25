@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Application.SharedServices;
 using ServiceMonitor.Domain.Interfaces;

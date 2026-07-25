@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Application.SharedServices;
 using ServiceMonitor.Domain.Entities;

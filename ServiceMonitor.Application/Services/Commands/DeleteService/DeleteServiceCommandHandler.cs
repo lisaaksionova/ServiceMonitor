@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Application.SharedServices;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Exceptions;

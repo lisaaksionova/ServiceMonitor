@@ -8,7 +8,7 @@ namespace ServiceMonitor.Application.Auth.RegisterUser;
 
 public class RegisterUserCommandHandler(
     UserManager<User> userManager,
-    Logger<RegisterUserCommandHandler> logger) : IRequestHandler<RegisterUserCommand>
+    ILogger<RegisterUserCommandHandler> logger) : IRequestHandler<RegisterUserCommand>
 {
     public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {

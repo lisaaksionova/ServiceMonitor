@@ -17,7 +17,7 @@ public class IncidentController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll(CancellationToken cancellationToken,
         [FromQuery] int limit = 10, [FromQuery] string? cursor = null)
     {
-        var incidents = await mediator.Send(new GetAllIncidentsQuery(), cancellationToken);
+        var incidents = await mediator.Send(new GetAllIncidentsQuery(cursor, limit), cancellationToken);
         return Ok(incidents);
     }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceMonitor.Domain.Common;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -11,6 +12,41 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
     {
         var incidents = await context.Incidents.ToListAsync(cancellationToken);
         return incidents;
+    }
+
+    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(string cursor, int limit,
+        CancellationToken cancellationToken)
+    {
+        var decodedCursor = Cursor.Decode(cursor);
+        var lastId = decodedCursor?.LastId;
+        var created = decodedCursor?.Created;
+
+        var query = context.Incidents
+            .AsNoTracking()
+            .OrderByDescending(i => i.Date)
+            .ThenBy(i => i.Id)
+            .AsQueryable();
+
+        if (created.HasValue)
+        {
+            query = query.Where(i =>
+                i.Date > created.Value.Date ||
+                (i.Date == created.Value.Date && i.Id >= lastId!.Value));
+        }
+
+        var incidents = await query.Take(limit + 1).ToListAsync(cancellationToken);
+        var hasMore = incidents.Count > limit;
+        if (hasMore)
+        {
+            incidents.RemoveAt(incidents.Count - 1);
+        }
+
+        var lastIncident = incidents.LastOrDefault();
+        var nextCursor = hasMore && lastIncident != null
+            ? Cursor.Encode(lastIncident.Id, lastIncident.Date)
+            : null;
+
+        return new CursorPagedList<Incident>(incidents, nextCursor, hasMore);
     }
 
     public async Task<Incident?> GetByIdAsync(int id, CancellationToken cancellationToken)

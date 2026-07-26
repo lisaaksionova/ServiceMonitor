@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceMonitor.Domain.Common;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -15,15 +16,20 @@ public class ServiceRepository(MonitorDbContext context) : IServiceRepository
         return service;
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync(int page, int pageSize, string userId,
+    public async Task<PagedList<Service>> GetPagedListAsync(int page, int pageSize, string userId,
         CancellationToken cancellationToken)
     {
-        var query = context.Services.Include(s => s.Incidents).AsQueryable();
+        var query = context.Services.Include(s => s.Incidents).AsNoTrackingWithIdentityResolution();
+        var count = await query.CountAsync(cancellationToken);
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).Where(s => s.UserId == userId)
+            .ToListAsync(cancellationToken);
+        return new PagedList<Service>(items, count, page, pageSize);
+    }
 
-        var services = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Where(s => s.UserId == userId)
+    public async Task<IEnumerable<Service>> GetAllAsync(string userId,
+        CancellationToken cancellationToken)
+    {
+        var services = await context.Services.Include(s => s.Incidents).Where(s => s.UserId == userId)
             .ToListAsync(cancellationToken);
 
         return services;

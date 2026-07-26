@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication;
+using System.Text.Json;
 using ServiceMonitor.Domain.Exceptions;
 
 namespace ServiceMonitor.API.Middlewares;
@@ -25,6 +26,16 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync(authenticationException.Message);
+        }
+        catch (FormatException formatException)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync(formatException.Message);
+        }
+        catch (JsonException jsonException)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync(jsonException.Message);
         }
         catch (Exception ex)
         {

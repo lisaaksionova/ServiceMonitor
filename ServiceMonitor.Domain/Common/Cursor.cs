@@ -3,11 +3,11 @@ using System.Text.Json;
 
 namespace ServiceMonitor.Domain.Common;
 
-public sealed record Cursor(int LastId)
+public sealed record Cursor(int LastId, DateTime CreatedAt)
 {
-    public static string Encode(int lastId)
+    public static string Encode(int lastId, DateTime createdAt)
     {
-        var json = JsonSerializer.Serialize(new Cursor(lastId));
+        var json = JsonSerializer.Serialize(new Cursor(lastId,  createdAt));
 
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
     }
@@ -26,13 +26,13 @@ public sealed record Cursor(int LastId)
 
             return JsonSerializer.Deserialize<Cursor>(json);
         }
-        catch (FormatException)
+        catch (FormatException formatException)
         {
-            return null;
+            throw new FormatException("Invalid cursor string", formatException);
         }
-        catch (JsonException)
+        catch (JsonException jsonException)
         {
-            return null;
+            throw new JsonException("Invalid cursor string", jsonException);
         }
     }
 }

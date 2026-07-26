@@ -19,7 +19,7 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
     {
         var decodedCursor = Cursor.Decode(cursor);
         var lastId = decodedCursor?.LastId;
-        var created = decodedCursor?.Created;
+        var created = decodedCursor?.CreatedAt;
 
         var query = context.Incidents
             .AsNoTracking()
@@ -30,8 +30,8 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         if (created.HasValue)
         {
             query = query.Where(i =>
-                i.Date > created.Value.Date ||
-                (i.Date == created.Value.Date && i.Id >= lastId!.Value));
+                i.Date < created.Value ||
+                (i.Date == created.Value && i.Id > lastId!.Value));
         }
 
         var incidents = await query.Take(limit + 1).ToListAsync(cancellationToken);

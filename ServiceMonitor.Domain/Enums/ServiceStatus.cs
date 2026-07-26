@@ -4,5 +4,6 @@ public enum ServiceStatus
 {
     Healthy,
     Degraded,
-    Down
+    Down,
+    Unknown
 }

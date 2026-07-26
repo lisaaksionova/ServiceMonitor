@@ -43,15 +43,9 @@ public class MonitorSeeder(
     {
         return
         [
-            new(UserRoles.User)
-            {
-                NormalizedName = UserRoles.User.ToUpperInvariant()
-            },
+            new IdentityRole(UserRoles.User) { NormalizedName = UserRoles.User.ToUpperInvariant() },
 
-            new(UserRoles.Admin)
-            {
-                NormalizedName = UserRoles.Admin.ToUpperInvariant()
-            }
+            new IdentityRole(UserRoles.Admin) { NormalizedName = UserRoles.Admin.ToUpperInvariant() }
         ];
     }
 
@@ -64,9 +58,7 @@ public class MonitorSeeder(
 
         var admin = new User
         {
-            UserName = "admin@servicemonitor.com",
-            Email = "admin@servicemonitor.com",
-            EmailConfirmed = true
+            UserName = "admin@servicemonitor.com", Email = "admin@servicemonitor.com", EmailConfirmed = true
         };
 
         var result = await userManager.CreateAsync(admin, "Admin123!");

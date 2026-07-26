@@ -7,7 +7,7 @@ public sealed record Cursor(int LastId, DateTime CreatedAt)
 {
     public static string Encode(int lastId, DateTime createdAt)
     {
-        var json = JsonSerializer.Serialize(new Cursor(lastId,  createdAt));
+        var json = JsonSerializer.Serialize(new Cursor(lastId, createdAt));
 
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
     }

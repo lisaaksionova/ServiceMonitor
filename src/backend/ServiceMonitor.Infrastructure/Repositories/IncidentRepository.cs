@@ -14,7 +14,7 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         return incidents;
     }
 
-    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(string cursor, int limit,
+    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(string cursor, int limit, string userId,
         CancellationToken cancellationToken)
     {
         var decodedCursor = Cursor.Decode(cursor);
@@ -22,7 +22,9 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         var created = decodedCursor?.CreatedAt;
 
         var query = context.Incidents
-            .AsNoTracking()
+            .Include(i => i.Service)
+            .AsNoTrackingWithIdentityResolution()
+            .Where(i => i.Service.UserId == userId)
             .OrderByDescending(i => i.Date)
             .ThenBy(i => i.Id)
             .AsQueryable();
@@ -49,9 +51,9 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         return new CursorPagedList<Incident>(incidents, nextCursor, hasMore);
     }
 
-    public async Task<Incident?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Incident?> GetByIdAsync(int id, string userId, CancellationToken cancellationToken)
     {
-        var incident = await context.Incidents.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var incident = await context.Incidents.Include(i => i.Service).FirstOrDefaultAsync(x => x.Id == id && x.Service.UserId == userId, cancellationToken);
         return incident;
     }
 

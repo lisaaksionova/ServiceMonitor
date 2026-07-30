@@ -7,11 +7,9 @@ public class CreateServiceCommandValidator : AbstractValidator<CreateServiceComm
     public CreateServiceCommandValidator()
     {
         RuleFor(service => service.Name)
-            .NotNull()
             .NotEmpty()
             .WithMessage("Name is required");
         RuleFor(service => service.Endpoint)
-            .NotNull()
             .NotEmpty()
             .WithMessage("Endpoint is required");
         RuleFor(service => service.Endpoint)

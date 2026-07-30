@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ServiceMonitor.Application.Incidents.Dtos;
+using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Exceptions;
 using ServiceMonitor.Domain.Interfaces;
@@ -9,11 +10,12 @@ namespace ServiceMonitor.Application.Incidents.Queries.GetIncidentById;
 
 public class GetIncidentByIdQueryHandler(
     IIncidentRepository repository,
-    IMapper mapper) : IRequestHandler<GetIncidentByIdQuery, IncidentDto>
+    IMapper mapper,
+    IAuthenticatedUser authenticatedUser) : IRequestHandler<GetIncidentByIdQuery, IncidentDto>
 {
     public async Task<IncidentDto> Handle(GetIncidentByIdQuery request, CancellationToken cancellationToken)
     {
-        var incident = await repository.GetByIdAsync(request.Id, cancellationToken) ??
+        var incident = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken) ??
                        throw new NotFoundException(nameof(Incident), request.Id.ToString());
         var incidentDto = mapper.Map<IncidentDto>(incident);
         return incidentDto;

@@ -8,6 +8,7 @@ public class Incident
     public DateTime Date { get; set; }
     public string Description { get; set; } = string.Empty;
     public IncidentStatus Status { get; set; }
+    public DateTime ResolvedAt { get; set; }
 
     public int ServiceId { get; set; }
     public Service Service { get; set; }

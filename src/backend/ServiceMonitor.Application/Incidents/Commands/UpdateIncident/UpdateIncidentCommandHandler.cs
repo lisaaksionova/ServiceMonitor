@@ -15,6 +15,7 @@ public class UpdateIncidentCommandHandler(IIncidentRepository incidentRepository
 {
     public async Task Handle(UpdateIncidentCommand request, CancellationToken cancellationToken)
     {
+        logger.LogInformation("Updating incident {@Incident}", request.Description);
         var incident = await incidentRepository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken)
             ?? throw new NotFoundException(nameof(Incident), request.Id.ToString());
         mapper.Map(request, incident);

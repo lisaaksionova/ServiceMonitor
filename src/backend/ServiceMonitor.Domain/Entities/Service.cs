@@ -14,6 +14,9 @@ public class Service
     public ServiceStatus Status { get; set; }
     public int CheckIntervalMinutes { get; set; }
     public DateTime NextCheckAt { get; set; }
+    public DateTime LastCheckAt { get; set; }
+    public DateTime LastSuccessfulCheckAt { get; set; }
+    [MaxLength(200)] public string LastFailureReason { get; set; } = string.Empty;
 
     public List<Incident> Incidents { get; set; } = new();
 

@@ -91,6 +91,6 @@ public class HealthCheckBackgroundService(
             return ServiceStatus.Down;
         }
 
-        return ServiceStatus.Degraded;
+        return ServiceStatus.Unavailable;
     }
 }

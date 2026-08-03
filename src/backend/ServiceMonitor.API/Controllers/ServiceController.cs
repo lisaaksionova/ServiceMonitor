@@ -15,8 +15,8 @@ namespace ServiceMonitor.API.Controllers;
 [Authorize]
 public class ServiceController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var service = await mediator.Send(new GetServiceByIdQuery(id), cancellationToken);
         return Ok(service);
@@ -47,8 +47,8 @@ public class ServiceController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteServiceCommand(id), cancellationToken);
         return Ok();

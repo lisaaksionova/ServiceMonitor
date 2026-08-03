@@ -2,7 +2,7 @@
 
 namespace ServiceMonitor.Application.Incidents.Commands.DeleteIncident;
 
-public class DeleteIncidentCommand(int incidentId) : IRequest
+public class DeleteIncidentCommand(Guid incidentId) : IRequest
 {
-    public int IncidentId { get; set; } = incidentId;
+    public Guid IncidentId { get; set; } = incidentId;
 }

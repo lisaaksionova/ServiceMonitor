@@ -2,7 +2,7 @@
 
 namespace ServiceMonitor.Application.Services.Commands.DeleteService;
 
-public class DeleteServiceCommand(int id) : IRequest
+public class DeleteServiceCommand(Guid id) : IRequest
 {
-    public int Id { get; set; } = id;
+    public Guid Id { get; set; } = id;
 }

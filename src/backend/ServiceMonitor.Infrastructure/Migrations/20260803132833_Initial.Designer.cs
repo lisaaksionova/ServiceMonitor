@@ -12,8 +12,8 @@ using ServiceMonitor.Infrastructure.Persistence;
 namespace ServiceMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(MonitorDbContext))]
-    [Migration("20260419210032_User")]
-    partial class User
+    [Migration("20260803132833_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,11 +159,9 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceMonitor.Domain.Entities.Incident", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
@@ -172,8 +170,11 @@ namespace ServiceMonitor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("ResolvedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -187,22 +188,33 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceMonitor.Domain.Entities.Service", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<int>("CheckIntervalMinutes")
                         .HasColumnType("integer");
 
                     b.Property<string>("Endpoint")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("LastCheckAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastFailureReason")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("LastSuccessfulCheckAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("NextCheckAt")
                         .HasColumnType("timestamp with time zone");
@@ -211,6 +223,7 @@ namespace ServiceMonitor.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -348,9 +361,13 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceMonitor.Domain.Entities.Service", b =>
                 {
-                    b.HasOne("ServiceMonitor.Domain.Entities.User", null)
+                    b.HasOne("ServiceMonitor.Domain.Entities.User", "User")
                         .WithMany("Services")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ServiceMonitor.Domain.Entities.Service", b =>

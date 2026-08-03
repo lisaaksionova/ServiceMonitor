@@ -128,7 +128,8 @@ public class MonitorSeeder(
                 ServiceId = facebook.Id,
                 Date = DateTime.UtcNow.AddDays(-2),
                 Description = "Facebook was temporarily unavailable.",
-                Status = IncidentStatus.Resolved
+                Status = IncidentStatus.Resolved,
+                ResolvedAt = DateTime.UtcNow.AddDays(-1),
             },
 
             new Incident
@@ -136,7 +137,8 @@ public class MonitorSeeder(
                 ServiceId = github.Id,
                 Date = DateTime.UtcNow.AddHours(-5),
                 Description = "GitHub response time was higher than usual.",
-                Status = IncidentStatus.Resolved
+                Status = IncidentStatus.Resolved,
+                ResolvedAt = DateTime.UtcNow.AddDays(-1)
             }
         ];
     }

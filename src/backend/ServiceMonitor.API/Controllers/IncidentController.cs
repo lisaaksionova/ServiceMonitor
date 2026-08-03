@@ -23,8 +23,8 @@ public class IncidentController(IMediator mediator) : ControllerBase
         return Ok(incidents);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<IncidentDto>> GetById([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<IncidentDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var incident = await mediator.Send(new GetIncidentByIdQuery(id), cancellationToken);
         return Ok(incident);
@@ -37,8 +37,8 @@ public class IncidentController(IMediator mediator) : ControllerBase
         return Created();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteIncidentCommand(id), cancellationToken);
         return Ok();

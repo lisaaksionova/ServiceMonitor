@@ -51,7 +51,7 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         return new CursorPagedList<Incident>(incidents, nextCursor, hasMore);
     }
 
-    public async Task<Incident?> GetByIdAsync(int id, string userId, CancellationToken cancellationToken)
+    public async Task<Incident?> GetByIdAsync(Guid id, string userId, CancellationToken cancellationToken)
     {
         var incident = await context.Incidents.Include(i => i.Service).FirstOrDefaultAsync(x => x.Id == id && x.Service.UserId == userId, cancellationToken);
         return incident;

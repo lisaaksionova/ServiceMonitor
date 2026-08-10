@@ -65,8 +65,11 @@ app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<IMonitorSeeder>();
-await seeder.SeedAsync();
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IMonitorSeeder>();
+    await seeder.SeedAsync();
+}
+
 
 app.Run();

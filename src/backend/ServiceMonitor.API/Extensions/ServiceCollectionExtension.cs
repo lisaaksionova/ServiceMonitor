@@ -12,7 +12,7 @@ public static class ServiceCollectionExtension
 {
     public static void AddPresentation(this IServiceCollection services)
     {
-        services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddSingleton<ErrorHandlingMiddleware>();
         services.AddScoped<IMonitorSeeder, MonitorSeeder>();
         services.AddFluentValidationAutoValidation();
 

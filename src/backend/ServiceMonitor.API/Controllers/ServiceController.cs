@@ -33,34 +33,34 @@ public class ServiceController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateServiceCommand command,
+    public async Task<ActionResult<ServiceDto>> Create([FromBody] CreateServiceCommand command,
         CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var service = await mediator.Send(command, cancellationToken);
 
-        return Created();
+        return CreatedAtAction(nameof(GetById), new { id = service.Id }, service);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command,
+    public async Task<ActionResult<ServiceDto>> Update([FromBody] UpdateServiceCommand command,
         CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
-        return Ok();
+        var service = await mediator.Send(command, cancellationToken);
+        return Ok(service);
     }
 
     [HttpPatch("healthy/{id:guid}")]
-    public async Task<IActionResult> UpdateServiceAsHealthy([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceDto>> UpdateServiceAsHealthy([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new UpdateServiceAsHealthyCommand(id), cancellationToken);
-        return Ok();
+        var service = await mediator.Send(new UpdateServiceAsHealthyCommand(id), cancellationToken);
+        return Ok(service);
     }
 
     [HttpPatch("unavailable/{id:guid}")]
-    public async Task<IActionResult> UpdateServiceAsUnavailable([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceDto>> UpdateServiceAsUnavailable([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new UpdateServiceAsUnavailableCommand(id), cancellationToken);
-        return Ok();
+        var service = await mediator.Send(new UpdateServiceAsUnavailableCommand(id), cancellationToken);
+        return Ok(service);
     }
 
     [HttpDelete("{id:guid}")]

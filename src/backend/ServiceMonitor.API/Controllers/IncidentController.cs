@@ -31,11 +31,11 @@ public class IncidentController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromRoute] Guid serviceId, CreateIncidentCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<IncidentDto>> Create([FromRoute] Guid serviceId, CreateIncidentCommand request, CancellationToken cancellationToken)
     {
         request.ServiceId = serviceId;
-        await mediator.Send(request, cancellationToken);
-        return Created();
+        var incident = await mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { serviceId, id = incident.Id }, incident);
     }
 
     [HttpDelete("{id:guid}")]
@@ -46,11 +46,11 @@ public class IncidentController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([FromRoute] Guid serviceId, [FromBody] UpdateIncidentCommand request,
+    public async Task<ActionResult<IncidentDto>> Update([FromRoute] Guid serviceId, [FromBody] UpdateIncidentCommand request,
         CancellationToken cancellationToken)
     {
         request.ServiceId = serviceId;
-        await mediator.Send(request, cancellationToken);
-        return Ok();
+        var incident = await mediator.Send(request, cancellationToken);
+        return Ok(incident);
     }
 }

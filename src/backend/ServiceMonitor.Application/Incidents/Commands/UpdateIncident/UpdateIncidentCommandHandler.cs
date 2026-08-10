@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using ServiceMonitor.Application.Incidents.Dtos;
 using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Enums;
@@ -12,9 +13,9 @@ namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 public class UpdateIncidentCommandHandler(IIncidentRepository incidentRepository,
     ILogger<UpdateIncidentCommandHandler> logger,
     IAuthenticatedUser authenticatedUser,
-    IMapper mapper) : IRequestHandler<UpdateIncidentCommand>
+    IMapper mapper) : IRequestHandler<UpdateIncidentCommand, IncidentDto>
 {
-    public async Task Handle(UpdateIncidentCommand request, CancellationToken cancellationToken)
+    public async Task<IncidentDto> Handle(UpdateIncidentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating incident {@Incident}", request.Description);
         var openIncidents = await incidentRepository.GetAllOpenAsync(request.ServiceId, cancellationToken);
@@ -28,5 +29,6 @@ public class UpdateIncidentCommandHandler(IIncidentRepository incidentRepository
             ?? throw new NotFoundException(nameof(Incident), request.Id.ToString());
         mapper.Map(request, incident);
         await incidentRepository.SaveAsync(cancellationToken);
+        return mapper.Map<IncidentDto>(incident);
     }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ServiceMonitor.Application.Interfaces;
+using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Interfaces;
@@ -12,9 +13,9 @@ public class CreateServiceCommandHandler(
     IServiceRepository repository,
     IMapper mapper,
     ILogger<CreateServiceCommandHandler> logger,
-    IAuthenticatedUser authenticatedUser) : IRequestHandler<CreateServiceCommand>
+    IAuthenticatedUser authenticatedUser) : IRequestHandler<CreateServiceCommand, ServiceDto>
 {
-    public async Task Handle(CreateServiceCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceDto> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating new service {@Service} with endpoint {@Endpoint}", request.Name,
             request.Endpoint);
@@ -22,5 +23,6 @@ public class CreateServiceCommandHandler(
         service.Status = ServiceStatus.Healthy;
         service.UserId = authenticatedUser.UserId;
         await repository.CreateAsync(service, cancellationToken);
+        return mapper.Map<ServiceDto>(service);
     }
 }

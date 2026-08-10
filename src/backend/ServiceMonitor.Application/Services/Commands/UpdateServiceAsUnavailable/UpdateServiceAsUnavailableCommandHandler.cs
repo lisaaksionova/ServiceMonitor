@@ -1,6 +1,8 @@
+using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ServiceMonitor.Application.Interfaces;
+using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Exceptions;
@@ -11,9 +13,10 @@ namespace ServiceMonitor.Application.Services.Commands.UpdateServiceAsUnavailabl
 public class UpdateServiceAsUnavailableCommandHandler(
     ILogger<UpdateServiceAsUnavailableCommandHandler> logger,
     IServiceRepository repository,
-    IAuthenticatedUser authenticatedUser) : IRequestHandler<UpdateServiceAsUnavailableCommand>
+    IAuthenticatedUser authenticatedUser,
+    IMapper mapper) : IRequestHandler<UpdateServiceAsUnavailableCommand, ServiceDto>
 {
-    public async Task Handle(UpdateServiceAsUnavailableCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceDto> Handle(UpdateServiceAsUnavailableCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating service as unavailable");
         var service = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken)
@@ -25,5 +28,6 @@ public class UpdateServiceAsUnavailableCommandHandler(
 
         service.Status = ServiceStatus.Unavailable;
         await repository.Save(cancellationToken);
+        return mapper.Map<ServiceDto>(service);
     }
 }

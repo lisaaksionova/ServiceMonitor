@@ -8,7 +8,7 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class ServiceRepository(MonitorDbContext context) : IServiceRepository
 {
-    public async Task<Service?> GetByIdAsync(int id, string userId, CancellationToken cancellationToken)
+    public async Task<Service?> GetByIdAsync(Guid id, string userId, CancellationToken cancellationToken)
     {
         var service = await context.Services
             .Include(s => s.Incidents)

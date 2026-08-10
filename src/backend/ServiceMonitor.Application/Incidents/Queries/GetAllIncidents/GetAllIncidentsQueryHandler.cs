@@ -15,7 +15,7 @@ public class GetAllIncidentsQueryHandler(
     public async Task<CursorPagedList<IncidentDto>> Handle(GetAllIncidentsQuery request,
         CancellationToken cancellationToken)
     {
-        var incidents = await repository.GetAllPaginatedAsync(request.Cursor, request.Limit, authenticatedUser.UserId, cancellationToken);
+        var incidents = await repository.GetAllPaginatedAsync(request.ServiceId, request.Cursor, request.Limit, authenticatedUser.UserId, cancellationToken);
         var incidentDtos = new CursorPagedList<IncidentDto>(
             mapper.Map<List<IncidentDto>>(incidents.Items),
             incidents.NextCursor,

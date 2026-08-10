@@ -11,43 +11,45 @@ using ServiceMonitor.Application.Incidents.Queries.GetIncidentById;
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
-[Route("api/incidents")]
+[Route("api/services/{serviceId:guid}/incidents")]
 [Authorize]
 public class IncidentController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll(CancellationToken cancellationToken,
+    public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll([FromRoute] Guid serviceId, CancellationToken cancellationToken,
         [FromQuery] int limit = 10, [FromQuery] string? cursor = null)
     {
-        var incidents = await mediator.Send(new GetAllIncidentsQuery(cursor, limit), cancellationToken);
+        var incidents = await mediator.Send(new GetAllIncidentsQuery(serviceId, cursor, limit), cancellationToken);
         return Ok(incidents);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<IncidentDto>> GetById([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<IncidentDto>> GetById([FromRoute] Guid serviceId, [FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var incident = await mediator.Send(new GetIncidentByIdQuery(id), cancellationToken);
+        var incident = await mediator.Send(new GetIncidentByIdQuery(serviceId, id), cancellationToken);
         return Ok(incident);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateIncidentCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromRoute] Guid serviceId, CreateIncidentCommand request, CancellationToken cancellationToken)
     {
+        request.ServiceId = serviceId;
         await mediator.Send(request, cancellationToken);
         return Created();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid serviceId, [FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteIncidentCommand(id), cancellationToken);
+        await mediator.Send(new DeleteIncidentCommand(serviceId, id), cancellationToken);
         return Ok();
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([FromBody] UpdateIncidentCommand request,
+    public async Task<IActionResult> Update([FromRoute] Guid serviceId, [FromBody] UpdateIncidentCommand request,
         CancellationToken cancellationToken)
     {
+        request.ServiceId = serviceId;
         await mediator.Send(request, cancellationToken);
         return Ok();
     }

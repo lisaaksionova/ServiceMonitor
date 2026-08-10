@@ -3,7 +3,8 @@ using ServiceMonitor.Application.Incidents.Dtos;
 
 namespace ServiceMonitor.Application.Incidents.Queries.GetIncidentById;
 
-public class GetIncidentByIdQuery(int id) : IRequest<IncidentDto>
+public class GetIncidentByIdQuery(Guid serviceId, Guid id) : IRequest<IncidentDto>
 {
-    public int Id { get; set; } = id;
+    public Guid ServiceId { get; set; } = serviceId;
+    public Guid Id { get; set; } = id;
 }

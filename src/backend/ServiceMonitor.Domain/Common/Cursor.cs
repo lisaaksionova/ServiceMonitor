@@ -3,9 +3,9 @@ using System.Text.Json;
 
 namespace ServiceMonitor.Domain.Common;
 
-public sealed record Cursor(int LastId, DateTime CreatedAt)
+public sealed record Cursor(Guid LastId, DateTime CreatedAt)
 {
-    public static string Encode(int lastId, DateTime createdAt)
+    public static string Encode(Guid lastId, DateTime createdAt)
     {
         var json = JsonSerializer.Serialize(new Cursor(lastId, createdAt));
 

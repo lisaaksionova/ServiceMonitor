@@ -3,7 +3,7 @@
 public enum ServiceStatus
 {
     Healthy,
-    Degraded,
+    Unavailable,
     Down,
     Unknown
 }

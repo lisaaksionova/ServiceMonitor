@@ -17,6 +17,8 @@ public class IncidentProfile : Profile
         CreateMap<UpdateIncidentCommand, Incident>()
             .ForMember(x => x.Description,
                 opts => opts.MapFrom((s, d) => s.Description ?? d.Description))
+            .ForMember(x => x.ResolvedAt,
+                opts => opts.MapFrom((s, d) => s.ResolvedAt != null ? DateTime.Parse(s.ResolvedAt) : d.ResolvedAt))
             .ForMember(x => x.Status,
                 opt => opt.MapFrom((s, d) => s.Status != null ? Enum.Parse<IncidentStatus>(s.Status, true) : d.Status));
 

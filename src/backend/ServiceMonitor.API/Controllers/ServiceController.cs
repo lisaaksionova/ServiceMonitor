@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
 using ServiceMonitor.Application.Services.Commands.UpdateService;
+using ServiceMonitor.Application.Services.Commands.UpdateServiceAsHealthy;
+using ServiceMonitor.Application.Services.Commands.UpdateServiceAsUnavailable;
 using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Application.Services.Queries.GetAllServices;
 using ServiceMonitor.Application.Services.Queries.GetServiceById;
@@ -15,8 +17,8 @@ namespace ServiceMonitor.API.Controllers;
 [Authorize]
 public class ServiceController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ServiceDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var service = await mediator.Send(new GetServiceByIdQuery(id), cancellationToken);
         return Ok(service);
@@ -39,7 +41,7 @@ public class ServiceController(IMediator mediator) : ControllerBase
         return Created();
     }
 
-    [HttpPatch]
+    [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command,
         CancellationToken cancellationToken)
     {
@@ -47,8 +49,22 @@ public class ServiceController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
+    [HttpPatch("healthy/{id:guid}")]
+    public async Task<IActionResult> UpdateServiceAsHealthy([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new UpdateServiceAsHealthyCommand(id), cancellationToken);
+        return Ok();
+    }
+
+    [HttpPatch("unavailable/{id:guid}")]
+    public async Task<IActionResult> UpdateServiceAsUnavailable([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new UpdateServiceAsUnavailableCommand(id), cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteServiceCommand(id), cancellationToken);
         return Ok();

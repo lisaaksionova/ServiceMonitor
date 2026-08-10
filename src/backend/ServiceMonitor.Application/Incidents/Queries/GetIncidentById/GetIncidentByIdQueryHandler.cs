@@ -15,7 +15,7 @@ public class GetIncidentByIdQueryHandler(
 {
     public async Task<IncidentDto> Handle(GetIncidentByIdQuery request, CancellationToken cancellationToken)
     {
-        var incident = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken) ??
+        var incident = await repository.GetByIdAsync(request.ServiceId, request.Id, authenticatedUser.UserId, cancellationToken) ??
                        throw new NotFoundException(nameof(Incident), request.Id.ToString());
         var incidentDto = mapper.Map<IncidentDto>(incident);
         return incidentDto;

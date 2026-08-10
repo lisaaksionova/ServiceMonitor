@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
 using ServiceMonitor.Application.Services.Commands.UpdateService;
+using ServiceMonitor.Application.Services.Commands.UpdateServiceAsHealthy;
+using ServiceMonitor.Application.Services.Commands.UpdateServiceAsUnavailable;
 using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Application.Services.Queries.GetAllServices;
 using ServiceMonitor.Application.Services.Queries.GetServiceById;
@@ -39,11 +41,25 @@ public class ServiceController(IMediator mediator) : ControllerBase
         return Created();
     }
 
-    [HttpPatch]
+    [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateServiceCommand command,
         CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+
+    [HttpPatch("healthy/{id:guid}")]
+    public async Task<IActionResult> UpdateServiceAsHealthy([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new UpdateServiceAsHealthyCommand(id), cancellationToken);
+        return Ok();
+    }
+
+    [HttpPatch("unavailable/{id:guid}")]
+    public async Task<IActionResult> UpdateServiceAsUnavailable([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new UpdateServiceAsUnavailableCommand(id), cancellationToken);
         return Ok();
     }
 

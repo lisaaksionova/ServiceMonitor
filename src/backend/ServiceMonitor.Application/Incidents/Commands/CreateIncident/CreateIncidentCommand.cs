@@ -6,5 +6,5 @@ public class CreateIncidentCommand : IRequest
 {
     public string Description { get; set; } = string.Empty;
 
-    public int ServiceId { get; set; }
+    public Guid ServiceId { get; set; }
 }

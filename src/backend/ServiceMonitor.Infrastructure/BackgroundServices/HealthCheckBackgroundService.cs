@@ -14,19 +14,17 @@ public class HealthCheckBackgroundService(
     ILogger<HealthCheckBackgroundService> logger)
     : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        while (!cancellationToken.IsCancellationRequested)
         {
             using var scope = scopeFactory.CreateScope();
 
             var serviceRepository = scope.ServiceProvider.GetRequiredService<IServiceRepository>();
             var incidentRepository = scope.ServiceProvider.GetRequiredService<IIncidentRepository>();
 
-            var services = await serviceRepository.GetServicesForCheck(stoppingToken);
+            var services = await serviceRepository.GetServicesForCheck(cancellationToken);
             var httpClient = httpClientFactory.CreateClient();
-
-            var now = DateTime.UtcNow;
 
             foreach (var service in services)
             {
@@ -36,7 +34,7 @@ public class HealthCheckBackgroundService(
                 try
                 {
                     using var request = new HttpRequestMessage(HttpMethod.Get, service.Endpoint);
-                    using var response = await httpClient.SendAsync(request, stoppingToken);
+                    using var response = await httpClient.SendAsync(request, cancellationToken);
 
                     logger.LogInformation(
                         "Health check {Endpoint}: {StatusCode}",
@@ -61,21 +59,34 @@ public class HealthCheckBackgroundService(
 
                     service.Status = newStatus;
 
-                    await incidentRepository.CreateAsync(
-                        new Incident
+                    if(newStatus != ServiceStatus.Healthy)
+                    {
+                        await incidentRepository.CreateAsync(
+                            new Incident
+                            {
+                                ServiceId = service.Id,
+                                Date = DateTime.UtcNow,
+                                Status = IncidentStatus.Open,
+                                Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
+                            }, cancellationToken);
+                    }
+                    else
+                    {
+                        var openIncident = await incidentRepository.GetAllOpenAsync(service.Id, cancellationToken);
+                        foreach (var incident in openIncident)
                         {
-                            ServiceId = service.Id,
-                            Date = now,
-                            Status = IncidentStatus.Open,
-                            Description = $"Service {service.Name} changed from {oldStatus} to {newStatus}"
-                        }, stoppingToken);
+                            incident.Status = IncidentStatus.Resolved;
+                        }
+
+                        await incidentRepository.SaveAsync(cancellationToken);
+                    }
                 }
 
-                service.NextCheckAt = now.AddMinutes(service.CheckIntervalMinutes);
+                service.NextCheckAt = DateTime.UtcNow.AddMinutes(service.CheckIntervalMinutes);
             }
 
-            await serviceRepository.Save(stoppingToken);
-            await Task.Delay(5000, stoppingToken);
+            await serviceRepository.Save(cancellationToken);
+            await Task.Delay(5000, cancellationToken);
         }
     }
 
@@ -83,6 +94,7 @@ public class HealthCheckBackgroundService(
     {
         if ((int)statusCode >= 200 && (int)statusCode < 300)
         {
+
             return ServiceStatus.Healthy;
         }
 

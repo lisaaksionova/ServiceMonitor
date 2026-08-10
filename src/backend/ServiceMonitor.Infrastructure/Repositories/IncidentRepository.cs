@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Common;
 using ServiceMonitor.Domain.Entities;
+using ServiceMonitor.Domain.Enums;
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
 
@@ -8,13 +9,7 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
 {
-    public async Task<IEnumerable<Incident>> GetAllAsync(CancellationToken cancellationToken)
-    {
-        var incidents = await context.Incidents.ToListAsync(cancellationToken);
-        return incidents;
-    }
-
-    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(string cursor, int limit, string userId,
+    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit, string userId,
         CancellationToken cancellationToken)
     {
         var decodedCursor = Cursor.Decode(cursor);
@@ -22,6 +17,7 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         var created = decodedCursor?.CreatedAt;
 
         var query = context.Incidents
+            .Where(i => i.ServiceId == serviceId)
             .Include(i => i.Service)
             .AsNoTrackingWithIdentityResolution()
             .Where(i => i.Service.UserId == userId)
@@ -51,9 +47,20 @@ public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
         return new CursorPagedList<Incident>(incidents, nextCursor, hasMore);
     }
 
-    public async Task<Incident?> GetByIdAsync(Guid id, string userId, CancellationToken cancellationToken)
+    public async Task<List<Incident>> GetAllOpenAsync(Guid serviceId, CancellationToken cancellationToken)
     {
-        var incident = await context.Incidents.Include(i => i.Service).FirstOrDefaultAsync(x => x.Id == id && x.Service.UserId == userId, cancellationToken);
+        var openIncidents = await context.Incidents
+            .Where(i => i.ServiceId == serviceId && i.Status == IncidentStatus.Open)
+            .ToListAsync(cancellationToken);
+        return openIncidents;
+    }
+
+    public async Task<Incident?> GetByIdAsync(Guid serviceId, Guid id, string userId, CancellationToken cancellationToken)
+    {
+        var incident = await context.Incidents
+            .Where(i => i.ServiceId == serviceId)
+            .Include(i => i.Service)
+            .FirstOrDefaultAsync(x => x.Id == id && x.Service.UserId == userId, cancellationToken);
         return incident;
     }
 

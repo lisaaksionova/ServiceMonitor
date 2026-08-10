@@ -1,4 +1,4 @@
-﻿using ServiceMonitor.Domain.Enums;
+using ServiceMonitor.Domain.Enums;
 
 namespace ServiceMonitor.Domain.Entities;
 

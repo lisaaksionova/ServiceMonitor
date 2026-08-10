@@ -1,4 +1,4 @@
-﻿using ServiceMonitor.Application.Incidents.Dtos;
+using ServiceMonitor.Application.Incidents.Dtos;
 
 namespace ServiceMonitor.Application.Services.Dtos;
 
@@ -9,7 +9,7 @@ public class ServiceDto
     public string Endpoint { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public string NextCheckAt { get; set; } = string.Empty;
-    public string LastCheckAt { get; set; } =  string.Empty;
+    public string LastCheckAt { get; set; } = string.Empty;
     public string LastSuccessfulCheckAt { get; set; } = string.Empty;
     public List<IncidentDto> Incidents { get; set; } = new();
 }

@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Domain.Constants;
+namespace ServiceMonitor.Domain.Constants;
 
 public static class UserRoles
 {

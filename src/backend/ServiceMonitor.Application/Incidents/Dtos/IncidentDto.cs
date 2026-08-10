@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Application.Incidents.Dtos;
+namespace ServiceMonitor.Application.Incidents.Dtos;
 
 public class IncidentDto
 {

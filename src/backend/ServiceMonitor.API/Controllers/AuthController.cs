@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.Auth.LoginUser;
 using ServiceMonitor.Application.Auth.RegisterUser;

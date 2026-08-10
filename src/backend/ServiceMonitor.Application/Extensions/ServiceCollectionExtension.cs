@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Application.SharedServices;

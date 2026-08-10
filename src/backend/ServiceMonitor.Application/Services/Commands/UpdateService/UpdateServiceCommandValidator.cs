@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ServiceMonitor.Domain.Enums;
 
 namespace ServiceMonitor.Application.Services.Commands.UpdateService;
@@ -24,7 +24,7 @@ public class UpdateServiceCommandValidator : AbstractValidator<UpdateServiceComm
             .Must(status => status == null ||
                             Enum.TryParse<ServiceStatus>(status, true, out _))
             .WithMessage("Status should only be in [Healthy, Degraded, Down]");
-        
+
         RuleFor(service => service.CheckIntervalMinutes)
             .GreaterThan(0)
             .When(x => x.CheckIntervalMinutes != null)

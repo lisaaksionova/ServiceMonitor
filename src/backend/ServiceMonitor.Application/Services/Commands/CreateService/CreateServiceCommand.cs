@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 
 namespace ServiceMonitor.Application.Services.Commands.CreateService;
 

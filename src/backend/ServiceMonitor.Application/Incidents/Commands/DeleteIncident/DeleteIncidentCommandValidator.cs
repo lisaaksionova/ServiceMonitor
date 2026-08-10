@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
 
 namespace ServiceMonitor.Application.Incidents.Commands.DeleteIncident;

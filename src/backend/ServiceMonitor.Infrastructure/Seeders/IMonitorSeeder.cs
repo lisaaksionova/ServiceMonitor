@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Infrastructure.Seeders;
+namespace ServiceMonitor.Infrastructure.Seeders;
 
 public interface IMonitorSeeder
 {

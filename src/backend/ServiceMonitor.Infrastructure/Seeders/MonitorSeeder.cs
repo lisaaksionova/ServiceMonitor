@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Constants;
 using ServiceMonitor.Domain.Entities;
@@ -58,7 +58,9 @@ public class MonitorSeeder(
 
         var admin = new User
         {
-            UserName = "admin@servicemonitor.com", Email = "admin@servicemonitor.com", EmailConfirmed = true
+            UserName = "admin@servicemonitor.com",
+            Email = "admin@servicemonitor.com",
+            EmailConfirmed = true
         };
 
         var result = await userManager.CreateAsync(admin, "Admin123!");

@@ -1,4 +1,4 @@
-﻿using ServiceMonitor.Domain.Common;
+using ServiceMonitor.Domain.Common;
 using ServiceMonitor.Domain.Entities;
 
 namespace ServiceMonitor.Domain.Interfaces;

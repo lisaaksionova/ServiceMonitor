@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ServiceMonitor.Application.Interfaces;

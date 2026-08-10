@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Common;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Interfaces;

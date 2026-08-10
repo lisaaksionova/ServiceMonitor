@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -59,7 +59,7 @@ public class HealthCheckBackgroundService(
 
                     service.Status = newStatus;
 
-                    if(newStatus != ServiceStatus.Healthy)
+                    if (newStatus != ServiceStatus.Healthy)
                     {
                         await incidentRepository.CreateAsync(
                             new Incident

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace ServiceMonitor.Application.Services.Commands.CreateService;
 

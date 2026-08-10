@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 using ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 using ServiceMonitor.Domain.Entities;

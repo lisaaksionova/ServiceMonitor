@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Domain.Common;
+namespace ServiceMonitor.Domain.Common;
 
 public class PagedList<T>(List<T> items, int count, int pageNumber, int pageSize)
 {

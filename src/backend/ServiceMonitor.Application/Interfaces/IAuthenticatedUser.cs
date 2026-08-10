@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Application.Interfaces;
+namespace ServiceMonitor.Application.Interfaces;
 
 public interface IAuthenticatedUser
 {

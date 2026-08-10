@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.UpdateService;
 using ServiceMonitor.Domain.Entities;

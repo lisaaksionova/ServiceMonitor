@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Domain.Enums;
+namespace ServiceMonitor.Domain.Enums;
 
 public enum IncidentStatus
 {

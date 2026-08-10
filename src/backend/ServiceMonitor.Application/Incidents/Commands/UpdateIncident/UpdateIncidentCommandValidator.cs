@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ServiceMonitor.Domain.Enums;
 
 namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;

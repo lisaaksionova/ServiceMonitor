@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ServiceMonitor.Domain.Entities;
@@ -15,7 +15,7 @@ public class CreateIncidentCommandHandler(
     {
         logger.LogInformation("Creating incident {@Incident}", request.Description);
         var openIncidents = await incidentRepository.GetAllOpenAsync(request.ServiceId, cancellationToken);
-        if  (openIncidents.Any())
+        if (openIncidents.Any())
             throw new InvalidOperationException("Cannot create new open incident. Resolve previous.");
         var incident = mapper.Map<Incident>(request);
         await incidentRepository.CreateAsync(incident, cancellationToken);

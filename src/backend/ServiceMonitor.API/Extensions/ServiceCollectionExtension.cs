@@ -1,4 +1,4 @@
-﻿using FluentValidation.AspNetCore;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi;
 using ServiceMonitor.API.Middlewares;

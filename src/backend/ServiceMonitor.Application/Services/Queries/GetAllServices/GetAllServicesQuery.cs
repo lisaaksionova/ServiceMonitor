@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using ServiceMonitor.Application.Services.Dtos;
 using ServiceMonitor.Domain.Common;
 

@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitor.Domain.Common;
+namespace ServiceMonitor.Domain.Common;
 
 public class CursorPagedList<T>(List<T> items, string? nextCursor, bool hasMore)
 {

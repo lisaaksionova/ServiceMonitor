@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using ServiceMonitor.Application.Incidents.Dtos;
 using ServiceMonitor.Application.Interfaces;

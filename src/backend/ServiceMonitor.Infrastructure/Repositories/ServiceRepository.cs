@@ -6,7 +6,7 @@ using ServiceMonitor.Infrastructure.Persistence;
 
 namespace ServiceMonitor.Infrastructure.Repositories;
 
-public class ServiceRepository(MonitorDbContext context) : IServiceRepository
+public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Service>(context), IServiceRepository
 {
     public async Task<Service?> GetByIdAsync(Guid id, string userId, CancellationToken cancellationToken)
     {

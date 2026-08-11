@@ -7,7 +7,7 @@ using ServiceMonitor.Infrastructure.Persistence;
 
 namespace ServiceMonitor.Infrastructure.Repositories;
 
-public class IncidentRepository(MonitorDbContext context) : IIncidentRepository
+public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incident>(context), IIncidentRepository
 {
     public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit, string userId,
         CancellationToken cancellationToken)

@@ -21,29 +21,29 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.MapControllers();
-
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<IMonitorSeeder>();
     await seeder.SeedAsync();
 }
-
 
 app.Run();

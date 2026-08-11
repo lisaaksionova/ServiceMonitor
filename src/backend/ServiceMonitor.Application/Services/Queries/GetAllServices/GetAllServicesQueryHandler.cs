@@ -9,7 +9,7 @@ using ServiceMonitor.Domain.Interfaces;
 namespace ServiceMonitor.Application.Services.Queries.GetAllServices;
 
 public class GetAllServicesQueryHandler(
-    IServiceRepository repository,
+    IRepositoryManager repository,
     IMapper mapper,
     IAuthenticatedUser authenticatedUser,
     ILogger<GetAllServicesQueryHandler> logger) : IRequestHandler<GetAllServicesQuery, PagedList<ServiceDto>>
@@ -17,7 +17,7 @@ public class GetAllServicesQueryHandler(
     public async Task<PagedList<ServiceDto>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Getting all services");
-        var services = await repository.GetPagedListAsync(request.Page, request.PageSize, authenticatedUser.UserId,
+        var services = await repository.Service.GetPagedListAsync(request.Page, request.PageSize, authenticatedUser.UserId,
             cancellationToken);
         var serviceDtos = new PagedList<ServiceDto>(
             mapper.Map<List<ServiceDto>>(services.Items),

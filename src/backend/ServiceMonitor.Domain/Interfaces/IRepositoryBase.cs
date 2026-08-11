@@ -4,9 +4,9 @@ namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IRepositoryBase<T>
 {
-    IQueryable<T> GetAllAsync(bool trackChanges);
-    IQueryable<T> GetByConditionAsync(Expression<Func<T, bool>> expression, bool trackChanges);
-    void CreateAsync(T entity);
-    void UpdateAsync(T entity);
-    void DeleteAsync(T entity);
+    IQueryable<T> GetAll();
+    IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
+    void Create(T entity);
+    void Update(T entity);
+    void Delete(T entity);
 }

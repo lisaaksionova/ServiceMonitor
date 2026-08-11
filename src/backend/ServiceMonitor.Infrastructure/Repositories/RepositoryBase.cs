@@ -13,11 +13,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         _context = context;
     }
 
-    public void CreateAsync(T entity) => _context.Set<T>().Add(entity);
-    public void DeleteAsync(T entity) => _context.Set<T>().Remove(entity);
-    public IQueryable<T> GetAllAsync(bool trackChanges) =>
-      !trackChanges ? _context.Set<T>().AsNoTracking() : _context.Set<T>();
-    public IQueryable<T> GetByConditionAsync(Expression<Func<T, bool>> expression, bool trackChanges) =>
-      !trackChanges ? _context.Set<T>().Where(expression).AsNoTracking() : _context.Set<T>().Where(expression);
-    public void UpdateAsync(T entity) => _context.Set<T>().Update(entity);
+    public void Create(T entity) => _context.Set<T>().Add(entity);
+    public void Delete(T entity) => _context.Set<T>().Remove(entity);
+    public IQueryable<T> GetAll() =>
+      _context.Set<T>().AsNoTrackingWithIdentityResolution();
+    public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression) =>
+      _context.Set<T>().Where(expression).AsNoTrackingWithIdentityResolution();
+    public void Update(T entity) => _context.Set<T>().Update(entity);
 }

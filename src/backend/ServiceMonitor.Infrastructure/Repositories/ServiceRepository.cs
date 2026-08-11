@@ -19,17 +19,25 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
     public async Task<PagedList<Service>> GetPagedListAsync(int page, int pageSize, string userId,
         CancellationToken cancellationToken)
     {
-        var query = context.Services.Include(s => s.Incidents).AsNoTrackingWithIdentityResolution();
+        var query = GetAll()
+            .Where(s => s.UserId == userId)
+            .OrderBy(s => s.Name);
+
         var count = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).Where(s => s.UserId == userId)
+
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Include(s => s.Incidents)
             .ToListAsync(cancellationToken);
+
         return new PagedList<Service>(items, count, page, pageSize);
     }
 
     public async Task<IEnumerable<Service>> GetAllAsync(string userId,
         CancellationToken cancellationToken)
     {
-        var services = await context.Services.Include(s => s.Incidents).Where(s => s.UserId == userId)
+        var services = await context.Services.Where(s => s.UserId == userId).Include(s => s.Incidents)
             .ToListAsync(cancellationToken);
 
         return services;

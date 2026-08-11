@@ -10,8 +10,7 @@ public class ServiceProfile : Profile
 {
     public ServiceProfile()
     {
-        CreateMap<Service, ServiceDto>()
-            .ForMember(s => s.Incidents, opt => opt.MapFrom(src => src.Incidents));
+        CreateMap<Service, ServiceDto>();
 
         CreateMap<UpdateServiceCommand, Service>()
             .ForMember(s => s.CheckIntervalMinutes,

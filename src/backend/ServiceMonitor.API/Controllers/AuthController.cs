@@ -6,7 +6,7 @@ using ServiceMonitor.Application.Auth.RegisterUser;
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/authentication")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [HttpPost("login")]

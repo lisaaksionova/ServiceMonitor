@@ -9,12 +9,8 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Service>(context), IServiceRepository
 {
     public async Task<Service?> GetByIdAsync(Guid id, string userId, CancellationToken cancellationToken)
-    {
-        var service = await context.Services
-            .Include(s => s.Incidents)
-            .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId, cancellationToken);
-        return service;
-    }
+        => await GetByCondition(s => s.Id.Equals(id) && s.UserId.Equals(userId))
+            .SingleOrDefaultAsync(cancellationToken);
 
     public async Task<PagedList<Service>> GetPagedListAsync(int page, int pageSize, string userId,
         CancellationToken cancellationToken)

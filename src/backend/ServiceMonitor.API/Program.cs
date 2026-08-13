@@ -29,6 +29,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
+//app.ConfigureExceptionHandler(app.Configuration, new Logger<>()); //use correct logger
+
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();

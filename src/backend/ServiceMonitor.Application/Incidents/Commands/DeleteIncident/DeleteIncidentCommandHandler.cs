@@ -7,15 +7,19 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Application.Incidents.Commands.DeleteIncident;
 
-public class DeleteIncidentCommandHandler(IIncidentRepository incidentRepository,
+public class DeleteIncidentCommandHandler(IRepositoryManager repository,
     ILogger<DeleteIncidentCommandHandler> logger,
     IAuthenticatedUser authenticatedUser) : IRequestHandler<DeleteIncidentCommand>
 {
     public async Task Handle(DeleteIncidentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Deleting incident {IncidentId}", request.IncidentId);
-        var incident = await incidentRepository.GetByIdAsync(request.ServiceId, request.IncidentId, authenticatedUser.UserId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Incident), request.IncidentId.ToString());
-        await incidentRepository.DeleteAsync(incident, cancellationToken);
+        var service =
+            await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken)
+            ?? throw new ServiceNotFoundException(request.ServiceId);
+        var incident =
+            await repository.Incident.GetByIdAsync(service.Id, request.IncidentId, cancellationToken)
+            ?? throw new IncidentNotFoundException(request.IncidentId);
+        await repository.Incident.DeleteAsync(incident, cancellationToken);
     }
 }

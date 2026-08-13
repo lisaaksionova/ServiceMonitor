@@ -20,7 +20,7 @@ public class UpdateServiceAsUnavailableCommandHandler(
     {
         logger.LogInformation("Updating service as unavailable");
         var service = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken)
-                      ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
+                      ?? throw new ServiceNotFoundException(request.Id);
         if (service.Status == ServiceStatus.Unavailable)
         {
             throw new InvalidOperationException("Service is already unavailable");

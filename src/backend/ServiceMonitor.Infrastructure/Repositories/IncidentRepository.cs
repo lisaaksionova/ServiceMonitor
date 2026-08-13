@@ -9,18 +9,15 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incident>(context), IIncidentRepository
 {
-    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit, string userId,
+    public async Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit,
         CancellationToken cancellationToken)
     {
         var decodedCursor = Cursor.Decode(cursor);
         var lastId = decodedCursor?.LastId;
         var created = decodedCursor?.CreatedAt;
 
-        var query = context.Incidents
-            .Where(i => i.ServiceId == serviceId)
-            .Include(i => i.Service)
-            .AsNoTrackingWithIdentityResolution()
-            .Where(i => i.Service.UserId == userId)
+        var query = GetAll()
+            .Where(i => i.ServiceId.Equals(serviceId))
             .OrderByDescending(i => i.Date)
             .ThenBy(i => i.Id)
             .AsQueryable();
@@ -55,12 +52,12 @@ public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incid
         return openIncidents;
     }
 
-    public async Task<Incident?> GetByIdAsync(Guid serviceId, Guid id, string userId, CancellationToken cancellationToken)
+    public async Task<Incident?> GetByIdAsync(Guid serviceId, Guid id, CancellationToken cancellationToken)
     {
-        var incident = await context.Incidents
-            .Where(i => i.ServiceId == serviceId)
-            .Include(i => i.Service)
-            .FirstOrDefaultAsync(x => x.Id == id && x.Service.UserId == userId, cancellationToken);
+        var incident = await
+            GetByCondition(i => i.ServiceId.Equals(serviceId) && i.Id.Equals(id))
+                .SingleOrDefaultAsync(cancellationToken);
+
         return incident;
     }
 

@@ -10,7 +10,7 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 
-public class UpdateIncidentCommandHandler(IIncidentRepository incidentRepository,
+public class UpdateIncidentCommandHandler(IRepositoryManager repository,
     ILogger<UpdateIncidentCommandHandler> logger,
     IAuthenticatedUser authenticatedUser,
     IMapper mapper) : IRequestHandler<UpdateIncidentCommand, IncidentDto>
@@ -18,17 +18,21 @@ public class UpdateIncidentCommandHandler(IIncidentRepository incidentRepository
     public async Task<IncidentDto> Handle(UpdateIncidentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating incident {@Incident}", request.Description);
-        var openIncidents = await incidentRepository.GetAllOpenAsync(request.ServiceId, cancellationToken);
+        var openIncidents = await repository.Incident.GetAllOpenAsync(request.ServiceId, cancellationToken);
         if (openIncidents.Any() && Enum.TryParse<IncidentStatus>(
                                     request.Status,
                                     ignoreCase: true,
                                     out var status)
                                 && status == IncidentStatus.Open)
             throw new InvalidOperationException("Cannot create new open incident. Resolve previous.");
-        var incident = await incidentRepository.GetByIdAsync(request.ServiceId, request.Id, authenticatedUser.UserId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Incident), request.Id.ToString());
+        var service =
+            await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken)
+            ?? throw new ServiceNotFoundException(request.ServiceId);
+        var incident =
+            await repository.Incident.GetByIdAsync(service.Id, request.Id, cancellationToken)
+            ?? throw new IncidentNotFoundException(request.Id);
         mapper.Map(request, incident);
-        await incidentRepository.SaveAsync(cancellationToken);
+        await repository.Incident.SaveAsync(cancellationToken);
         return mapper.Map<IncidentDto>(incident);
     }
 }

@@ -20,7 +20,7 @@ public class UpdateServiceAsHealthyCommandHandler(
     {
         logger.LogInformation("Updating service as healthy");
         var service = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Service), request.Id.ToString());
+            ?? throw new ServiceNotFoundException(request.Id);
         if (service.Status == ServiceStatus.Healthy)
         {
             throw new InvalidOperationException("Service is already healthy");

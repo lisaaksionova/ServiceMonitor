@@ -19,7 +19,7 @@ public class UpdateServiceCommandHandler(
     {
         logger.LogInformation("Updating {@Service} with id {@ServiceId}", nameof(Service), request.Id);
         var service = await repository.GetByIdAsync(request.Id, authenticatedUser.UserId, cancellationToken) ??
-                      throw new NotFoundException(nameof(Service), request.Id.ToString());
+                      throw new ServiceNotFoundException(request.Id);
         mapper.Map(request, service);
         await repository.Save(cancellationToken);
         return mapper.Map<ServiceDto>(service);

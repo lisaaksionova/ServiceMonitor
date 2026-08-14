@@ -11,9 +11,9 @@ using ServiceMonitor.Application.Incidents.Queries.GetIncidentById;
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
-[Route("api/services/{serviceId:guid}/incidents")]
+[Route("api/services/{serviceId:guid}/[controller]")]
 [Authorize]
-public class IncidentController(IMediator mediator) : ControllerBase
+public class IncidentsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<IncidentDto>>> GetAll([FromRoute] Guid serviceId, CancellationToken cancellationToken,

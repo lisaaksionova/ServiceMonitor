@@ -13,9 +13,9 @@ using ServiceMonitor.Application.Services.Queries.GetServiceById;
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
-[Route("api/services")]
+[Route("api/[controller]")]
 [Authorize]
-public class ServiceController(IMediator mediator) : ControllerBase
+public class ServicesController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ServiceDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)

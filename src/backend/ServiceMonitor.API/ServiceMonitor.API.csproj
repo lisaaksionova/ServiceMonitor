@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -6,21 +6,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <UserSecretsId>d6d6815f-7223-47e9-aaa4-61034e6b1a7a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1"/>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceMonitor.Application\ServiceMonitor.Application.csproj"/>
-    <ProjectReference Include="..\ServiceMonitor.Infrastructure\ServiceMonitor.Infrastructure.csproj"/>
+    <ProjectReference Include="..\ServiceMonitor.Application\ServiceMonitor.Application.csproj" />
+    <ProjectReference Include="..\ServiceMonitor.Infrastructure\ServiceMonitor.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

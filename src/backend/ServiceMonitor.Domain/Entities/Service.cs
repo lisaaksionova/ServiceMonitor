@@ -24,9 +24,10 @@ public class Service
     [MaxLength(200, ErrorMessage = "Failure reason cannot exceed 200 characters.")]
     public string LastFailureReason { get; set; } = string.Empty;
 
-    public List<Incident> Incidents { get; set; } = new();
+    public List<Incident> Incidents { get; set; } = null!;
 
     [ForeignKey(nameof(User))]
     public string UserId { get; set; } = string.Empty;
-    public User User { get; set; } = new();
+
+    public User User { get; set; } = null!;
 }

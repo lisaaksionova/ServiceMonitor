@@ -9,6 +9,6 @@ public class DeleteIncidentCommandValidator : AbstractValidator<DeleteServiceCom
     {
         RuleFor(i => i.Id)
             .NotNull()
-            .WithMessage("Id cannot be null");
+            .WithMessage("IncidentId cannot be null");
     }
 }

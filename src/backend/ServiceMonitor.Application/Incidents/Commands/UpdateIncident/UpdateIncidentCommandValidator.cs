@@ -7,8 +7,8 @@ public class UpdateIncidentCommandValidator : AbstractValidator<UpdateIncidentCo
 {
     public UpdateIncidentCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.IncidentId)
+            .NotEmpty().WithMessage("IncidentId is required");
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required")
             .When(x => x.Description != null)

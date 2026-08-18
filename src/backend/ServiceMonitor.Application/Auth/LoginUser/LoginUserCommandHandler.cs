@@ -24,11 +24,13 @@ public class LoginUserCommandHandler(
 
         if (user == null)
         {
+            logger.LogError("User {@UserEmail} not found", request.Email);
             throw new AuthenticationException("Invalid email");
         }
 
         if (!await userManager.CheckPasswordAsync(user, request.Password))
         {
+            logger.LogError("Invalid password for user {@UserEmail}", request.Email);
             throw new AuthenticationException("Invalid password");
         }
 

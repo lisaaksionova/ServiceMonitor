@@ -20,10 +20,9 @@ public class HealthCheckBackgroundService(
         {
             using var scope = scopeFactory.CreateScope();
 
-            var serviceRepository = scope.ServiceProvider.GetRequiredService<IServiceRepository>();
-            var incidentRepository = scope.ServiceProvider.GetRequiredService<IIncidentRepository>();
+            var repository = scope.ServiceProvider.GetRequiredService<IRepositoryManager>();
 
-            var services = await serviceRepository.GetServicesForCheck(cancellationToken);
+            var services = await repository.Service.GetServicesForCheck(cancellationToken);
             var httpClient = httpClientFactory.CreateClient();
 
             foreach (var service in services)
@@ -61,7 +60,7 @@ public class HealthCheckBackgroundService(
 
                     if (newStatus != ServiceStatus.Healthy)
                     {
-                        await incidentRepository.CreateAsync(
+                        await repository.Incident.CreateAsync(
                             new Incident
                             {
                                 ServiceId = service.Id,
@@ -72,20 +71,20 @@ public class HealthCheckBackgroundService(
                     }
                     else
                     {
-                        var openIncident = await incidentRepository.GetAllOpenAsync(service.Id, cancellationToken);
+                        var openIncident = await repository.Incident.GetAllOpenAsync(service.Id, cancellationToken);
                         foreach (var incident in openIncident)
                         {
                             incident.Status = IncidentStatus.Resolved;
                         }
 
-                        await incidentRepository.SaveAsync(cancellationToken);
+                        await repository.Incident.SaveAsync(cancellationToken);
                     }
                 }
 
                 service.NextCheckAt = DateTime.UtcNow.AddMinutes(service.CheckIntervalMinutes);
             }
 
-            await serviceRepository.Save(cancellationToken);
+            await repository.Service.Save(cancellationToken);
             await Task.Delay(5000, cancellationToken);
         }
     }

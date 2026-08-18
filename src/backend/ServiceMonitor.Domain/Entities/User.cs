@@ -4,5 +4,5 @@ namespace ServiceMonitor.Domain.Entities;
 
 public class User : IdentityUser
 {
-    public List<Service> Services { get; set; } = new();
+    public List<Service> Services { get; set; } = null!;
 }

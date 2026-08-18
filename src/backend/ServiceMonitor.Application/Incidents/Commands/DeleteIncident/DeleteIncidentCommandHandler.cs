@@ -14,12 +14,19 @@ public class DeleteIncidentCommandHandler(IRepositoryManager repository,
     public async Task Handle(DeleteIncidentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Deleting incident {IncidentId}", request.IncidentId);
-        var service =
-            await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken)
-            ?? throw new ServiceNotFoundException(request.ServiceId);
-        var incident =
-            await repository.Incident.GetByIdAsync(service.Id, request.IncidentId, cancellationToken)
-            ?? throw new IncidentNotFoundException(request.IncidentId);
+
+        var service = await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken);
+        if (service == null)
+        {
+            logger.LogError("Service {ServiceId} for incident {IncidentId} is not found.", request.ServiceId, request.IncidentId);
+            throw new ServiceNotFoundException(request.ServiceId);
+        }
+        var incident = await repository.Incident.GetByIdAsync(service.Id, request.IncidentId, cancellationToken);
+        if (incident == null)
+        {
+            logger.LogError("Incident {IncidentId} is not found.", request.IncidentId);
+            throw new IncidentNotFoundException(request.IncidentId);
+        }
         await repository.Incident.DeleteAsync(incident, cancellationToken);
     }
 }

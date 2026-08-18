@@ -16,6 +16,7 @@ public class RegisterUserCommandHandler(
         var userExists = await userManager.FindByEmailAsync(request.Email);
         if (userExists != null)
         {
+            logger.LogWarning("User {@UserEmail} is already registered", request.Email);
             throw new InvalidOperationException("User already exists"); //handle in extension
         }
 
@@ -24,6 +25,7 @@ public class RegisterUserCommandHandler(
         var createResult = await userManager.CreateAsync(user, request.Password);
         if (!createResult.Succeeded)
         {
+            logger.LogError("User {@UserEmail} creation failed", request.Email);
             throw new InvalidOperationException($"Failed to create user: {createResult.Errors.First().Description}");
         }
 

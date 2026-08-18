@@ -17,5 +17,6 @@ public class Incident
 
     [ForeignKey(nameof(Service))]
     public Guid ServiceId { get; set; }
-    public Service Service { get; set; } = new();
+
+    public Service Service { get; set; } = null!;
 }

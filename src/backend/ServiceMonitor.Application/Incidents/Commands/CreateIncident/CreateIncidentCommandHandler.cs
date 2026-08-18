@@ -8,18 +8,23 @@ using ServiceMonitor.Domain.Interfaces;
 namespace ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 
 public class CreateIncidentCommandHandler(
-    IIncidentRepository incidentRepository,
+    IRepositoryManager repository,
     IMapper mapper,
     ILogger<CreateIncidentCommandHandler> logger) : IRequestHandler<CreateIncidentCommand, IncidentDto>
 {
     public async Task<IncidentDto> Handle(CreateIncidentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating incident {@Incident}", request.Description);
-        var openIncidents = await incidentRepository.GetAllOpenAsync(request.ServiceId, cancellationToken);
+
+        var openIncidents = await repository.Incident.GetAllOpenAsync(request.ServiceId, cancellationToken);
         if (openIncidents.Any())
+        {
+            logger.LogInformation("Incident {@Incident} already exists", request.Description);
             throw new InvalidOperationException("Cannot create new open incident. Resolve previous.");
+        }
+
         var incident = mapper.Map<Incident>(request);
-        await incidentRepository.CreateAsync(incident, cancellationToken);
+        await repository.Incident.CreateAsync(incident, cancellationToken);
         return mapper.Map<IncidentDto>(incident);
     }
 }

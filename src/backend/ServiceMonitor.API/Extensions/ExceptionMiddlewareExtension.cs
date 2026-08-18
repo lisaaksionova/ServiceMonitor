@@ -1,4 +1,3 @@
-﻿using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using ServiceMonitor.Domain.ErrorModel;
 using ServiceMonitor.Domain.Exceptions;

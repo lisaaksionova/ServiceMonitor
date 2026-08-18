@@ -95,8 +95,8 @@ public class MonitorSeeder(
             Status = ServiceStatus.Unknown,
             CheckIntervalMinutes = 5,
             NextCheckAt = DateTime.UtcNow.AddMinutes(5),
-            LastCheckAt =  DateTime.UtcNow,
-            LastSuccessfulCheckAt =  DateTime.UtcNow,
+            LastCheckAt = DateTime.UtcNow,
+            LastSuccessfulCheckAt = DateTime.UtcNow,
             UserId = admin.Id
         };
 
@@ -107,8 +107,8 @@ public class MonitorSeeder(
             Status = ServiceStatus.Unknown,
             CheckIntervalMinutes = 10,
             NextCheckAt = DateTime.UtcNow.AddMinutes(10),
-            LastCheckAt =  DateTime.UtcNow,
-            LastSuccessfulCheckAt =  DateTime.UtcNow,
+            LastCheckAt = DateTime.UtcNow,
+            LastSuccessfulCheckAt = DateTime.UtcNow,
             UserId = admin.Id
         };
 

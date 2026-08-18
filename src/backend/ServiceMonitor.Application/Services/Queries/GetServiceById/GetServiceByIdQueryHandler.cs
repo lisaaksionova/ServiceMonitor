@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using ServiceMonitor.Application.Interfaces;
 using ServiceMonitor.Application.Services.Dtos;
-using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Domain.Exceptions;
 using ServiceMonitor.Domain.Interfaces;
 

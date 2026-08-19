@@ -40,10 +40,21 @@ public static class ServiceCollectionExtension
 
         services.AddRateLimiter(opts =>
         {
+            opts.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
             opts.AddFixedWindowLimiter(policyName: "FixedWindowRateLimiter", windowOpts =>
             {
                 windowOpts.PermitLimit = 50;
                 windowOpts.Window = TimeSpan.FromSeconds(10);
+                windowOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                windowOpts.QueueLimit = 2;
+            });
+
+            opts.AddSlidingWindowLimiter(policyName: "SlidingWindowRateLimiter", windowOpts =>
+            {
+                windowOpts.PermitLimit = 50;
+                windowOpts.Window = TimeSpan.FromSeconds(10);
+                windowOpts.SegmentsPerWindow = 4;
                 windowOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 windowOpts.QueueLimit = 2;
             });

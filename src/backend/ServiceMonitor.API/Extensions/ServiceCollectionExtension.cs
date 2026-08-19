@@ -1,7 +1,9 @@
 using System.Text;
+using System.Text.Json;
 using System.Threading.RateLimiting;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +66,26 @@ public static class ServiceCollectionExtension
                 limiterOpts.PermitLimit = 50;
                 limiterOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 limiterOpts.QueueLimit = 2;
+            });
+        });
+
+        services.AddRequestTimeouts(opts =>
+        {
+            opts.AddPolicy(policyName: "FiveSecondRequestTimeout", new RequestTimeoutPolicy
+            {
+                Timeout = TimeSpan.FromSeconds(5),
+                TimeoutStatusCode = 503,
+                WriteTimeoutResponse = async (HttpContext context) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    var timeoutErrorResponse = new
+                    {
+                        ErrorMessage = "Request timeout error occured",
+                        StatusCode = StatusCodes.Status503ServiceUnavailable
+                    };
+                    var jsonResponse = JsonSerializer.Serialize(timeoutErrorResponse);
+                    await context.Response.WriteAsync(jsonResponse);
+                }
             });
         });
     }

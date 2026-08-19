@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ServiceMonitor.Application.Services.Commands.CreateService;
 using ServiceMonitor.Application.Services.Commands.DeleteService;
 using ServiceMonitor.Application.Services.Commands.UpdateService;
@@ -14,6 +15,7 @@ namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("FixedWindowRateLimiter")]
 [Authorize]
 public class ServicesController(IMediator mediator) : ControllerBase
 {

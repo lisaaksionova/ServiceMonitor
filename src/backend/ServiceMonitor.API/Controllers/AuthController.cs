@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ServiceMonitor.Application.Auth.LoginUser;
 using ServiceMonitor.Application.Auth.RegisterUser;
 
@@ -7,6 +8,7 @@ namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("ConcurrencyLimiter")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [HttpPost("login")]

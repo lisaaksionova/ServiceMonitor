@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 using ServiceMonitor.Application.Incidents.Commands.DeleteIncident;
 using ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
@@ -12,6 +13,7 @@ namespace ServiceMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/services/{serviceId:guid}/[controller]")]
+[EnableRateLimiting("SlidingWindowRateLimiter")]
 [Authorize]
 public class IncidentsController(IMediator mediator) : ControllerBase
 {

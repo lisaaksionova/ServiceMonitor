@@ -74,13 +74,13 @@ public static class ServiceCollectionExtension
             opts.AddPolicy(policyName: "FiveSecondRequestTimeout", new RequestTimeoutPolicy
             {
                 Timeout = TimeSpan.FromSeconds(5),
-                TimeoutStatusCode = 503,
+                TimeoutStatusCode = StatusCodes.Status503ServiceUnavailable,
                 WriteTimeoutResponse = async (HttpContext context) =>
                 {
                     context.Response.ContentType = "application/json";
                     var timeoutErrorResponse = new
                     {
-                        ErrorMessage = "Request timeout error occured",
+                        ErrorMessage = "Request timeout error occurred",
                         StatusCode = StatusCodes.Status503ServiceUnavailable
                     };
                     var jsonResponse = JsonSerializer.Serialize(timeoutErrorResponse);

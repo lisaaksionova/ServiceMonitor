@@ -41,8 +41,9 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRateLimiter();
 app.UseRequestTimeouts();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 

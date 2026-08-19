@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/backend/">
+    <Project Path="src/backend/ServiceMonitor.API/ServiceMonitor.API.csproj" />
+    <Project Path="src/backend/ServiceMonitor.Application/ServiceMonitor.Application.csproj" />
+    <Project Path="src/backend/ServiceMonitor.Domain/ServiceMonitor.Domain.csproj" />
+    <Project Path="src/backend/ServiceMonitor.Infrastructure/ServiceMonitor.Infrastructure.csproj" />
+  </Folder>
+</Solution>

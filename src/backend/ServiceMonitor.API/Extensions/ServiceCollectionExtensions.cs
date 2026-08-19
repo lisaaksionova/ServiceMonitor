@@ -15,7 +15,7 @@ using ServiceMonitor.Infrastructure.Seeders;
 
 namespace ServiceMonitor.API.Extensions;
 
-public static class ServiceCollectionExtension
+public static class ServiceCollectionExtensions
 {
     public static void AddPresentation(this IServiceCollection services)
     {

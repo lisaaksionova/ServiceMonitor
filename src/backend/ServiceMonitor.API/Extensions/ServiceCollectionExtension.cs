@@ -1,7 +1,9 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using ServiceMonitor.API.Middlewares;
@@ -24,17 +26,28 @@ public static class ServiceCollectionExtension
             .AddDefaultTokenProviders();
 
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
+        services.AddSwaggerGen(opts =>
         {
-            c.AddSecurityDefinition("Bearer",
+            opts.AddSecurityDefinition("Bearer",
                 new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "Bearer" });
 
-            c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            opts.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
                 [new OpenApiSecuritySchemeReference("Bearer", document)] = []
             });
         });
         services.AddHttpContextAccessor();
+
+        services.AddRateLimiter(opts =>
+        {
+            opts.AddFixedWindowLimiter(policyName: "FixedWindowRateLimiter", windowOpts =>
+            {
+                windowOpts.PermitLimit = 50;
+                windowOpts.Window = TimeSpan.FromSeconds(10);
+                windowOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                windowOpts.QueueLimit = 2;
+            });
+        });
     }
 
     public static void ConfigureCors(this IServiceCollection services)

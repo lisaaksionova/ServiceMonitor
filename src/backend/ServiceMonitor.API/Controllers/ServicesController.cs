@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using ServiceMonitor.Application.Services.Commands.CreateService;
@@ -16,6 +17,7 @@ namespace ServiceMonitor.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [EnableRateLimiting("FixedWindowRateLimiter")]
+[RequestTimeout("FiveSecondRequestTimeout")]
 [Authorize]
 public class ServicesController(IMediator mediator) : ControllerBase
 {

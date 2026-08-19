@@ -58,6 +58,13 @@ public static class ServiceCollectionExtension
                 windowOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 windowOpts.QueueLimit = 2;
             });
+
+            opts.AddConcurrencyLimiter(policyName: "ConcurrencyLimiter", limiterOpts =>
+            {
+                limiterOpts.PermitLimit = 50;
+                limiterOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                limiterOpts.QueueLimit = 2;
+            });
         });
     }
 

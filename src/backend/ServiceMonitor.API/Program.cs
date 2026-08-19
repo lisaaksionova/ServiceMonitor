@@ -28,7 +28,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<MaintenanceMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+app.UseCorrelationId();
 
 //app.ConfigureExceptionHandler(app.Configuration, new Logger<>()); //use correct logger
 
@@ -42,7 +45,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseRequestTimeouts();
-
 app.UseRateLimiter();
 
 app.MapControllers();

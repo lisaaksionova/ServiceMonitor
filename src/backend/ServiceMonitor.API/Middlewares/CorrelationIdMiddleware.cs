@@ -7,16 +7,22 @@ public class CorrelationIdMiddleware(RequestDelegate next,
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var correlationId = context.Request.Headers[CorrelationIdHeaderName].FirstOrDefault();
-        if (string.IsNullOrEmpty(correlationId))
+        var correlationId = context.Request.Headers[CorrelationIdHeaderName].FirstOrDefault()?.Trim();
+        var generated = false;
+
+        if (string.IsNullOrWhiteSpace(correlationId))
         {
             correlationId = Guid.NewGuid().ToString();
+            generated = true;
         }
 
-        context.Request.Headers.TryAdd(CorrelationIdHeaderName, correlationId);
-        logger.LogInformation("Request path: {RequestPath}. CorrelationId: {CorrelationId}", context.Request.Path, correlationId);
-        context.Response.Headers.TryAdd(CorrelationIdHeaderName, correlationId);
+        context.Request.Headers[CorrelationIdHeaderName] = correlationId;
+        context.Response.Headers[CorrelationIdHeaderName] = correlationId;
 
+        if (generated)
+        {
+            logger.LogDebug("Generated CorrelationId {CorrelationId} for request path {RequestPath}", correlationId, context.Request.Path);
+        }
         await next(context);
     }
 }

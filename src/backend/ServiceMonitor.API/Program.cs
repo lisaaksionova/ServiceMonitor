@@ -31,6 +31,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<MaintenanceMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
+app.UseCorrelationId();
+
 //app.ConfigureExceptionHandler(app.Configuration, new Logger<>()); //use correct logger
 
 app.UseSerilogRequestLogging();
@@ -44,8 +46,6 @@ app.UseAuthorization();
 
 app.UseRequestTimeouts();
 app.UseRateLimiter();
-
-app.UseCorrelationId();
 
 app.MapControllers();
 

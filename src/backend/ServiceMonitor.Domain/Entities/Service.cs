@@ -22,7 +22,7 @@ public class Service
     public DateTime LastCheckAt { get; set; }
     public DateTime LastSuccessfulCheckAt { get; set; }
     [MaxLength(200, ErrorMessage = "Failure reason cannot exceed 200 characters.")]
-    public string LastFailureReason { get; set; } = string.Empty;
+    public string? LastFailureReason { get; set; } = string.Empty;
 
     public List<Incident> Incidents { get; set; } = null!;
 

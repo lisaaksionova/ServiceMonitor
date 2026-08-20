@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
 using ServiceMonitor.Infrastructure.Extensions;
+using ServiceMonitor.Infrastructure.Persistence;
 using ServiceMonitor.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +53,9 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
+    var db = scope.ServiceProvider.GetRequiredService<MonitorDbContext>();
+    db.Database.Migrate();
+
     var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
     await seeder.SeedAsync();
 }

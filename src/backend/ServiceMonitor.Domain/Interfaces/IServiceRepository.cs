@@ -11,7 +11,8 @@ public interface IServiceRepository
         CancellationToken cancellationToken);
 
     Task CreateAsync(Service service, CancellationToken cancellationToken);
-    Task Delete(Service service, CancellationToken cancellationToken);
-    Task Save(CancellationToken cancellationToken);
+    Task DeleteAsync(Service service, CancellationToken cancellationToken);
+    Task UpdateAsync(Service service, CancellationToken cancellationToken);
+    Task SaveAsync(CancellationToken cancellationToken);
     Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken);
 }

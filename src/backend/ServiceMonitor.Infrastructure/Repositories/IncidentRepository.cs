@@ -46,8 +46,7 @@ public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incid
 
     public async Task<List<Incident>> GetAllOpenAsync(Guid serviceId, CancellationToken cancellationToken)
     {
-        var openIncidents = await context.Incidents
-            .Where(i => i.ServiceId == serviceId && i.Status == IncidentStatus.Open)
+        var openIncidents = await GetByCondition(i => i.ServiceId == serviceId && i.Status == IncidentStatus.Open)
             .ToListAsync(cancellationToken);
         return openIncidents;
     }
@@ -63,14 +62,20 @@ public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incid
 
     public async Task CreateAsync(Incident incident, CancellationToken cancellationToken)
     {
-        await context.Incidents.AddAsync(incident, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        Create(incident);
+        await SaveAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(Incident incident, CancellationToken cancellationToken)
     {
-        context.Incidents.Remove(incident);
-        await context.SaveChangesAsync(cancellationToken);
+        Delete(incident);
+        await SaveAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(Incident incident, CancellationToken cancellationToken)
+    {
+        Update(incident);
+        await SaveAsync(cancellationToken);
     }
 
     public async Task SaveAsync(CancellationToken cancellationToken) =>

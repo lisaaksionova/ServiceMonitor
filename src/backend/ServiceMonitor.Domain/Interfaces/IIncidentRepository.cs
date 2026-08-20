@@ -10,5 +10,6 @@ public interface IIncidentRepository
     Task<Incident?> GetByIdAsync(Guid serviceId, Guid id, CancellationToken cancellationToken);
     Task CreateAsync(Incident incident, CancellationToken cancellationToken);
     Task DeleteAsync(Incident incident, CancellationToken cancellationToken);
+    Task UpdateAsync(Incident incident, CancellationToken cancellationToken);
     Task SaveAsync(CancellationToken cancellationToken);
 }

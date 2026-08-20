@@ -41,7 +41,7 @@ public class UpdateIncidentCommandHandler(IRepositoryManager repository,
             throw new IncidentNotFoundException(request.IncidentId);
         }
         mapper.Map(request, incident);
-        await repository.Incident.SaveAsync(cancellationToken);
+        await repository.Incident.UpdateAsync(incident, cancellationToken);
         return mapper.Map<IncidentDto>(incident);
     }
 }

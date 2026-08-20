@@ -21,6 +21,6 @@ public class DeleteServiceCommandHandler(
             logger.LogError("Service {ServiceId} is not found.", request.Id);
             throw new ServiceNotFoundException(request.Id);
         }
-        await repository.Service.Delete(service, cancellationToken);
+        await repository.Service.DeleteAsync(service, cancellationToken);
     }
 }

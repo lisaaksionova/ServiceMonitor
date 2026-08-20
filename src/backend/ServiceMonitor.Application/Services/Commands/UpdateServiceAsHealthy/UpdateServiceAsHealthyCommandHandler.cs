@@ -33,7 +33,7 @@ public class UpdateServiceAsHealthyCommandHandler(
         }
         service.Status = ServiceStatus.Healthy;
 
-        await repository.Service.Save(cancellationToken);
+        await repository.Service.UpdateAsync(service, cancellationToken);
         return mapper.Map<ServiceDto>(service);
     }
 }

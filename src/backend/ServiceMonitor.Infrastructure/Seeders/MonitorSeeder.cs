@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceMonitor.Domain.Constants;
@@ -10,7 +11,7 @@ namespace ServiceMonitor.Infrastructure.Seeders;
 public class MonitorSeeder(
     MonitorDbContext dbContext,
     UserManager<User> userManager,
-    RoleManager<IdentityRole> roleManager) : IMonitorSeeder
+    RoleManager<IdentityRole> roleManager) : ISeeder
 {
     public async Task SeedAsync()
     {
@@ -56,22 +57,54 @@ public class MonitorSeeder(
             return;
         }
 
+        var faker = new Faker<User>()
+            .RuleFor(u => u.UserName, f => f.Internet.UserName())
+            .RuleFor(u => u.Email, f => f.Internet.Email())
+            .RuleFor(u => u.EmailConfirmed, true);
+
+        var users = faker.Generate(10);
+
+        foreach (var user in users)
+        {
+            var result = await userManager.CreateAsync(user, "Password123!");
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(
+                    string.Join(", ", result.Errors.Select(e => e.Description)));
+            }
+
+            var roleResult = await userManager.AddToRoleAsync(user, UserRoles.User);
+
+            if (!roleResult.Succeeded)
+            {
+                throw new InvalidOperationException(
+                    string.Join(", ", roleResult.Errors.Select(e => e.Description)));
+            }
+        }
+
         var admin = new User
         {
-            UserName = "admin@servicemonitor.com",
+            UserName = "admin",
             Email = "admin@servicemonitor.com",
             EmailConfirmed = true
         };
 
-        var result = await userManager.CreateAsync(admin, "Admin123!");
+        var adminResult = await userManager.CreateAsync(admin, "Password123!");
 
-        if (!result.Succeeded)
+        if (!adminResult.Succeeded)
         {
             throw new InvalidOperationException(
-                string.Join(", ", result.Errors.Select(error => error.Description)));
+                string.Join(", ", adminResult.Errors.Select(e => e.Description)));
         }
 
-        await userManager.AddToRoleAsync(admin, UserRoles.Admin);
+        var adminRoleResult = await userManager.AddToRoleAsync(admin, UserRoles.Admin);
+
+        if (!adminRoleResult.Succeeded)
+        {
+            throw new InvalidOperationException(
+                string.Join(", ", adminRoleResult.Errors.Select(e => e.Description)));
+        }
     }
 
     private async Task SeedServicesAsync()
@@ -81,42 +114,49 @@ public class MonitorSeeder(
             return;
         }
 
-        var admin = await userManager.FindByEmailAsync("admin@servicemonitor.com");
+        var userIds = await userManager.Users
+            .Select(u => u.Id)
+            .ToListAsync();
 
-        if (admin is null)
-        {
-            throw new InvalidOperationException("Admin user was not found.");
-        }
+        var now = DateTime.UtcNow;
 
-        var facebook = new Service
+        var serviceData = new[]
         {
-            Name = "Facebook",
-            Endpoint = "https://www.facebook.com/",
-            Status = ServiceStatus.Unknown,
-            CheckIntervalMinutes = 5,
-            NextCheckAt = DateTime.UtcNow.AddMinutes(5),
-            LastCheckAt = DateTime.UtcNow,
-            LastSuccessfulCheckAt = DateTime.UtcNow,
-            UserId = admin.Id
+            ("Facebook", "https://www.facebook.com/"),
+            ("GitHub", "https://github.com/"),
+            ("Google", "https://www.google.com/"),
+            ("Microsoft", "https://www.microsoft.com/"),
+            ("Stack Overflow", "https://stackoverflow.com/")
         };
 
-        var github = new Service
-        {
-            Name = "GitHub",
-            Endpoint = "https://github.com/",
-            Status = ServiceStatus.Unknown,
-            CheckIntervalMinutes = 10,
-            NextCheckAt = DateTime.UtcNow.AddMinutes(10),
-            LastCheckAt = DateTime.UtcNow,
-            LastSuccessfulCheckAt = DateTime.UtcNow,
-            UserId = admin.Id
-        };
+        var faker = new Faker<Service>()
+            .RuleFor(s => s.Status, f => f.PickRandom<ServiceStatus>())
+            .RuleFor(s => s.CheckIntervalMinutes, f => f.PickRandom(5, 10, 15, 30))
+            .RuleFor(s => s.LastCheckAt, now)
+            .RuleFor(
+                s => s.NextCheckAt,
+                (_, service) => now.AddMinutes(service.CheckIntervalMinutes))
+            .RuleFor(s => s.LastSuccessfulCheckAt, now)
+            .RuleFor(s => s.LastFailureReason, f => null)
+            .RuleFor(s => s.UserId, f => f.PickRandom(userIds));
 
-        dbContext.Services.AddRange(facebook, github);
+        var services = serviceData
+            .Select(data =>
+            {
+                var service = faker.Generate();
+
+                service.Name = data.Item1;
+                service.Endpoint = data.Item2;
+
+                return service;
+            })
+            .ToList();
+
+        dbContext.Services.AddRange(services);
 
         await dbContext.SaveChangesAsync();
 
-        var incidents = GetIncidents(facebook, github);
+        var incidents = GetIncidents(services.ToArray());
 
         dbContext.Incidents.AddRange(incidents);
 
@@ -124,28 +164,29 @@ public class MonitorSeeder(
     }
 
     private static IEnumerable<Incident> GetIncidents(
-        Service facebook,
-        Service github)
+        IEnumerable<Service> services)
     {
-        return
-        [
-            new Incident
-            {
-                ServiceId = facebook.Id,
-                Date = DateTime.UtcNow.AddDays(-2),
-                Description = "Facebook was temporarily unavailable.",
-                Status = IncidentStatus.Resolved,
-                ResolvedAt = DateTime.UtcNow.AddDays(-1),
-            },
+        var servicesList = services.ToList();
+        var now = DateTime.UtcNow;
 
-            new Incident
-            {
-                ServiceId = github.Id,
-                Date = DateTime.UtcNow.AddHours(-5),
-                Description = "GitHub response time was higher than usual.",
-                Status = IncidentStatus.Resolved,
-                ResolvedAt = DateTime.UtcNow.AddDays(-1)
-            }
-        ];
+        var faker = new Faker<Incident>()
+            .RuleFor(i => i.ServiceId, f => f.PickRandom(servicesList).Id)
+            .RuleFor(i => i.Date, f => f.Date.Recent(30, now))
+            .RuleFor(
+                i => i.Description,
+                f => f.PickRandom(
+                    "Service was temporarily unavailable.",
+                    "Service response time was higher than usual.",
+                    "Health check failed.",
+                    "Connection timed out.",
+                    "Unexpected server error occurred."))
+            .RuleFor(i => i.Status, f => f.PickRandom<IncidentStatus>())
+            .RuleFor(
+                i => i.ResolvedAt,
+                (f, incident) => incident.Status == IncidentStatus.Resolved
+                    ? incident.Date.AddHours(f.Random.Int(1, 24))
+                    : null);
+
+        return faker.Generate(20);
     }
 }

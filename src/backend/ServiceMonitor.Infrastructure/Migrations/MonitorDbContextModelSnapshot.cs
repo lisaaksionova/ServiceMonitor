@@ -165,9 +165,10 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                    b.Property<DateTime>("ResolvedAt")
+                    b.Property<DateTime?>("ResolvedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ServiceId")
@@ -194,8 +195,8 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
                     b.Property<string>("Endpoint")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("LastCheckAt")
                         .HasColumnType("timestamp with time zone");
@@ -210,8 +211,8 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("NextCheckAt")
                         .HasColumnType("timestamp with time zone");

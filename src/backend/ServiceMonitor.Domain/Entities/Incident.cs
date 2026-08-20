@@ -13,7 +13,7 @@ public class Incident
     [MaxLength(200, ErrorMessage = "Description cannot exceed 200 characters.")]
     public string Description { get; set; } = string.Empty;
     public IncidentStatus Status { get; set; }
-    public DateTime ResolvedAt { get; set; }
+    public DateTime? ResolvedAt { get; set; }
 
     [ForeignKey(nameof(Service))]
     public Guid ServiceId { get; set; }

@@ -1,6 +1,6 @@
 namespace ServiceMonitor.Infrastructure.Seeders;
 
-public interface IMonitorSeeder
+public interface ISeeder
 {
     Task SeedAsync();
 }

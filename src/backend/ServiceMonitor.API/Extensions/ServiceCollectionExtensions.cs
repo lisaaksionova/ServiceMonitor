@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
     public static void AddPresentation(this IServiceCollection services)
     {
         services.AddSingleton<ErrorHandlingMiddleware>();
-        services.AddScoped<IMonitorSeeder, MonitorSeeder>();
+        services.AddScoped<ISeeder, MonitorSeeder>();
         services.AddFluentValidationAutoValidation();
 
         services.AddIdentity<User, IdentityRole>()

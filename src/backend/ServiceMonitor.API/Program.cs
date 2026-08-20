@@ -51,7 +51,7 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var seeder = scope.ServiceProvider.GetRequiredService<IMonitorSeeder>();
+    var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
     await seeder.SeedAsync();
 }
 

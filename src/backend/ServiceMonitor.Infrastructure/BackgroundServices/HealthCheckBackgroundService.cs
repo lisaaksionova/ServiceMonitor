@@ -84,7 +84,7 @@ public class HealthCheckBackgroundService(
                 service.NextCheckAt = DateTime.UtcNow.AddMinutes(service.CheckIntervalMinutes);
             }
 
-            await repository.Service.Save(cancellationToken);
+            await repository.Service.SaveAsync(cancellationToken);
             await Task.Delay(5000, cancellationToken);
         }
     }

@@ -30,19 +30,9 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
         return new PagedList<Service>(items, count, page, pageSize);
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync(string userId,
-        CancellationToken cancellationToken)
-    {
-        var services = await context.Services.Where(s => s.UserId == userId).Include(s => s.Incidents)
-            .ToListAsync(cancellationToken);
-
-        return services;
-    }
-
     public async Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken)
     {
-        var services = await context.Services
-            .Where(s => s.NextCheckAt <= DateTime.UtcNow)
+        var services = await GetByCondition(s => s.NextCheckAt <= DateTime.UtcNow)
             .Take(50)
             .ToListAsync(cancellationToken);
         return services;
@@ -50,15 +40,21 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
 
     public async Task CreateAsync(Service service, CancellationToken cancellationToken)
     {
-        await context.Services.AddAsync(service, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        Create(service);
+        await SaveAsync(cancellationToken);
     }
 
-    public async Task Delete(Service service, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Service service, CancellationToken cancellationToken)
     {
-        context.Services.Remove(service);
-        await context.SaveChangesAsync(cancellationToken);
+        Delete(service);
+        await SaveAsync(cancellationToken);
     }
 
-    public async Task Save(CancellationToken cancellationToken) => await context.SaveChangesAsync(cancellationToken);
+    public async Task UpdateAsync(Service service, CancellationToken cancellationToken)
+    {
+        Update(service);
+        await SaveAsync(cancellationToken);
+    }
+
+    public async Task SaveAsync(CancellationToken cancellationToken) => await context.SaveChangesAsync(cancellationToken);
 }

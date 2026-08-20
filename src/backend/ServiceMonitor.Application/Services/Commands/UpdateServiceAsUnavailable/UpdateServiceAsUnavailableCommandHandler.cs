@@ -33,7 +33,7 @@ public class UpdateServiceAsUnavailableCommandHandler(
         }
 
         service.Status = ServiceStatus.Unavailable;
-        await repository.Service.Save(cancellationToken);
+        await repository.Service.UpdateAsync(service, cancellationToken);
         return mapper.Map<ServiceDto>(service);
     }
 }

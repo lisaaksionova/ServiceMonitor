@@ -27,7 +27,7 @@ public class UpdateServiceCommandHandler(
         }
         mapper.Map(request, service);
 
-        await repository.Service.Save(cancellationToken);
+        await repository.Service.UpdateAsync(service, cancellationToken);
         return mapper.Map<ServiceDto>(service);
     }
 }

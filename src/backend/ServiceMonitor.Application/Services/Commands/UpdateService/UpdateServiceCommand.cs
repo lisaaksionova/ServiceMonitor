@@ -8,6 +8,5 @@ public class UpdateServiceCommand : IRequest<ServiceDto>
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Endpoint { get; set; }
-    public string? Status { get; set; }
     public int? CheckIntervalMinutes { get; set; }
 }

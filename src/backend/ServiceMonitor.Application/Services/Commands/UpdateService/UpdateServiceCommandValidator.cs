@@ -18,13 +18,6 @@ public class UpdateServiceCommandValidator : AbstractValidator<UpdateServiceComm
             .When(x => x.Endpoint != null)
             .WithMessage("Only correct http/https endpoint are supported");
 
-        RuleFor(service => service.Status)
-            .NotEmpty()
-            .When(x => x.Status != null)
-            .Must(status => status == null ||
-                            Enum.TryParse<ServiceStatus>(status, true, out _))
-            .WithMessage("Status should only be in [Healthy, Degraded, Down]");
-
         RuleFor(service => service.CheckIntervalMinutes)
             .GreaterThan(0)
             .When(x => x.CheckIntervalMinutes != null)

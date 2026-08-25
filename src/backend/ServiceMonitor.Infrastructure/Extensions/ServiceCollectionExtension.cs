@@ -12,7 +12,7 @@ public static class ServiceCollectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("MonitorDatabase");
-        services.AddDbContext<MonitorDbContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContextPool<MonitorDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddScoped<IRepositoryManager, RepositoryManager>();
 

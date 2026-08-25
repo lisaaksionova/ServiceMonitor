@@ -19,5 +19,8 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
       _context.Set<T>().AsNoTracking();
     public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression) =>
       _context.Set<T>().Where(expression).AsNoTracking();
+
+    public void DeleteByCondition(Expression<Func<T, bool>> expression) =>
+        _context.Set<T>().Where(expression).ExecuteDelete();
     public void Update(T entity) => _context.Set<T>().Update(entity);
 }

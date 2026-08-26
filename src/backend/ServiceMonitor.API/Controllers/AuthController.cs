@@ -23,11 +23,11 @@ public class AuthController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command,
+    public async Task<ActionResult<string>> Register([FromBody] RegisterUserCommand command,
         CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var token = await mediator.Send(command, cancellationToken);
 
-        return Created();
+        return Ok("ACCESS_TOKEN: " + token);
     }
 }

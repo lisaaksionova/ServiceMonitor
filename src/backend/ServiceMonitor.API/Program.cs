@@ -53,10 +53,13 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<MonitorDbContext>();
+    var services = scope.ServiceProvider;
+    var db = services.GetRequiredService<MonitorDbContext>();
+    db.Database.EnsureCreated();
+
     db.Database.Migrate();
 
-    var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
+    var seeder = services.GetRequiredService<ISeeder>();
     await seeder.SeedAsync();
 }
 

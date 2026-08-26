@@ -14,6 +14,7 @@ public static class ServiceCollectionExtension
         services.AddAutoMapper(cfg => { }, applicationAssembly);
         services.AddValidatorsFromAssembly(applicationAssembly);
         services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
+        services.AddScoped<IAuthenticationToken, AuthenticationToken>();
         services.AddHttpContextAccessor();
     }
 }

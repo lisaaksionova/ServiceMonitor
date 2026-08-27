@@ -28,16 +28,7 @@ public static class ServiceCollectionExtensions
             .AddDefaultTokenProviders();
 
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(opts =>
-        {
-            opts.AddSecurityDefinition("Bearer",
-                new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "Bearer" });
-
-            opts.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-            {
-                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
-            });
-        });
+        services.ConfigureSwagger();
         services.AddHttpContextAccessor();
 
         services.AddRateLimiter(opts =>
@@ -86,6 +77,27 @@ public static class ServiceCollectionExtensions
                     var jsonResponse = JsonSerializer.Serialize(timeoutErrorResponse);
                     await context.Response.WriteAsync(jsonResponse);
                 }
+            });
+        });
+    }
+
+    private static void ConfigureSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(opts =>
+        {
+            opts.AddSecurityDefinition("Bearer",
+                new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+
+            opts.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
             });
         });
     }

@@ -1,8 +1,7 @@
 using ServiceMonitor.Domain.Interfaces;
 using ServiceMonitor.Infrastructure.Persistence;
-using ServiceMonitor.Infrastructure.Repositories;
 
-namespace ServiceMonitor.Infrastructure;
+namespace ServiceMonitor.Infrastructure.Repositories;
 
 public sealed class RepositoryManager : IRepositoryManager
 {
@@ -20,8 +19,5 @@ public sealed class RepositoryManager : IRepositoryManager
     public IServiceRepository Service => _serviceRepository.Value;
     public IIncidentRepository Incident => _incidentRepository.Value;
 
-    public async Task SaveAsync(CancellationToken cancellationToken)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
-    }
+    public async Task SaveAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
 }

@@ -16,9 +16,7 @@ public class ServiceProfile : Profile
             .ForMember(s => s.CheckIntervalMinutes,
                 opts => opts.MapFrom((s, d) => s.CheckIntervalMinutes ?? d.CheckIntervalMinutes))
             .ForMember(s => s.Name, opts => opts.MapFrom((s, d) => s.Name ?? d.Name))
-            .ForMember(s => s.Endpoint, opts => opts.MapFrom((s, d) => s.Endpoint ?? d.Endpoint))
-            .ForMember(s => s.Status,
-                opt => opt.MapFrom((s, d) => s.Status != null ? Enum.Parse<ServiceStatus>(s.Status, true) : d.Status));
+            .ForMember(s => s.Endpoint, opts => opts.MapFrom((s, d) => s.Endpoint ?? d.Endpoint));
 
         CreateMap<CreateServiceCommand, Service>()
             .ForMember(s => s.NextCheckAt,

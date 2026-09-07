@@ -15,6 +15,7 @@ namespace ServiceMonitor.Application.Auth.LoginUser;
 
 public class LoginUserCommandHandler(
     UserManager<User> userManager,
+    SignInManager<User> signInManager,
     ILogger<LoginUserCommandHandler> logger,
     IAuthenticationToken authenticationToken) : IRequestHandler<LoginUserCommand, string?>
 {
@@ -29,12 +30,13 @@ public class LoginUserCommandHandler(
             throw new AuthenticationException("Invalid email");
         }
 
-        if (!await userManager.CheckPasswordAsync(user, request.Password))
+        var loginResult = await signInManager.CheckPasswordSignInAsync(user, request.Password, true);
+        if (!loginResult.Succeeded)
         {
             logger.LogError("Invalid password for user {@UserEmail}", request.Email);
             throw new AuthenticationException("Invalid password");
         }
-        
+
         logger.LogDebug("Generating token for user {@UserEmail}", request.Email);
         var token = await authenticationToken.GenerateToken(user);
         return token;

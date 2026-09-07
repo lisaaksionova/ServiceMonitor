@@ -33,6 +33,7 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
     public async Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken)
     {
         var services = await GetByCondition(s => s.NextCheckAt <= DateTime.UtcNow)
+            .OrderBy(s => s.Name)
             .Take(50)
             .ToListAsync(cancellationToken);
         return services;

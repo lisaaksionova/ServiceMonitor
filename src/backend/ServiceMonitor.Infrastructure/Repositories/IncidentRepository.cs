@@ -44,10 +44,10 @@ public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incid
         return new CursorPagedList<Incident>(incidents, nextCursor, hasMore);
     }
 
-    public async Task<List<Incident>> GetAllOpenAsync(Guid serviceId, CancellationToken cancellationToken)
+    public async Task<Incident?> GetOpenAsync(Guid serviceId, CancellationToken cancellationToken)
     {
         var openIncidents = await GetByCondition(i => i.ServiceId == serviceId && i.Status == IncidentStatus.Open)
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
         return openIncidents;
     }
 

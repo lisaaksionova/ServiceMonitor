@@ -16,8 +16,8 @@ public class CreateIncidentCommandHandler(
     {
         logger.LogInformation("Creating incident {@Incident}", request.Description);
 
-        var openIncidents = await repository.Incident.GetAllOpenAsync(request.ServiceId, cancellationToken);
-        if (openIncidents.Any())
+        var openIncidents = await repository.Incident.GetOpenAsync(request.ServiceId, cancellationToken);
+        if (openIncidents != null)
         {
             logger.LogInformation("Incident {@Incident} already exists", request.Description);
             throw new InvalidOperationException("Cannot create new open incident. Resolve previous.");

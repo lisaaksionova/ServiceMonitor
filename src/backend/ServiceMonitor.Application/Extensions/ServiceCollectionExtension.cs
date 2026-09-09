@@ -15,6 +15,7 @@ public static class ServiceCollectionExtension
         services.AddValidatorsFromAssembly(applicationAssembly);
         services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
         services.AddScoped<IAuthenticationToken, AuthenticationToken>();
+        services.AddScoped<IServiceHealthChecker, ServiceHealthChecker>();
         services.AddHttpContextAccessor();
     }
 }

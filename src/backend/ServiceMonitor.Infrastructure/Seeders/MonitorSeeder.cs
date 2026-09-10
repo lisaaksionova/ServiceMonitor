@@ -180,7 +180,7 @@ public class MonitorSeeder(
                     "Health check failed.",
                     "Connection timed out.",
                     "Unexpected server error occurred."))
-            .RuleFor(i => i.Status, f => f.PickRandom<IncidentStatus>())
+            .RuleFor(i => i.Status, f => f.PickRandom(IncidentStatus.Investigation, IncidentStatus.Resolved))
             .RuleFor(
                 i => i.ResolvedAt,
                 (f, incident) => incident.Status == IncidentStatus.Resolved

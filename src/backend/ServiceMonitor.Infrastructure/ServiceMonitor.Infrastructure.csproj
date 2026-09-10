@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceMonitor.Application\ServiceMonitor.Application.csproj" />
     <ProjectReference Include="..\ServiceMonitor.Domain\ServiceMonitor.Domain.csproj"/>
   </ItemGroup>
 

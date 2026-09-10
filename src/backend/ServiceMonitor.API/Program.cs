@@ -55,7 +55,6 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var db = services.GetRequiredService<MonitorDbContext>();
-    db.Database.EnsureCreated();
 
     db.Database.Migrate();
 

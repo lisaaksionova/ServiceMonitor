@@ -30,11 +30,12 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
         return new PagedList<Service>(items, count, page, pageSize);
     }
 
-    public async Task<IEnumerable<Service>> GetServicesForCheck(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Service>> GetServicesForCheckAsync(CancellationToken cancellationToken)
     {
         var services = await GetByCondition(s => s.NextCheckAt <= DateTime.UtcNow)
             .OrderBy(s => s.Name)
             .Take(50)
+            .AsTracking()
             .ToListAsync(cancellationToken);
         return services;
     }

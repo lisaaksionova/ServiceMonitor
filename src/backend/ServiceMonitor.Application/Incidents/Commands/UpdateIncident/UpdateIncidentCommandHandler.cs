@@ -18,8 +18,8 @@ public class UpdateIncidentCommandHandler(IRepositoryManager repository,
     {
         logger.LogInformation("Updating incident {@Incident}", request.Description);
 
-        var openIncidents = await repository.Incident.GetAllOpenAsync(request.ServiceId, cancellationToken);
-        if (openIncidents.Any() && Enum.TryParse<IncidentStatus>(
+        var openIncidents = await repository.Incident.GetOpenAsync(request.ServiceId, cancellationToken);
+        if (openIncidents != null && Enum.TryParse<IncidentStatus>(
                                     request.Status,
                                     ignoreCase: true,
                                     out var status)

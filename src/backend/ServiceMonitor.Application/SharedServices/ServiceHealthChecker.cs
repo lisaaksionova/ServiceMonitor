@@ -23,12 +23,30 @@ public class ServiceHealthChecker(IHttpClientFactory httpClientFactory) : IServi
             switch (sx.SocketErrorCode)
             {
                 case SocketError.HostNotFound:
+                    return new CheckServiceResult(
+                        false,
+                        NotFound,
+                        "Host not found");
+
                 case SocketError.ConnectionRefused:
+                    return new CheckServiceResult(
+                        false,
+                        ServiceUnavailable,
+                        "Connection refused");
+
                 case SocketError.HostUnreachable:
+                    return new CheckServiceResult(
+                        false,
+                        ServiceUnavailable,
+                        "Host unreachable");
                 default:
                     return new CheckServiceResult(false, InternalServerError, e.Message);
 
             }
+        }
+        catch (OperationCanceledException e) when (!cancellationToken.IsCancellationRequested)
+        {
+            return new CheckServiceResult(false, RequestTimeout, e.Message);
         }
 
         return response.IsSuccessStatusCode

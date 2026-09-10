@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,19 +18,23 @@ public class HealthCheckBackgroundService(
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Starting health check background service");
+
+        using var scope = serviceProvider.CreateScope();
+        var repositoryManager = scope.ServiceProvider.GetRequiredService<IRepositoryManager>();
+        var serviceHealthChecker = scope.ServiceProvider.GetRequiredService<IServiceHealthChecker>();
+        var sw = new Stopwatch();
+
         while (!cancellationToken.IsCancellationRequested)
         {
-            using var scope = serviceProvider.CreateScope();
-            var repositoryManager = scope.ServiceProvider.GetRequiredService<IRepositoryManager>();
-            var serviceHealthChecker = scope.ServiceProvider.GetRequiredService<IServiceHealthChecker>();
-
             var services = await repositoryManager.Service.GetServicesForCheckAsync(cancellationToken);
             foreach (var service in services)
             {
                 logger.LogInformation("Checking service: {@ServiceName}", service.Name);
 
                 var now = DateTime.UtcNow;
+                sw.Start();
                 var result = await serviceHealthChecker.CheckAsync(service, cancellationToken);
+                sw.Stop();
                 switch (result.IsHealthy)
                 {
                     case true when service.Status != ServiceStatus.Healthy:
@@ -70,6 +75,18 @@ public class HealthCheckBackgroundService(
                 service.LastCheckAt = now;
                 service.NextCheckAt = now + TimeSpan.FromMinutes(service.CheckIntervalMinutes);
                 await repositoryManager.Service.UpdateAsync(service, cancellationToken);
+
+                var serviceCheck = new ServiceCheck
+                {
+                    ServiceId = service.Id,
+                    CheckedAt = now,
+                    Status = service.Status,
+                    StatusCode = result.StatusCode,
+                    ResponseTimeMs = sw.ElapsedMilliseconds,
+                    FailureReason = service.Status == ServiceStatus.Healthy ? null : service.LastFailureReason,
+                };
+
+                await repositoryManager.ServiceCheck.CreateAsync(serviceCheck, cancellationToken);
             }
         }
     }

@@ -9,6 +9,7 @@ public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : Iden
     public DbSet<Service> Services { get; set; }
     public DbSet<Incident> Incidents { get; set; }
     public DbSet<ServiceCheck> ServiceChecks { get; set; }
+    public DbSet<HourlyServiceCheck> HourlyServiceChecks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,5 +25,9 @@ public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : Iden
 
         modelBuilder.Entity<ServiceCheck>()
             .HasIndex(x => new { x.ServiceId, x.CheckedAt });
+
+        modelBuilder.Entity<HourlyServiceCheck>()
+            .HasIndex(x => new { x.ServiceId, x.Hour })
+            .IsUnique();
     }
 }

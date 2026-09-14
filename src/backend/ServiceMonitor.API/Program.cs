@@ -1,8 +1,10 @@
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using ServiceMonitor.API.Extensions;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Application.Extensions;
+using ServiceMonitor.Infrastructure.BackgroundJobs;
 using ServiceMonitor.Infrastructure.Extensions;
 using ServiceMonitor.Infrastructure.Persistence;
 using ServiceMonitor.Infrastructure.Seeders;
@@ -35,8 +37,6 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseCorrelationId();
 
-//app.ConfigureExceptionHandler(app.Configuration, new Logger<>()); //use correct logger
-
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
@@ -48,6 +48,8 @@ app.UseAuthorization();
 
 app.UseRequestTimeouts();
 app.UseRateLimiter();
+
+app.UseHangfireDashboard();
 
 app.MapControllers();
 
@@ -61,5 +63,10 @@ using (var scope = app.Services.CreateScope())
     var seeder = services.GetRequiredService<ISeeder>();
     await seeder.SeedAsync();
 }
+
+RecurringJob.AddOrUpdate<IDataMaintenanceBackgroundJob>(
+    "Data Maintenance",
+    job => job.ExecuteAsync(CancellationToken.None),
+    Cron.Daily);
 
 app.Run();

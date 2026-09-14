@@ -5,9 +5,9 @@ namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IHourlyServiceCheckRepository
 {
-    Task CreateAsync(HourlyServiceCheck serviceCheck, CancellationToken  cancellationToken);
+    void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck);
 
-    Task<PagedList<HourlyServiceCheck>> GetPagedListAsync(int page, int pageSize, Guid serviceId,
+    Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from, DateTime to,
         CancellationToken cancellationToken);
 
     Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken);

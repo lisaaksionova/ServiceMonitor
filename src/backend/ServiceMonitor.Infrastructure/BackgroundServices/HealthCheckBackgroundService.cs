@@ -57,6 +57,7 @@ public class HealthCheckBackgroundService(
                             var incident = new Incident
                             {
                                 Date = now,
+                                ServiceId = service.Id,
                                 Status = IncidentStatus.Open,
                                 Description = $"Service failed due to {result.FailureReason} {result.StatusCode}"
                             };

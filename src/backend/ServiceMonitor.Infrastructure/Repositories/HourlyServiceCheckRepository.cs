@@ -8,18 +8,14 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class HourlyServiceCheckRepository(MonitorDbContext context) : RepositoryBase<HourlyServiceCheck>(context), IHourlyServiceCheckRepository
 {
-    public async Task CreateAsync(HourlyServiceCheck serviceCheck, CancellationToken cancellationToken)
-    {
-        Create(serviceCheck);
-        await Task.CompletedTask;
-    }
+    public void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck) => context.HourlyServiceChecks.AddRange(serviceCheck);
 
-    public async Task<PagedList<HourlyServiceCheck>> GetPagedListAsync(int page, int pageSize, Guid serviceId,
+    public async Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from, DateTime to,
         CancellationToken cancellationToken)
     {
         var query = GetAll()
             .AsNoTracking()
-            .Where(s => s.ServiceId == serviceId)
+            .Where(s => s.ServiceId == serviceId && s.Hour >= from && s.Hour <= to)
             .OrderBy(s => s.Hour);
 
         var count = await query.CountAsync(cancellationToken);

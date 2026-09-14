@@ -32,5 +32,7 @@ public class ServiceCheckRepository(MonitorDbContext context) : RepositoryBase<S
         return new PagedList<ServiceCheck>(items, count, page, pageSize);
     }
 
+    public IQueryable<ServiceCheck> GetAllByDate(DateTime from, DateTime to, CancellationToken cancellationToken) => GetByCondition(s => s.CheckedAt >= from && s.CheckedAt < to);
+
     public async Task DeleteOlderThanAsync(DateTime date, CancellationToken cancellationToken) => await context.ServiceChecks.Where(s => s.CheckedAt < date).ExecuteDeleteAsync(cancellationToken);
 }

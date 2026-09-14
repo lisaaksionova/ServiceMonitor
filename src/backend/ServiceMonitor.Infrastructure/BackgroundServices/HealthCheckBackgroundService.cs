@@ -22,7 +22,6 @@ public class HealthCheckBackgroundService(
         using var scope = serviceProvider.CreateScope();
         var repositoryManager = scope.ServiceProvider.GetRequiredService<IRepositoryManager>();
         var serviceHealthChecker = scope.ServiceProvider.GetRequiredService<IServiceHealthChecker>();
-        var sw = new Stopwatch();
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -32,7 +31,7 @@ public class HealthCheckBackgroundService(
                 logger.LogInformation("Checking service: {@ServiceName}", service.Name);
 
                 var now = DateTime.UtcNow;
-                sw.Start();
+                var sw = Stopwatch.StartNew();
                 var result = await serviceHealthChecker.CheckAsync(service, cancellationToken);
                 sw.Stop();
                 switch (result.IsHealthy)

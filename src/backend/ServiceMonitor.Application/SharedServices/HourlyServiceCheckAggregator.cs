@@ -10,11 +10,21 @@ public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHour
 {
     public async Task AggregateAsync(CancellationToken cancellationToken)
     {
-        var to = DateTime.UtcNow;
-        var from = to.AddDays(-1);
+        var now = DateTime.UtcNow;
+
+        var currentHour = new DateTime(
+            now.Year,
+            now.Month,
+            now.Day,
+            now.Hour,
+            0,
+            0,
+            DateTimeKind.Utc);
+
+        var from = (await repository.HourlyServiceCheck.GetAllFromTo(currentHour, now, cancellationToken)).OrderBy(h => h.Hour).Select(h => h.Hour).LastOrDefault();
 
         var serviceChecks = repository.ServiceCheck
-            .GetAllByDate(from, to, cancellationToken);
+            .GetAllByDate(from, currentHour, cancellationToken);
 
         var hourlyChecks = await serviceChecks
             .GroupBy(s => new

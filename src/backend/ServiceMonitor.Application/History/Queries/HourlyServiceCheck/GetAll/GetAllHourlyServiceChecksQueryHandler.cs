@@ -18,7 +18,7 @@ public class GetAllHourlyServiceChecksQueryHandler(
     {
         logger.LogInformation("Getting hourly service checks from {@From} on {@To}", request.From, request.To);
 
-        var checks = await repository.HourlyServiceCheck.GetAllFromTo(request.Page, request.PageSize, request.ServiceId,
+        var checks = await repository.HourlyServiceCheck.GetAllFromToPaged(request.Page, request.PageSize, request.ServiceId,
             request.From, request.To, cancellationToken);
 
         var checksDto = new PagedList<HourlyServiceCheckDto>(

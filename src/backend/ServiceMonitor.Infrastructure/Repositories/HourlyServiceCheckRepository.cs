@@ -12,7 +12,7 @@ public class HourlyServiceCheckRepository(MonitorDbContext context)
     public void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck) =>
         context.HourlyServiceChecks.AddRange(serviceCheck);
 
-    public async Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from,
+    public async Task<PagedList<HourlyServiceCheck>> GetAllFromToPaged(int page, int pageSize, Guid serviceId, DateTime from,
         DateTime to,
         CancellationToken cancellationToken)
     {
@@ -30,6 +30,10 @@ public class HourlyServiceCheckRepository(MonitorDbContext context)
 
         return new PagedList<HourlyServiceCheck>(items, count, page, pageSize);
     }
+
+    public async Task<List<HourlyServiceCheck>> GetAllFromTo(DateTime from, DateTime to,
+        CancellationToken cancellationToken) =>
+        await GetByCondition(s => s.Hour >= from && s.Hour <= to).ToListAsync(cancellationToken);
 
     public async Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken) =>
         await context.HourlyServiceChecks.Where(s => s.Hour < hour).ExecuteDeleteAsync(cancellationToken);

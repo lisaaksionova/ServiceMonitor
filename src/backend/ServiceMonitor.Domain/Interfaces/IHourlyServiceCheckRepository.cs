@@ -7,7 +7,10 @@ public interface IHourlyServiceCheckRepository
 {
     void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck);
 
-    Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from, DateTime to,
+    Task<PagedList<HourlyServiceCheck>> GetAllFromToPaged(int page, int pageSize, Guid serviceId, DateTime from, DateTime to,
+        CancellationToken cancellationToken);
+
+    Task<List<HourlyServiceCheck>> GetAllFromTo(DateTime from, DateTime to,
         CancellationToken cancellationToken);
 
     Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken);

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using ServiceMonitor.Infrastructure.Persistence;
 namespace ServiceMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(MonitorDbContext))]
-    partial class MonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260910192716_Add_ServiceCheck")]
+    partial class Add_ServiceCheck
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,44 +157,6 @@ namespace ServiceMonitor.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceMonitor.Domain.Entities.HourlyServiceCheck", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("AverageResponseTimeMs")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("FailedChecks")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Hour")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<double>("MaxResponseTimeMs")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("MinResponseTimeMs")
-                        .HasColumnType("double precision");
-
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("SuccessfulChecks")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalChecks")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId", "Hour")
-                        .IsUnique();
-
-                    b.ToTable("HourlyServiceChecks");
-                });
-
             modelBuilder.Entity("ServiceMonitor.Domain.Entities.Incident", b =>
                 {
                     b.Property<Guid>("Id")
@@ -294,7 +259,7 @@ namespace ServiceMonitor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceId", "CheckedAt");
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceChecks");
                 });

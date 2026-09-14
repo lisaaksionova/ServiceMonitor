@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using ServiceMonitor.Infrastructure.Persistence;
 namespace ServiceMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(MonitorDbContext))]
-    partial class MonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260914091730_Add_Hourly_Check")]
+    partial class Add_Hourly_Check
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,9 +188,6 @@ namespace ServiceMonitor.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ServiceId", "Hour")
-                        .IsUnique();
 
                     b.ToTable("HourlyServiceChecks");
                 });

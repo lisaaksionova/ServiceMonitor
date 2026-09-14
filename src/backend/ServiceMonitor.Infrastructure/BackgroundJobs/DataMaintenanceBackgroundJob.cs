@@ -12,7 +12,7 @@ public class DataMaintenanceBackgroundJob(MonitorDbContext context, ILogger<Data
     {
         logger.LogInformation("Hourly aggregation job started");
 
-        var to = DateTime.UtcNow;
+        var to = DateTime.UtcNow.Date;
         var from = to.AddDays(-1);
 
         var serviceChecks = context

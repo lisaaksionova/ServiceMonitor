@@ -18,9 +18,7 @@ public class ServiceCheckProfile : Profile
             )
             .ForMember(
                 dest => dest.StatusCode,
-                opts => opts.MapFrom(src => src.StatusCode.HasValue
-                    ? (int)src.StatusCode.Value
-                    : 0)
+                opts => opts.MapFrom(src => src.StatusCode)
             )
             .ForMember(
                 dest => dest.ResponseTimeSeconds,

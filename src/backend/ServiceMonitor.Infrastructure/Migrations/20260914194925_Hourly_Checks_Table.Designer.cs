@@ -12,8 +12,8 @@ using ServiceMonitor.Infrastructure.Persistence;
 namespace ServiceMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(MonitorDbContext))]
-    [Migration("20260914094356_Unique_Hourly_Index")]
-    partial class Unique_Hourly_Index
+    [Migration("20260914194925_Hourly_Checks_Table")]
+    partial class Hourly_Checks_Table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -6,11 +6,14 @@ using ServiceMonitor.Infrastructure.Persistence;
 
 namespace ServiceMonitor.Infrastructure.Repositories;
 
-public class HourlyServiceCheckRepository(MonitorDbContext context) : RepositoryBase<HourlyServiceCheck>(context), IHourlyServiceCheckRepository
+public class HourlyServiceCheckRepository(MonitorDbContext context)
+    : RepositoryBase<HourlyServiceCheck>(context), IHourlyServiceCheckRepository
 {
-    public void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck) => context.HourlyServiceChecks.AddRange(serviceCheck);
+    public void CreateRange(IEnumerable<HourlyServiceCheck> serviceCheck) =>
+        context.HourlyServiceChecks.AddRange(serviceCheck);
 
-    public async Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from, DateTime to,
+    public async Task<PagedList<HourlyServiceCheck>> GetAllFromTo(int page, int pageSize, Guid serviceId, DateTime from,
+        DateTime to,
         CancellationToken cancellationToken)
     {
         var query = GetAll()
@@ -28,5 +31,6 @@ public class HourlyServiceCheckRepository(MonitorDbContext context) : Repository
         return new PagedList<HourlyServiceCheck>(items, count, page, pageSize);
     }
 
-    public async Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken) => await context.HourlyServiceChecks.Where(s => s.Hour < hour).ExecuteDeleteAsync(cancellationToken);
+    public async Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken) =>
+        await context.HourlyServiceChecks.Where(s => s.Hour < hour).ExecuteDeleteAsync(cancellationToken);
 }

@@ -33,11 +33,9 @@ public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHour
             {
                 ServiceId = h.Key.ServiceId,
                 Hour = h.Key.Hour,
-
                 TotalChecks = h.Count(),
                 SuccessfulChecks = h.Count(s => s.Status == ServiceStatus.Healthy),
                 FailedChecks = h.Count(s => s.Status != ServiceStatus.Healthy),
-
                 AverageResponseTimeMs = (int)h.Average(s => s.ResponseTimeMs),
                 MinResponseTimeMs = h.Min(s => s.ResponseTimeMs),
                 MaxResponseTimeMs = h.Max(s => s.ResponseTimeMs)

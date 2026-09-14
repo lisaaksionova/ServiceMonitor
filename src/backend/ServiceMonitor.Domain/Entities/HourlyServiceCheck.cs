@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ServiceMonitor.Domain.Entities;
+﻿namespace ServiceMonitor.Domain.Entities;
 
 public class HourlyServiceCheck
 {

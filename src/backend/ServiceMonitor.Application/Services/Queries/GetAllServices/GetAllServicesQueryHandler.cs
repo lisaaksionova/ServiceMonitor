@@ -18,7 +18,8 @@ public class GetAllServicesQueryHandler(
     {
         logger.LogInformation("Getting all services");
 
-        var services = await repository.Service.GetPagedListAsync(request.Page, request.PageSize, authenticatedUser.UserId,
+        var services = await repository.Service.GetPagedListAsync(request.Page, request.PageSize,
+            authenticatedUser.UserId,
             cancellationToken);
         var serviceDtos = new PagedList<ServiceDto>(
             mapper.Map<List<ServiceDto>>(services.Items),

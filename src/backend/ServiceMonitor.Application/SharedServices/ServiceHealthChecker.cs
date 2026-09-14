@@ -41,7 +41,6 @@ public class ServiceHealthChecker(IHttpClientFactory httpClientFactory) : IServi
                         "Host unreachable");
                 default:
                     return new CheckServiceResult(false, InternalServerError, e.Message);
-
             }
         }
         catch (OperationCanceledException e) when (!cancellationToken.IsCancellationRequested)

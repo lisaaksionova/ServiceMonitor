@@ -16,20 +16,25 @@ public class GetIncidentByIdQueryHandler(
 {
     public async Task<IncidentDto> Handle(GetIncidentByIdQuery request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Getting incident {IncidentId} for service {ServiceId}", request.IncidentId, request.ServiceId);
+        logger.LogInformation("Getting incident {IncidentId} for service {ServiceId}", request.IncidentId,
+            request.ServiceId);
 
-        var service = await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken);
+        var service =
+            await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken);
         if (service == null)
         {
-            logger.LogError("Service {ServiceId} for incident {IncidentId} is not found.", request.ServiceId, request.IncidentId);
+            logger.LogError("Service {ServiceId} for incident {IncidentId} is not found.", request.ServiceId,
+                request.IncidentId);
             throw new ServiceNotFoundException(request.ServiceId);
         }
+
         var incident = await repository.Incident.GetByIdAsync(service.Id, request.IncidentId, cancellationToken);
         if (incident == null)
         {
             logger.LogError("Incident {IncidentId} is not found.", request.IncidentId);
             throw new IncidentNotFoundException(request.IncidentId);
         }
+
         var incidentDto = mapper.Map<IncidentDto>(incident);
 
         return incidentDto;

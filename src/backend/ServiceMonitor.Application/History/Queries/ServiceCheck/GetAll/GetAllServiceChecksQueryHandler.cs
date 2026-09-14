@@ -10,7 +10,8 @@ namespace ServiceMonitor.Application.ServiceChecks.Queries;
 public class GetAllServiceChecksQueryHandler(
     IRepositoryManager repository,
     IMapper mapper,
-    ILogger<GetAllServiceChecksQueryHandler> logger) : IRequestHandler<GetAllServiceChecksQuery, PagedList<ServiceCheckDto>>
+    ILogger<GetAllServiceChecksQueryHandler> logger)
+    : IRequestHandler<GetAllServiceChecksQuery, PagedList<ServiceCheckDto>>
 {
     public async Task<PagedList<ServiceCheckDto>> Handle(GetAllServiceChecksQuery request,
         CancellationToken cancellationToken)

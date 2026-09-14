@@ -5,7 +5,9 @@ namespace ServiceMonitor.Domain.Interfaces;
 
 public interface IIncidentRepository
 {
-    Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit, CancellationToken cancellationToken);
+    Task<CursorPagedList<Incident>> GetAllPaginatedAsync(Guid serviceId, string cursor, int limit,
+        CancellationToken cancellationToken);
+
     Task<Incident?> GetOpenAsync(Guid serviceId, CancellationToken cancellationToken);
     Task<Incident?> GetByIdAsync(Guid serviceId, Guid id, CancellationToken cancellationToken);
     Task CreateAsync(Incident incident, CancellationToken cancellationToken);

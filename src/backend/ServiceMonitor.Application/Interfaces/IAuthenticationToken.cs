@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using ServiceMonitor.Domain.Entities;
 
 namespace ServiceMonitor.Application.Interfaces;

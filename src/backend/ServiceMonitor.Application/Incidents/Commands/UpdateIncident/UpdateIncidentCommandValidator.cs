@@ -18,7 +18,7 @@ public class UpdateIncidentCommandValidator : AbstractValidator<UpdateIncidentCo
             .NotEmpty().WithMessage("Status is required")
             .When(x => x.Status != null)
             .Must(status => status == null ||
-                             Enum.TryParse<IncidentStatus>(status, true, out _))
-                .WithMessage("Status should only be in [Open, Investigation, Closed]");
+                            Enum.TryParse<IncidentStatus>(status, true, out _))
+            .WithMessage("Status should only be in [Open, Investigation, Closed]");
     }
 }

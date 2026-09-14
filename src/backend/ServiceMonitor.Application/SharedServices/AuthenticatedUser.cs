@@ -24,7 +24,6 @@ public class AuthenticatedUser(
 
             logger.LogError("User {User} is not authenticated", httpContextAccessor.HttpContext?.User.Identity?.Name);
             throw new UnauthorizedAccessException("The current user is not authenticated.");
-
         }
     }
 }

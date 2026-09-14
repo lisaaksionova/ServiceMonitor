@@ -3,7 +3,8 @@ using ServiceMonitor.Application.Interfaces;
 
 namespace ServiceMonitor.Infrastructure.BackgroundJobs;
 
-public class DataMaintenanceBackgroundJob(IHourlyServiceCheckAggregator hourlyServiceCheckAggregator,
+public class DataMaintenanceBackgroundJob(
+    IHourlyServiceCheckAggregator hourlyServiceCheckAggregator,
     IDataRetentionService dataRetentionService,
     ILogger<DataMaintenanceBackgroundJob> logger) : IDataMaintenanceBackgroundJob
 {

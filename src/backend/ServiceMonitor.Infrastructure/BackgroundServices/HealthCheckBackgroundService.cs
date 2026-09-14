@@ -67,7 +67,8 @@ public class HealthCheckBackgroundService(
                             service.Status = CheckServiceStatus(result.StatusCode, cancellationToken);
                             service.LastFailureReason = result.FailureReason;
 
-                            logger.LogInformation("Service {@ServiceName} is {@ServiceStatus} due to {@FailureReason}", service.Name, service.Status, service.LastFailureReason);
+                            logger.LogInformation("Service {@ServiceName} is {@ServiceStatus} due to {@FailureReason}",
+                                service.Name, service.Status, service.LastFailureReason);
                             break;
                         }
                 }
@@ -83,7 +84,7 @@ public class HealthCheckBackgroundService(
                     Status = service.Status,
                     StatusCode = result.StatusCode,
                     ResponseTimeMs = sw.ElapsedMilliseconds,
-                    FailureReason = service.Status == ServiceStatus.Healthy ? null : service.LastFailureReason,
+                    FailureReason = service.Status == ServiceStatus.Healthy ? null : service.LastFailureReason
                 };
 
                 await repositoryManager.ServiceCheck.CreateAsync(serviceCheck, cancellationToken);

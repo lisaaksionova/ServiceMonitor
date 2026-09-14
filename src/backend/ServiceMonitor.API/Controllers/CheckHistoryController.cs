@@ -5,7 +5,6 @@ using ServiceMonitor.Application.History.Dtos.HourlyServiceChecks;
 using ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
 using ServiceMonitor.Application.ServiceChecks.Dtos;
 using ServiceMonitor.Application.ServiceChecks.Queries;
-using ServiceMonitor.Domain.Entities;
 
 namespace ServiceMonitor.API.Controllers;
 
@@ -16,7 +15,8 @@ public class CheckHistoryController(
     IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ServiceCheckDto>>> GetAllServiceChecks([FromRoute] Guid serviceId, CancellationToken cancellationToken,
+    public async Task<ActionResult<IEnumerable<ServiceCheckDto>>> GetAllServiceChecks([FromRoute] Guid serviceId,
+        CancellationToken cancellationToken,
         [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         var result = await mediator.Send(new GetAllServiceChecksQuery(page, pageSize, serviceId), cancellationToken);
@@ -26,9 +26,11 @@ public class CheckHistoryController(
 
     [HttpGet("hourly")]
     public async Task<ActionResult<IEnumerable<HourlyServiceCheckDto>>> GetAllHourlyServiceChecks(
-        [FromRoute] Guid serviceId, [FromQuery] DateTime from, [FromQuery] DateTime to, CancellationToken cancellationToken,  [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        [FromRoute] Guid serviceId, [FromQuery] DateTime from, [FromQuery] DateTime to,
+        CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var result = await mediator.Send(new GetAllHourlyServiceChecksQuery(page, pageSize, serviceId, from, to), cancellationToken);
+        var result = await mediator.Send(new GetAllHourlyServiceChecksQuery(page, pageSize, serviceId, from, to),
+            cancellationToken);
 
         return Ok(result);
     }

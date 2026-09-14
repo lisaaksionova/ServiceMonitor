@@ -10,7 +10,8 @@ namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
 public class GetAllHourlyServiceChecksQueryHandler(
     IRepositoryManager repository,
     IMapper mapper,
-    ILogger<GetAllHourlyServiceChecksQueryHandler> logger) : IRequestHandler<GetAllHourlyServiceChecksQuery, PagedList<HourlyServiceCheckDto>>
+    ILogger<GetAllHourlyServiceChecksQueryHandler> logger)
+    : IRequestHandler<GetAllHourlyServiceChecksQuery, PagedList<HourlyServiceCheckDto>>
 {
     public async Task<PagedList<HourlyServiceCheckDto>> Handle(GetAllHourlyServiceChecksQuery request,
         CancellationToken cancellationToken)

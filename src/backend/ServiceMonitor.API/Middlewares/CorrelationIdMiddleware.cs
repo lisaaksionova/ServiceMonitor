@@ -1,6 +1,7 @@
 namespace ServiceMonitor.API.Middlewares;
 
-public class CorrelationIdMiddleware(RequestDelegate next,
+public class CorrelationIdMiddleware(
+    RequestDelegate next,
     ILogger<CorrelationIdMiddleware> logger)
 {
     private const string CorrelationIdHeaderName = "X-Correlation-Id";
@@ -21,8 +22,10 @@ public class CorrelationIdMiddleware(RequestDelegate next,
 
         if (generated)
         {
-            logger.LogDebug("Generated CorrelationId {CorrelationId} for request path {RequestPath}", correlationId, context.Request.Path);
+            logger.LogDebug("Generated CorrelationId {CorrelationId} for request path {RequestPath}", correlationId,
+                context.Request.Path);
         }
+
         await next(context);
     }
 }

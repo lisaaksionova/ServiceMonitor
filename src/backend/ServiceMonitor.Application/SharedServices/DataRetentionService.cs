@@ -4,7 +4,8 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Application.SharedServices;
 
-public class DataRetentionService(IRepositoryManager repository,
+public class DataRetentionService(
+    IRepositoryManager repository,
     ILogger<DataRetentionService> logger) : IDataRetentionService
 {
     public async Task RemoveStaleServiceChecks(DateTime olderThan, CancellationToken cancellationToken)

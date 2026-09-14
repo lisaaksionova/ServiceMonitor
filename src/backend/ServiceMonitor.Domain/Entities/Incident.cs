@@ -12,11 +12,11 @@ public class Incident
     [Required(ErrorMessage = "Description is required.")]
     [MaxLength(200, ErrorMessage = "Description cannot exceed 200 characters.")]
     public string Description { get; set; } = string.Empty;
+
     public IncidentStatus Status { get; set; }
     public DateTime? ResolvedAt { get; set; }
 
-    [ForeignKey(nameof(Service))]
-    public Guid ServiceId { get; set; }
+    [ForeignKey(nameof(Service))] public Guid ServiceId { get; set; }
 
     public Service Service { get; set; } = null!;
 }

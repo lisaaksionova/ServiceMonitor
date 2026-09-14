@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using ServiceMonitor.Domain.Entities;
+using ServiceMonitor.Application.ServiceChecks.Dtos;
 
-namespace ServiceMonitor.Application.ServiceChecks.Dtos;
+namespace ServiceMonitor.Application.History.Dtos.ServiceCheck;
 
 public class ServiceCheckProfile : Profile
 {
     public ServiceCheckProfile()
     {
-        CreateMap<ServiceCheck, ServiceCheckDto>()
+        CreateMap<Domain.Entities.ServiceCheck, ServiceCheckDto>()
             .ForMember(
                 dest => dest.CheckedAt,
                 opts => opts.MapFrom(src => src.CheckedAt.ToString("O"))

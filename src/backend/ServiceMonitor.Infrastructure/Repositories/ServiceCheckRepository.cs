@@ -6,7 +6,8 @@ using ServiceMonitor.Infrastructure.Persistence;
 
 namespace ServiceMonitor.Infrastructure.Repositories;
 
-public class ServiceCheckRepository(MonitorDbContext context) : RepositoryBase<ServiceCheck>(context), IServiceCheckRepository
+public class ServiceCheckRepository(MonitorDbContext context)
+    : RepositoryBase<ServiceCheck>(context), IServiceCheckRepository
 {
     public async Task CreateAsync(ServiceCheck serviceCheck, CancellationToken cancellationToken)
     {
@@ -32,5 +33,9 @@ public class ServiceCheckRepository(MonitorDbContext context) : RepositoryBase<S
         return new PagedList<ServiceCheck>(items, count, page, pageSize);
     }
 
-    public async Task DeleteOlderThanAsync(DateTime date, CancellationToken cancellationToken) => await context.ServiceChecks.Where(s => s.CheckedAt < date).ExecuteDeleteAsync(cancellationToken);
+    public IQueryable<ServiceCheck> GetAllByDate(DateTime from, DateTime to, CancellationToken cancellationToken) =>
+        GetByCondition(s => s.CheckedAt >= from && s.CheckedAt < to);
+
+    public async Task DeleteOlderThanAsync(DateTime date, CancellationToken cancellationToken) =>
+        await context.ServiceChecks.Where(s => s.CheckedAt < date).ExecuteDeleteAsync(cancellationToken);
 }

@@ -1,6 +1,6 @@
-﻿namespace ServiceMonitor.Domain.Entities;
+﻿namespace ServiceMonitor.Application.History.Dtos.HourlyServiceChecks;
 
-public class HourlyServiceCheck
+public class HourlyServiceCheckDto
 {
     public Guid Id { get; set; }
     public Guid ServiceId { get; set; }

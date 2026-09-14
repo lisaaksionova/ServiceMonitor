@@ -58,5 +58,6 @@ public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Servic
         await SaveAsync(cancellationToken);
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken) => await context.SaveChangesAsync(cancellationToken);
+    public async Task SaveAsync(CancellationToken cancellationToken) =>
+        await context.SaveChangesAsync(cancellationToken);
 }

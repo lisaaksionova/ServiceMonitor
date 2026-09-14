@@ -21,7 +21,5 @@ public class IncidentProfile : Profile
                 opts => opts.MapFrom((s, d) => s.ResolvedAt != null ? DateTime.Parse(s.ResolvedAt) : d.ResolvedAt))
             .ForMember(x => x.Status,
                 opt => opt.MapFrom((s, d) => s.Status != null ? Enum.Parse<IncidentStatus>(s.Status, true) : d.Status));
-
-
     }
 }

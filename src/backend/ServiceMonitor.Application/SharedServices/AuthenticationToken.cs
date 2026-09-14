@@ -18,7 +18,8 @@ public class AuthenticationToken(IConfiguration configuration, UserManager<User>
         var audience = configuration["Jwt:ValidAudience"];
         var expireTime = configuration["Jwt:ExpirationMinutes"];
 
-        if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(audience) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(expireTime))
+        if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(audience) || string.IsNullOrEmpty(issuer) ||
+            string.IsNullOrEmpty(expireTime))
         {
             throw new ApplicationException("Missing configuration");
         }

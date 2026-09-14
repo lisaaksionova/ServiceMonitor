@@ -31,6 +31,7 @@ public class UpdateServiceAsHealthyCommandHandler(
             logger.LogError("Service {ServiceId} is already healthy", request.Id);
             throw new InvalidOperationException("Service is already healthy");
         }
+
         service.Status = ServiceStatus.Healthy;
 
         await repository.Service.UpdateAsync(service, cancellationToken);

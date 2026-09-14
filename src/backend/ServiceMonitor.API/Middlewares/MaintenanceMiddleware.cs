@@ -13,10 +13,7 @@ public class MaintenanceMiddleware(RequestDelegate next)
             context.Response.StatusCode =
                 StatusCodes.Status503ServiceUnavailable;
 
-            await context.Response.WriteAsJsonAsync(new
-            {
-                message = "Service is temporarily unavailable."
-            });
+            await context.Response.WriteAsJsonAsync(new { message = "Service is temporarily unavailable." });
 
             return;
         }

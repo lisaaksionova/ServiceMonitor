@@ -24,9 +24,7 @@ public class RegisterUserCommandHandler(
 
         var user = new User
         {
-            Email = request.Email,
-            UserName = request.Email.Split('@')[0],
-            SecurityStamp = Guid.NewGuid().ToString()
+            Email = request.Email, UserName = request.Email.Split('@')[0], SecurityStamp = Guid.NewGuid().ToString()
         };
 
         var createResult = await userManager.CreateAsync(user, request.Password);

@@ -54,14 +54,16 @@ public class ServicesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("healthy/{id:guid}")]
-    public async Task<ActionResult<ServiceDto>> UpdateServiceAsHealthy([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceDto>> UpdateServiceAsHealthy([FromRoute] Guid id,
+        CancellationToken cancellationToken)
     {
         var service = await mediator.Send(new UpdateServiceAsHealthyCommand(id), cancellationToken);
         return Ok(service);
     }
 
     [HttpPatch("unavailable/{id:guid}")]
-    public async Task<ActionResult<ServiceDto>> UpdateServiceAsUnavailable([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceDto>> UpdateServiceAsUnavailable([FromRoute] Guid id,
+        CancellationToken cancellationToken)
     {
         var service = await mediator.Send(new UpdateServiceAsUnavailableCommand(id), cancellationToken);
         return Ok(service);

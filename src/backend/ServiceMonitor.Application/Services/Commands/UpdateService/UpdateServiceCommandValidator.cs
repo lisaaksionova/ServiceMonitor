@@ -1,5 +1,4 @@
 using FluentValidation;
-using ServiceMonitor.Domain.Enums;
 
 namespace ServiceMonitor.Application.Services.Commands.UpdateService;
 

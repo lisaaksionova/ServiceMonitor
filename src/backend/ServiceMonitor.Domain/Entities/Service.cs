@@ -21,13 +21,13 @@ public class Service
     public DateTime NextCheckAt { get; set; }
     public DateTime LastCheckAt { get; set; }
     public DateTime LastSuccessfulCheckAt { get; set; }
+
     [MaxLength(200, ErrorMessage = "Failure reason cannot exceed 200 characters.")]
     public string? LastFailureReason { get; set; } = string.Empty;
 
     public List<Incident> Incidents { get; set; } = null!;
 
-    [ForeignKey(nameof(User))]
-    public string UserId { get; set; } = string.Empty;
+    [ForeignKey(nameof(User))] public string UserId { get; set; } = string.Empty;
 
     public User User { get; set; } = null!;
 }

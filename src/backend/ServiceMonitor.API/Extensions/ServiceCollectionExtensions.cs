@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
         {
             opts.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-            opts.AddFixedWindowLimiter(policyName: "FixedWindowRateLimiter", windowOpts =>
+            opts.AddFixedWindowLimiter("FixedWindowRateLimiter", windowOpts =>
             {
                 windowOpts.PermitLimit = 50;
                 windowOpts.Window = TimeSpan.FromSeconds(10);
@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
                 windowOpts.QueueLimit = 2;
             });
 
-            opts.AddSlidingWindowLimiter(policyName: "SlidingWindowRateLimiter", windowOpts =>
+            opts.AddSlidingWindowLimiter("SlidingWindowRateLimiter", windowOpts =>
             {
                 windowOpts.PermitLimit = 50;
                 windowOpts.Window = TimeSpan.FromSeconds(10);
@@ -52,7 +52,7 @@ public static class ServiceCollectionExtensions
                 windowOpts.QueueLimit = 2;
             });
 
-            opts.AddConcurrencyLimiter(policyName: "ConcurrencyLimiter", limiterOpts =>
+            opts.AddConcurrencyLimiter("ConcurrencyLimiter", limiterOpts =>
             {
                 limiterOpts.PermitLimit = 50;
                 limiterOpts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
@@ -62,11 +62,11 @@ public static class ServiceCollectionExtensions
 
         services.AddRequestTimeouts(opts =>
         {
-            opts.AddPolicy(policyName: "FiveSecondRequestTimeout", new RequestTimeoutPolicy
+            opts.AddPolicy("FiveSecondRequestTimeout", new RequestTimeoutPolicy
             {
                 Timeout = TimeSpan.FromSeconds(5),
                 TimeoutStatusCode = StatusCodes.Status503ServiceUnavailable,
-                WriteTimeoutResponse = async (HttpContext context) =>
+                WriteTimeoutResponse = async context =>
                 {
                     context.Response.ContentType = "application/json";
                     var timeoutErrorResponse = new
@@ -88,7 +88,8 @@ public static class ServiceCollectionExtensions
             opts.AddSecurityDefinition("Bearer",
                 new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
@@ -118,30 +119,30 @@ public static class ServiceCollectionExtensions
     public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(opts =>
-        {
-            opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(opts =>
-        {
-            opts.SaveToken = true;
-            opts.RequireHttpsMetadata = false;
-
-            opts.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = configuration["JWT:ValidAudience"],
-                ValidIssuer = configuration["JWT:ValidIssuer"],
-                ClockSkew = TimeSpan.Zero,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(
-                        configuration["JWT:Secret"]!
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(opts =>
+            {
+                opts.SaveToken = true;
+                opts.RequireHttpsMetadata = false;
+
+                opts.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = configuration["JWT:ValidAudience"],
+                    ValidIssuer = configuration["JWT:ValidIssuer"],
+                    ClockSkew = TimeSpan.Zero,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            configuration["JWT:Secret"]!
+                        )
                     )
-                )
-            };
-        });
+                };
+            });
 
         services.Configure<IdentityOptions>(options =>
         {

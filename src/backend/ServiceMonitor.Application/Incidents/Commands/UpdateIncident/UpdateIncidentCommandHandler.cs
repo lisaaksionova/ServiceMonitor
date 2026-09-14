@@ -9,7 +9,8 @@ using ServiceMonitor.Domain.Interfaces;
 
 namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 
-public class UpdateIncidentCommandHandler(IRepositoryManager repository,
+public class UpdateIncidentCommandHandler(
+    IRepositoryManager repository,
     ILogger<UpdateIncidentCommandHandler> logger,
     IAuthenticatedUser authenticatedUser,
     IMapper mapper) : IRequestHandler<UpdateIncidentCommand, IncidentDto>
@@ -20,26 +21,31 @@ public class UpdateIncidentCommandHandler(IRepositoryManager repository,
 
         var openIncidents = await repository.Incident.GetOpenAsync(request.ServiceId, cancellationToken);
         if (openIncidents != null && Enum.TryParse<IncidentStatus>(
-                                    request.Status,
-                                    ignoreCase: true,
-                                    out var status)
-                                && status == IncidentStatus.Open)
+                                      request.Status,
+                                      true,
+                                      out var status)
+                                  && status == IncidentStatus.Open)
         {
             logger.LogError("Incident {IncidentId} is already opened", request.IncidentId);
             throw new InvalidOperationException("Cannot create new open incident. Resolve previous.");
         }
-        var service = await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken);
+
+        var service =
+            await repository.Service.GetByIdAsync(request.ServiceId, authenticatedUser.UserId, cancellationToken);
         if (service == null)
         {
-            logger.LogError("Service {ServiceId} for incident {IncidentId} is not found.", request.ServiceId, request.IncidentId);
+            logger.LogError("Service {ServiceId} for incident {IncidentId} is not found.", request.ServiceId,
+                request.IncidentId);
             throw new ServiceNotFoundException(request.ServiceId);
         }
+
         var incident = await repository.Incident.GetByIdAsync(service.Id, request.IncidentId, cancellationToken);
         if (incident == null)
         {
             logger.LogError("Incident {IncidentId} is not found.", request.IncidentId);
             throw new IncidentNotFoundException(request.IncidentId);
         }
+
         mapper.Map(request, incident);
         await repository.Incident.UpdateAsync(incident, cancellationToken);
         return mapper.Map<IncidentDto>(incident);

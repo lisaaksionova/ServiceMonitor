@@ -6,9 +6,10 @@ namespace ServiceMonitor.Infrastructure.Repositories;
 public sealed class RepositoryManager : IRepositoryManager
 {
     private readonly MonitorDbContext _context;
-    private readonly Lazy<IServiceRepository> _serviceRepository;
+    private readonly Lazy<IHourlyServiceCheckRepository> _hourlyServiceCheckRepository;
     private readonly Lazy<IIncidentRepository> _incidentRepository;
     private readonly Lazy<IServiceCheckRepository> _serviceCheckRepository;
+    private readonly Lazy<IServiceRepository> _serviceRepository;
 
     public RepositoryManager(MonitorDbContext context)
     {
@@ -16,11 +17,15 @@ public sealed class RepositoryManager : IRepositoryManager
         _serviceRepository = new Lazy<IServiceRepository>(() => new ServiceRepository(_context));
         _incidentRepository = new Lazy<IIncidentRepository>(() => new IncidentRepository(_context));
         _serviceCheckRepository = new Lazy<IServiceCheckRepository>(() => new ServiceCheckRepository(_context));
+        _hourlyServiceCheckRepository =
+            new Lazy<IHourlyServiceCheckRepository>(() => new HourlyServiceCheckRepository(_context));
     }
 
     public IServiceRepository Service => _serviceRepository.Value;
     public IIncidentRepository Incident => _incidentRepository.Value;
     public IServiceCheckRepository ServiceCheck => _serviceCheckRepository.Value;
+    public IHourlyServiceCheckRepository HourlyServiceCheck => _hourlyServiceCheckRepository.Value;
 
-    public async Task SaveAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
+    public async Task SaveAsync(CancellationToken cancellationToken) =>
+        await _context.SaveChangesAsync(cancellationToken);
 }

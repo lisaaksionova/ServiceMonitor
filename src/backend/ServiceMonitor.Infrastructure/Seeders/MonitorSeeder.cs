@@ -83,12 +83,7 @@ public class MonitorSeeder(
             }
         }
 
-        var admin = new User
-        {
-            UserName = "admin",
-            Email = "admin@servicemonitor.com",
-            EmailConfirmed = true
-        };
+        var admin = new User { UserName = "admin", Email = "admin@servicemonitor.com", EmailConfirmed = true };
 
         var adminResult = await userManager.CreateAsync(admin, "Password123!");
 
@@ -122,10 +117,8 @@ public class MonitorSeeder(
 
         var serviceData = new[]
         {
-            ("Facebook", "https://www.facebook.com/"),
-            ("GitHub", "https://github.com/"),
-            ("Google", "https://www.google.com/"),
-            ("Microsoft", "https://www.microsoft.com/"),
+            ("Facebook", "https://www.facebook.com/"), ("GitHub", "https://github.com/"),
+            ("Google", "https://www.google.com/"), ("Microsoft", "https://www.microsoft.com/"),
             ("Stack Overflow", "https://stackoverflow.com/")
         };
 

@@ -26,8 +26,16 @@ public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : Iden
         modelBuilder.Entity<ServiceCheck>()
             .HasIndex(x => new { x.ServiceId, x.CheckedAt });
 
+        modelBuilder.Entity<ServiceCheck>()
+            .Property(x => x.CheckedAt)
+            .HasColumnType("timestamp with time zone");
+
         modelBuilder.Entity<HourlyServiceCheck>()
             .HasIndex(x => new { x.ServiceId, x.Hour })
             .IsUnique();
+
+        modelBuilder.Entity<HourlyServiceCheck>()
+            .Property(x => x.Hour)
+            .HasColumnType("timestamp with time zone");
     }
 }

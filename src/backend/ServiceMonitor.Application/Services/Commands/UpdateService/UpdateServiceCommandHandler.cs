@@ -25,6 +25,7 @@ public class UpdateServiceCommandHandler(
             logger.LogError("Service {ServiceId} is not found.", request.Id);
             throw new ServiceNotFoundException(request.Id);
         }
+
         mapper.Map(request, service);
 
         await repository.Service.UpdateAsync(service, cancellationToken);

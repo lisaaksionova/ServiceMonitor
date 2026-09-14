@@ -16,6 +16,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
         services.AddScoped<IAuthenticationToken, AuthenticationToken>();
         services.AddScoped<IServiceHealthChecker, ServiceHealthChecker>();
+        services.AddScoped<IHourlyServiceCheckAggregator, HourlyServiceCheckAggregator>();
+        services.AddScoped<IDataRetentionService, DataRetentionService>();
         services.AddHttpContextAccessor();
     }
 }

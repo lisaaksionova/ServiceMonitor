@@ -13,5 +13,7 @@ public interface IHourlyServiceCheckRepository
     Task<List<HourlyServiceCheck>> GetAllFromTo(DateTime from, DateTime to,
         CancellationToken cancellationToken);
 
+    Task<DateTime> GetLastCheckedHour(CancellationToken cancellationToken);
+
     Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken);
 }

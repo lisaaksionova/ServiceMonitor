@@ -42,6 +42,11 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync(applicationException.Message);
         }
+        catch (ValidationAppException validationException)
+        {
+            context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+            await context.Response.WriteAsJsonAsync(validationException.Errors);
+        }
         catch (Exception ex)
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;

@@ -21,7 +21,10 @@ public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHour
             0,
             DateTimeKind.Utc);
 
-        var from = (await repository.HourlyServiceCheck.GetAllFromTo(currentHour, now, cancellationToken)).OrderBy(h => h.Hour).Select(h => h.Hour).LastOrDefault();
+        var lastAggregatedHour =
+            await repository.HourlyServiceCheck.GetLastCheckedHour(cancellationToken);
+
+        var from = lastAggregatedHour.AddHours(1);
 
         var serviceChecks = repository.ServiceCheck
             .GetAllByDate(from, currentHour, cancellationToken);

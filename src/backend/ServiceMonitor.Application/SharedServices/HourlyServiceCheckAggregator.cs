@@ -22,12 +22,24 @@ public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHour
             DateTimeKind.Utc);
 
         var lastAggregatedHour =
-            await repository.HourlyServiceCheck.GetLastCheckedHour(cancellationToken);
+            await repository.HourlyServiceCheck
+                .GetLastCheckedHour(cancellationToken);
 
-        if (lastAggregatedHour == DateTime.MinValue)
-            lastAggregatedHour = now.Date;
+        var firstCheckedAt =
+            await repository.ServiceCheck.GetFirstCheckedAtAsync(cancellationToken);
 
-        var from = lastAggregatedHour.AddHours(1);
+        var from = lastAggregatedHour.HasValue
+            ? lastAggregatedHour.Value.AddHours(1)
+            : firstCheckedAt.HasValue
+                ? new DateTime(
+                    firstCheckedAt.Value.Year,
+                    firstCheckedAt.Value.Month,
+                    firstCheckedAt.Value.Day,
+                    firstCheckedAt.Value.Hour,
+                    0,
+                    0,
+                    DateTimeKind.Utc)
+                : now.Date;
 
         var serviceChecks = repository.ServiceCheck
             .GetAllByDate(from, currentHour, cancellationToken);

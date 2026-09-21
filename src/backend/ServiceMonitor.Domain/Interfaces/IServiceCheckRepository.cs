@@ -13,4 +13,7 @@ public interface IServiceCheckRepository
     IQueryable<ServiceCheck> GetAllByDate(DateTime from, DateTime to, CancellationToken cancellationToken);
 
     Task DeleteOlderThanAsync(DateTime date, CancellationToken cancellationToken);
+
+    Task<DateTime?> GetFirstCheckedAtAsync(
+        CancellationToken cancellationToken);
 }

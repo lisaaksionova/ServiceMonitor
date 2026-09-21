@@ -24,6 +24,9 @@ public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHour
         var lastAggregatedHour =
             await repository.HourlyServiceCheck.GetLastCheckedHour(cancellationToken);
 
+        if (lastAggregatedHour == DateTime.MinValue)
+            lastAggregatedHour = now.Date;
+
         var from = lastAggregatedHour.AddHours(1);
 
         var serviceChecks = repository.ServiceCheck

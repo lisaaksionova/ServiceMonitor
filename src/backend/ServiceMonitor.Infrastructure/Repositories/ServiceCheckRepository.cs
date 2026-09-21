@@ -33,6 +33,16 @@ public class ServiceCheckRepository(MonitorDbContext context)
         return new PagedList<ServiceCheck>(items, count, page, pageSize);
     }
 
+    public async Task<DateTime?> GetFirstCheckedAtAsync(
+        CancellationToken cancellationToken)
+    {
+        return await GetAll()
+            .AsNoTracking()
+            .OrderBy(s => s.CheckedAt)
+            .Select(s => (DateTime?)s.CheckedAt)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
     public IQueryable<ServiceCheck> GetAllByDate(DateTime from, DateTime to, CancellationToken cancellationToken) =>
         GetByCondition(s => s.CheckedAt >= from && s.CheckedAt < to);
 

@@ -52,6 +52,11 @@ public class HealthCheckBackgroundService(
                             service.LastSuccessfulCheckAt = now;
                             break;
                         }
+                    case true when service.Status == ServiceStatus.Healthy:
+                        {
+                            service.LastSuccessfulCheckAt = now;
+                            break;
+                        }
                     case false when service.Status == ServiceStatus.Healthy:
                         {
                             var incident = new Incident

@@ -2,12 +2,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.RateLimiting;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using ServiceMonitor.API.Behaviors;
 using ServiceMonitor.API.Middlewares;
 using ServiceMonitor.Domain.Entities;
 using ServiceMonitor.Infrastructure.Persistence;
@@ -21,6 +23,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<ErrorHandlingMiddleware>();
         services.AddScoped<ISeeder, MonitorSeeder>();
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddFluentValidationAutoValidation();
 
         services.AddIdentity<User, IdentityRole>()

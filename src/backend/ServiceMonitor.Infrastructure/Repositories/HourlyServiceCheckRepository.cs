@@ -35,6 +35,15 @@ public class HourlyServiceCheckRepository(MonitorDbContext context)
         CancellationToken cancellationToken) =>
         await GetByCondition(s => s.Hour >= from && s.Hour <= to).ToListAsync(cancellationToken);
 
+    public async Task<DateTime?> GetLastCheckedHour(CancellationToken cancellationToken)
+    {
+        return await GetAll()
+            .AsNoTracking()
+            .OrderByDescending(h => h.Hour)
+            .Select(h => (DateTime?)h.Hour)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
     public async Task DeleteOlderThanAsync(DateTime hour, CancellationToken cancellationToken) =>
         await context.HourlyServiceChecks.Where(s => s.Hour < hour).ExecuteDeleteAsync(cancellationToken);
 }

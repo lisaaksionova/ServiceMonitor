@@ -1,6 +1,3 @@
-using MediatR;
-using ServiceMonitor.Application.Services.Dtos;
-
 namespace ServiceMonitor.Application.Services.Commands.CreateService;
 
 public class CreateServiceCommand : IRequest<ServiceDto>

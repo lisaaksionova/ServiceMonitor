@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
-using ServiceMonitor.Domain.Interfaces;
-
-namespace ServiceMonitor.Application.SharedServices;
+﻿namespace ServiceMonitor.Application.SharedServices;
 
 public class HourlyServiceCheckAggregator(IRepositoryManager repository) : IHourlyServiceCheckAggregator
 {

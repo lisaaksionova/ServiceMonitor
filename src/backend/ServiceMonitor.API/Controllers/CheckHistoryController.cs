@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceMonitor.Application.History.Dtos.HourlyServiceChecks;
+using ServiceMonitor.Application.History.Dtos.ServiceCheck;
 using ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
-using ServiceMonitor.Application.ServiceChecks.Dtos;
 using ServiceMonitor.Application.ServiceChecks.Queries;
 
 namespace ServiceMonitor.API.Controllers;

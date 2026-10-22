@@ -1,8 +1,4 @@
-﻿using MediatR;
-using ServiceMonitor.Application.History.Dtos.HourlyServiceChecks;
-using ServiceMonitor.Domain.Common;
-
-namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
+﻿namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
 
 public class GetAllHourlyServiceChecksQuery(int page, int pageSize, Guid serviceId, DateTime from, DateTime to)
     : IRequest<PagedList<HourlyServiceCheckDto>>

@@ -1,6 +1,3 @@
-using MediatR;
-using ServiceMonitor.Application.Incidents.Dtos;
-
 namespace ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 
 public class CreateIncidentCommand : IRequest<IncidentDto>

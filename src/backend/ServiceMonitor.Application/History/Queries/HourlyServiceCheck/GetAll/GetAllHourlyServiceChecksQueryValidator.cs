@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
+﻿namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
 
 public class GetAllHourlyServiceChecksQueryValidator : AbstractValidator<GetAllHourlyServiceChecksQuery>
 {

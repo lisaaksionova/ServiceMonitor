@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace ServiceMonitor.Application.Auth.RegisterUser;
 
 public record RegisterUserCommand : IRequest<string?>

@@ -1,6 +1,3 @@
-using MediatR;
-using ServiceMonitor.Application.Incidents.Dtos;
-
 namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 
 public class UpdateIncidentCommand(Guid incidentId, string description, string status, string resolvedAt)

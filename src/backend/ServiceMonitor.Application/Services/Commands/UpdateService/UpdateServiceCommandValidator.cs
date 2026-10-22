@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ServiceMonitor.Application.Services.Commands.UpdateService;
 
 public class UpdateServiceCommandValidator : AbstractValidator<UpdateServiceCommand>

@@ -1,7 +1,3 @@
-using MediatR;
-using ServiceMonitor.Application.Incidents.Dtos;
-using ServiceMonitor.Domain.Common;
-
 namespace ServiceMonitor.Application.Incidents.Queries.GetAllIncidents;
 
 public class GetAllIncidentsQuery(Guid serviceId, string? cursor, int limit) : IRequest<CursorPagedList<IncidentDto>>

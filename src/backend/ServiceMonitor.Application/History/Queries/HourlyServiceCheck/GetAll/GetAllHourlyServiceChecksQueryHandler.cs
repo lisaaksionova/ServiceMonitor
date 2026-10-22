@@ -1,13 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.History.Dtos.HourlyServiceChecks;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Exceptions;
-using ServiceMonitor.Domain.Interfaces;
-
-namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
+﻿namespace ServiceMonitor.Application.History.Queries.HourlyServiceCheck.GetAll;
 
 public class GetAllHourlyServiceChecksQueryHandler(
     IRepositoryManager repository,

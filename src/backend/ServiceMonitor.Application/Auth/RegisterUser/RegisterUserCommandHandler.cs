@@ -1,10 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Constants;
-using ServiceMonitor.Domain.Entities;
-
 namespace ServiceMonitor.Application.Auth.RegisterUser;
 
 public class RegisterUserCommandHandler(

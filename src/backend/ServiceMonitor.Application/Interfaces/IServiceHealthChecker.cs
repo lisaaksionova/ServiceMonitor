@@ -1,7 +1,4 @@
-﻿using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Entities;
-
-namespace ServiceMonitor.Application.Interfaces;
+﻿namespace ServiceMonitor.Application.Interfaces;
 
 public interface IServiceHealthChecker
 {

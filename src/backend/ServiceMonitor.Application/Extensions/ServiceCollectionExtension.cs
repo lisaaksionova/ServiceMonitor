@@ -1,8 +1,3 @@
-using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Application.SharedServices;
-
 namespace ServiceMonitor.Application.Extensions;
 
 public static class ServiceCollectionExtension

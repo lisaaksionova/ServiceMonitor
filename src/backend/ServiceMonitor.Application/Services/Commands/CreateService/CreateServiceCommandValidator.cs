@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ServiceMonitor.Application.Services.Commands.CreateService;
 
 public class CreateServiceCommandValidator : AbstractValidator<CreateServiceCommand>

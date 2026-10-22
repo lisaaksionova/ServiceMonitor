@@ -1,9 +1,3 @@
-using AutoMapper;
-using ServiceMonitor.Application.Incidents.Commands.CreateIncident;
-using ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
-
 namespace ServiceMonitor.Application.Incidents.Dtos;
 
 public class IncidentProfile : Profile

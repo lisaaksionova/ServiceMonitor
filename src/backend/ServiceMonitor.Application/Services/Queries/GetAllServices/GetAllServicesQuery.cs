@@ -1,7 +1,3 @@
-using MediatR;
-using ServiceMonitor.Application.Services.Dtos;
-using ServiceMonitor.Domain.Common;
-
 namespace ServiceMonitor.Application.Services.Queries.GetAllServices;
 
 public class GetAllServicesQuery(int page, int pageSize) : IRequest<PagedList<ServiceDto>>

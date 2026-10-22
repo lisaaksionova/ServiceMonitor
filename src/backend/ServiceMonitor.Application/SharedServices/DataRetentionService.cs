@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Interfaces;
-
-namespace ServiceMonitor.Application.SharedServices;
+﻿namespace ServiceMonitor.Application.SharedServices;
 
 public class DataRetentionService(
     IRepositoryManager repository,

@@ -1,6 +1,3 @@
-using FluentValidation;
-using ServiceMonitor.Application.Services.Commands.DeleteService;
-
 namespace ServiceMonitor.Application.Incidents.Commands.DeleteIncident;
 
 public class DeleteIncidentCommandValidator : AbstractValidator<DeleteServiceCommand>

@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
-using ServiceMonitor.Domain.Exceptions;
-
-namespace ServiceMonitor.API.Behaviors;
+﻿namespace ServiceMonitor.API.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>

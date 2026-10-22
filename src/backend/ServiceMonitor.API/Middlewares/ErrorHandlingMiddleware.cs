@@ -1,7 +1,3 @@
-using System.Security.Authentication;
-using System.Text.Json;
-using ServiceMonitor.Domain.Exceptions;
-
 namespace ServiceMonitor.API.Middlewares;
 
 public class ErrorHandlingMiddleware : IMiddleware

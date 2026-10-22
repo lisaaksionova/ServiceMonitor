@@ -1,10 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Http.Timeouts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using ServiceMonitor.Application.Auth.LoginUser;
-using ServiceMonitor.Application.Auth.RegisterUser;
-
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]

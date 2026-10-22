@@ -1,15 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Timeouts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using ServiceMonitor.Application.Incidents.Commands.CreateIncident;
-using ServiceMonitor.Application.Incidents.Commands.DeleteIncident;
-using ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
-using ServiceMonitor.Application.Incidents.Dtos;
-using ServiceMonitor.Application.Incidents.Queries.GetAllIncidents;
-using ServiceMonitor.Application.Incidents.Queries.GetIncidentById;
-
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]

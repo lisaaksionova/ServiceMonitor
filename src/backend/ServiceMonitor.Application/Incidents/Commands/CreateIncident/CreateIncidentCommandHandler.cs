@@ -1,10 +1,3 @@
-using AutoMapper;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Incidents.Dtos;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Interfaces;
-
 namespace ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 
 public class CreateIncidentCommandHandler(

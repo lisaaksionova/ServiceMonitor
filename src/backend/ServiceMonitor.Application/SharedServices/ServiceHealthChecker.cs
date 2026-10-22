@@ -1,10 +1,4 @@
-﻿using System.Net.Sockets;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Entities;
-using static System.Net.HttpStatusCode;
-
-namespace ServiceMonitor.Application.SharedServices;
+﻿namespace ServiceMonitor.Application.SharedServices;
 
 public class ServiceHealthChecker(IHttpClientFactory httpClientFactory) : IServiceHealthChecker
 {

@@ -1,6 +1,3 @@
-using FluentValidation;
-using ServiceMonitor.Domain.Enums;
-
 namespace ServiceMonitor.Application.Incidents.Commands.UpdateIncident;
 
 public class UpdateIncidentCommandValidator : AbstractValidator<UpdateIncidentCommand>

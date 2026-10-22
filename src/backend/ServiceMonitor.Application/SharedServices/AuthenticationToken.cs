@@ -1,12 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Entities;
-
 namespace ServiceMonitor.Application.SharedServices;
 
 public class AuthenticationToken(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationToken

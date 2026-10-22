@@ -1,10 +1,4 @@
-using Bogus;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Constants;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
-using ServiceMonitor.Infrastructure.Persistence;
+
 
 namespace ServiceMonitor.Infrastructure.Seeders;
 

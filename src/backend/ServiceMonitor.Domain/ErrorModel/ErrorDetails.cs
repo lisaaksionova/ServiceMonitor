@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace ServiceMonitor.Domain.ErrorModel;
 
 public class ErrorDetails

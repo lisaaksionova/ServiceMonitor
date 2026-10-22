@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace ServiceMonitor.Application.Auth.LoginUser;
+﻿namespace ServiceMonitor.Application.Auth.LoginUser;
 
 public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {

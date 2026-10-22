@@ -1,5 +1,3 @@
-using ServiceMonitor.Domain.Entities;
-
 namespace ServiceMonitor.Application.Interfaces;
 
 public interface IAuthenticationToken

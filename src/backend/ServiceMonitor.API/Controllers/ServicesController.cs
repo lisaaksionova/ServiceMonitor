@@ -1,17 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Timeouts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using ServiceMonitor.Application.Services.Commands.CreateService;
-using ServiceMonitor.Application.Services.Commands.DeleteService;
-using ServiceMonitor.Application.Services.Commands.UpdateService;
-using ServiceMonitor.Application.Services.Commands.UpdateServiceAsHealthy;
-using ServiceMonitor.Application.Services.Commands.UpdateServiceAsUnavailable;
-using ServiceMonitor.Application.Services.Dtos;
-using ServiceMonitor.Application.Services.Queries.GetAllServices;
-using ServiceMonitor.Application.Services.Queries.GetServiceById;
-
 namespace ServiceMonitor.API.Controllers;
 
 [ApiController]

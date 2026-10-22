@@ -1,8 +1,3 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-
 namespace ServiceMonitor.Application.SharedServices;
 
 public class AuthenticatedUser(

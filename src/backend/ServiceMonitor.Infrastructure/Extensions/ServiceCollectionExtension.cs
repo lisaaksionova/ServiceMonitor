@@ -1,14 +1,3 @@
-using Hangfire;
-using Hangfire.PostgreSql;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using ServiceMonitor.Domain.Interfaces;
-using ServiceMonitor.Infrastructure.BackgroundJobs;
-using ServiceMonitor.Infrastructure.BackgroundServices;
-using ServiceMonitor.Infrastructure.Persistence;
-using ServiceMonitor.Infrastructure.Repositories;
-
 namespace ServiceMonitor.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtension

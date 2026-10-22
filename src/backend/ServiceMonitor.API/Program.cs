@@ -1,13 +1,4 @@
-using Hangfire;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using ServiceMonitor.API.Extensions;
-using ServiceMonitor.API.Middlewares;
-using ServiceMonitor.Application.Extensions;
-using ServiceMonitor.Infrastructure.BackgroundJobs;
-using ServiceMonitor.Infrastructure.Extensions;
-using ServiceMonitor.Infrastructure.Persistence;
-using ServiceMonitor.Infrastructure.Seeders;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

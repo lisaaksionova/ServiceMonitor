@@ -1,10 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
-using ServiceMonitor.Domain.Interfaces;
-using ServiceMonitor.Infrastructure.Persistence;
-
 namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class IncidentRepository(MonitorDbContext context) : RepositoryBase<Incident>(context), IIncidentRepository

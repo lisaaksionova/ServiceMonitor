@@ -1,8 +1,3 @@
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Interfaces;
-using ServiceMonitor.Infrastructure.Persistence;
-
 namespace ServiceMonitor.Infrastructure.Repositories;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class

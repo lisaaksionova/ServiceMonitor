@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
-using ServiceMonitor.Domain.ErrorModel;
-using ServiceMonitor.Domain.Exceptions;
-
 namespace ServiceMonitor.API.Extensions;
 
 public static class ExceptionMiddlewareExtension

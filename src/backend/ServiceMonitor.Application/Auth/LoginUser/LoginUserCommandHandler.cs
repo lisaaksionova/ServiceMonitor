@@ -1,10 +1,3 @@
-using System.Security.Authentication;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Entities;
-
 namespace ServiceMonitor.Application.Auth.LoginUser;
 
 public class LoginUserCommandHandler(

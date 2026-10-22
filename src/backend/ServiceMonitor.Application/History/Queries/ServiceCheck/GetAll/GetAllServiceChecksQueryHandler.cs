@@ -1,14 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Application.ServiceChecks.Dtos;
-using ServiceMonitor.Application.ServiceChecks.Queries;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Exceptions;
-using ServiceMonitor.Domain.Interfaces;
-
-namespace ServiceMonitor.Application.History.Queries.ServiceCheck.GetAll;
+﻿namespace ServiceMonitor.Application.History.Queries.ServiceCheck.GetAll;
 
 public class GetAllServiceChecksQueryHandler(
     IRepositoryManager repository,

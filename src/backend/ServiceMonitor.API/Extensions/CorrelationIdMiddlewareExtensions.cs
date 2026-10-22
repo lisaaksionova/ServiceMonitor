@@ -1,5 +1,3 @@
-using ServiceMonitor.API.Middlewares;
-
 namespace ServiceMonitor.API.Extensions;
 
 public static class CorrelationIdMiddlewareExtensions

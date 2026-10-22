@@ -1,12 +1,3 @@
-using AutoMapper;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Incidents.Dtos;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Exceptions;
-using ServiceMonitor.Domain.Interfaces;
-
 namespace ServiceMonitor.Application.Incidents.Queries.GetAllIncidents;
 
 public class GetAllIncidentsQueryHandler(

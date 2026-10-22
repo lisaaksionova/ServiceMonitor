@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Entities;
-
 namespace ServiceMonitor.Infrastructure.Persistence;
 
 public class MonitorDbContext(DbContextOptions<MonitorDbContext> options) : IdentityDbContext<User>(options)

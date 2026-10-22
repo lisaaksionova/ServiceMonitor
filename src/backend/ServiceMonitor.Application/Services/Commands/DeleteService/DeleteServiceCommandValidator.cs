@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ServiceMonitor.Application.Services.Commands.DeleteService;
 
 public class DeleteServiceCommandValidator : AbstractValidator<DeleteServiceCommand>

@@ -1,8 +1,4 @@
-﻿using MediatR;
-using ServiceMonitor.Application.ServiceChecks.Dtos;
-using ServiceMonitor.Domain.Common;
-
-namespace ServiceMonitor.Application.ServiceChecks.Queries;
+﻿namespace ServiceMonitor.Application.ServiceChecks.Queries;
 
 public class GetAllServiceChecksQuery(int page, int pageSize, Guid serviceId) : IRequest<PagedList<ServiceCheckDto>>
 {

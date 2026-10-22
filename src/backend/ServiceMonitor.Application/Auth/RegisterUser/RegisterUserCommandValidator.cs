@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace ServiceMonitor.Application.Auth.RegisterUser;
+﻿namespace ServiceMonitor.Application.Auth.RegisterUser;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {

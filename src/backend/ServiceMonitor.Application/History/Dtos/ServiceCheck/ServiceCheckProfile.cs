@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using ServiceMonitor.Application.ServiceChecks.Dtos;
-
-namespace ServiceMonitor.Application.History.Dtos.ServiceCheck;
+﻿namespace ServiceMonitor.Application.History.Dtos.ServiceCheck;
 
 public class ServiceCheckProfile : Profile
 {

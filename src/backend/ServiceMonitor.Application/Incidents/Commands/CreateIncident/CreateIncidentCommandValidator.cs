@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ServiceMonitor.Application.Incidents.Commands.CreateIncident;
 
 public class CreateIncidentCommandValidator : AbstractValidator<CreateIncidentCommand>

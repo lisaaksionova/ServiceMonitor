@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ServiceMonitor.Domain.Enums;
-
 namespace ServiceMonitor.Domain.Entities;
 
 public class Service

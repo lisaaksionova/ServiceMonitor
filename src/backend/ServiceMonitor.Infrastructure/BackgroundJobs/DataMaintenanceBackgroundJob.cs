@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
+﻿
 
 namespace ServiceMonitor.Infrastructure.BackgroundJobs;
 

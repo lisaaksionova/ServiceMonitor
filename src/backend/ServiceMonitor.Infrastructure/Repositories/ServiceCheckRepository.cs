@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Interfaces;
-using ServiceMonitor.Infrastructure.Persistence;
-
-namespace ServiceMonitor.Infrastructure.Repositories;
+﻿namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class ServiceCheckRepository(MonitorDbContext context)
     : RepositoryBase<ServiceCheck>(context), IServiceCheckRepository

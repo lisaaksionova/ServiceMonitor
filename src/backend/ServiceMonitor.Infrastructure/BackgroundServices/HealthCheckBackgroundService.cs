@@ -1,13 +1,3 @@
-using System.Diagnostics;
-using System.Net;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using ServiceMonitor.Application.Interfaces;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Enums;
-using ServiceMonitor.Domain.Interfaces;
-
 namespace ServiceMonitor.Infrastructure.BackgroundServices;
 
 public class HealthCheckBackgroundService(

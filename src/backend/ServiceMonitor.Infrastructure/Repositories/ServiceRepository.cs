@@ -1,9 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ServiceMonitor.Domain.Common;
-using ServiceMonitor.Domain.Entities;
-using ServiceMonitor.Domain.Interfaces;
-using ServiceMonitor.Infrastructure.Persistence;
-
 namespace ServiceMonitor.Infrastructure.Repositories;
 
 public class ServiceRepository(MonitorDbContext context) : RepositoryBase<Service>(context), IServiceRepository

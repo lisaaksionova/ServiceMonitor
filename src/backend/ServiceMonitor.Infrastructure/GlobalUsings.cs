@@ -1,0 +1,24 @@
+﻿global using Microsoft.Extensions.Logging;
+global using ServiceMonitor.Application.Interfaces;
+global using System.Diagnostics;
+global using System.Net;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using ServiceMonitor.Domain.Entities;
+global using ServiceMonitor.Domain.Enums;
+global using ServiceMonitor.Domain.Interfaces;
+global using Hangfire;
+global using Hangfire.PostgreSql;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using ServiceMonitor.Infrastructure.BackgroundJobs;
+global using ServiceMonitor.Infrastructure.BackgroundServices;
+global using ServiceMonitor.Infrastructure.Persistence;
+global using ServiceMonitor.Infrastructure.Repositories;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using ServiceMonitor.Domain.Common;
+global using System.Linq.Expressions;
+global using Bogus;
+global using Microsoft.AspNetCore.Identity;
+global using ServiceMonitor.Domain.Constants;
+

@@ -1,0 +1,10 @@
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using ServiceMonitor.Domain.Enums;
+global using System.Net;
+global using Microsoft.AspNetCore.Identity;
+global using System.Text;
+global using System.Text.Json;
+global using ServiceMonitor.Domain.Common;
+global using ServiceMonitor.Domain.Entities;
+global using System.Linq.Expressions;

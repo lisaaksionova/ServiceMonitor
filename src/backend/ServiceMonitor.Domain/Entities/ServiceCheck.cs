@@ -1,7 +1,4 @@
-﻿using System.Net;
-using ServiceMonitor.Domain.Enums;
-
-namespace ServiceMonitor.Domain.Entities;
+﻿namespace ServiceMonitor.Domain.Entities;
 
 public class ServiceCheck
 {

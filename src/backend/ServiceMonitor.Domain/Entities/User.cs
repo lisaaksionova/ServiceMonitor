@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace ServiceMonitor.Domain.Entities;
 
 public class User : IdentityUser
